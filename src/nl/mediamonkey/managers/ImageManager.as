@@ -23,28 +23,10 @@ package nl.mediamonkey.managers {
 		public static function getEncodedByteArray(bitmapDrawable:IBitmapDrawable, encoderType:String, jpgQuality:int=85, scale:Number=1, 
 			clipRect:Rectangle=null, backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):ByteArray {
 			
-			var bitmapdata:BitmapData = getBitmapData(bitmapDrawable, scale, clipRect, backgroundColor, pixelSnapping, smoothing);
+			var bitmapData:BitmapData = getBitmapData(bitmapDrawable, scale, clipRect, backgroundColor, pixelSnapping, smoothing);
+			var byteArray:ByteArray = encodeBitmapDataToByteArray(bitmapData, encoderType, jpgQuality);
 			
-			var encoder:IImageEncoder;
-			var bytearray:ByteArray;
-			
-			switch (encoderType) {
-				
-				case PNG_ENCODER: {
-					encoder = new PNGEncoder();
-					bytearray = encoder.encode(bitmapdata);
-					break;
-				}
-				
-				case JPG_ENCODER:
-				default: {
-					encoder = new JPEGEncoder(jpgQuality);
-					bytearray = encoder.encode(bitmapdata);
-					break;
-				}
-			}
-			
-			return bytearray;
+			return byteArray;
 		}
 		
 		public static function getBitmapData(bitmapDrawable:IBitmapDrawable, scale:Number=1, clipRect:Rectangle=null,
@@ -71,6 +53,30 @@ package nl.mediamonkey.managers {
 				
 				return bitmapdata;
 			}
+		}
+		
+		public static function encodeBitmapDataToByteArray(bitmapdata:BitmapData, encoderType:String, jpgQuality:int=85):ByteArray {
+			
+			var encoder:IImageEncoder;
+			var bytearray:ByteArray;
+			
+			switch (encoderType) {
+				
+				case PNG_ENCODER: {
+					encoder = new PNGEncoder();
+					bytearray = encoder.encode(bitmapdata);
+					break;
+				}
+				
+				case JPG_ENCODER:
+				default: {
+					encoder = new JPEGEncoder(jpgQuality);
+					bytearray = encoder.encode(bitmapdata);
+					break;
+				}
+			}
+			
+			return bytearray;
 		}
 		
 		/* Flash 10
