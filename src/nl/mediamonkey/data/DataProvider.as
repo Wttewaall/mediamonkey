@@ -77,6 +77,15 @@ package nl.mediamonkey.data {
 			collection = new ArrayCollection();
 		}
 		
+		// ---- public methods ----
+		
+		public function getItemIndex(item:Object):int {
+			for (var i:uint=0; i<collection.length; i++) {
+				if (collection[i] === item) return i;
+			}
+			return -1;
+		}
+		
 		// ---- protected methods ----
 		
 		protected function setData(value:Object):void {
