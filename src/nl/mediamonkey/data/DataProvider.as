@@ -26,8 +26,6 @@ package nl.mediamonkey.data {
 		
 		private var collection:ICollectionView;
 		private var iterator:IViewCursor;
-		private var _selectedIndex:int = -1;
-		private var _selectedItem:Object;
 		private var selectedUID:String;
 		private var selectionChanged:Boolean = false;
 		
@@ -36,6 +34,9 @@ package nl.mediamonkey.data {
     	public var selectedItemChanged:Boolean = false;
 		
 		// ---- getters & setters ----
+		
+		private var _selectedIndex:int = -1;
+		private var _selectedItem:Object;
 		
 		public function get data():Object {
 			//if (collection == null) collection = new ArrayCollection();
