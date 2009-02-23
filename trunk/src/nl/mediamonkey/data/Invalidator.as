@@ -1,17 +1,23 @@
-package nl.mediamonkey.data {
+﻿package nl.mediamonkey.data {
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	
+	import nl.mediamonkey.enum.InvalidationType;
 	import nl.mediamonkey.events.InvalidatorEvent;
 	import nl.mediamonkey.utils.DictionaryUtil;
+	
+	/**
+	 * todo
+	 *	. try using Object.watch to register a property and fire an invalidationEvent on change?
+	 */
 	
 	[Event(name="invalidation", type="nl.mediamonkey.events.InvalidatorEvent")]
 	
 	/**
-	 * We make use of a DisplayObjectContainer to recieve Event.ENTER_FRAME events
+	 * We make use of a DisplayObjectContainer (most basic class) to recieve Event.ENTER_FRAME events
 	 * Otherwise we'd have to use a timer, which might run unsynchronized to the framerate
 	 */
 	public class Invalidator extends EventDispatcher {
@@ -34,7 +40,7 @@ package nl.mediamonkey.data {
 		 * a very specific part of you application/model/state. You can also un-invalidate on a
 		 * property by passing a false-value.
 		 */
-		public function invalidate(type:String="any", value:Boolean=true):void {
+		public function invalidate(type:String="all", value:Boolean=true):void {
 			if (value == true) {
 				invalidatedProperties[type] = value;
 				
