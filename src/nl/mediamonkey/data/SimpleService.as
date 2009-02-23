@@ -1,4 +1,4 @@
-package nl.mediamonkey.data {
+﻿package nl.mediamonkey.data {
 	
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -141,6 +141,8 @@ package nl.mediamonkey.data {
 			timer.addEventListener(TimerEvent.TIMER_COMPLETE, timerCompleteHandler);
 		}
 		
+		// ---- public methods ----
+		
 		public function send(parameters:Object=null):void {
 			if (!url) return;
 			
@@ -152,17 +154,19 @@ package nl.mediamonkey.data {
 			load(request);
 		}
 		
+		public function cancel():void {
+			loader.close();
+		}
+		
+		// ---- protected methods ----
+		
 		protected function load(request:URLRequest):void {
 			startTime = getTimer();
 			timer.start();
 			loader.load(request);
 		}
 		
-		public function cancel():void {
-			loader.close();
-		}
-		
-		// ---- protected methods ----
+		// ---- event handlers ----
 		
 		protected function loaderOpenHandler(event:Event):void {
 			timer.reset();
@@ -208,9 +212,7 @@ package nl.mediamonkey.data {
 			dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, ERROR_TIMEOUT_MESSAGE));
 		}
 		
-		// ---- private methods ----
-		
-		/*private function buildPath(base:String, path:String):String {
+		/*protected function buildPath(base:String, path:String):String {
 			var backslash:String = "\\";
 			var slash:String = "/";
 			
