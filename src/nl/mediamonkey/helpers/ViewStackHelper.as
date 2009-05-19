@@ -123,14 +123,14 @@ package nl.mediamonkey.helpers {
 		
 		// ---- public methods ----
 		
-		public function nextPage():void {
+		public function next():void {
 			if (hasNextPage) {
 				selectedPageIndex++;
 				update();
 			}
 		}
 		
-		public function previousPage():void {
+		public function previous():void {
 			if (hasPreviousPage) {
 				selectedPageIndex--;
 				update();
@@ -143,6 +143,10 @@ package nl.mediamonkey.helpers {
 			if (child != null) {
 				viewstack.selectedIndex = viewstack.getChildIndex(child);
 			}
+		}
+		
+		public function getPageIndex(page:Container):int {
+			return viewstack.getChildIndex(page);
 		}
 		
 		// ---- protected methods ----
