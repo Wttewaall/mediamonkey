@@ -18,14 +18,14 @@ package nl.mediamonkey.utils {
 		
 		public static function contains(dict:Dictionary, value:Object):Boolean {
 			for (var key:Object in dict) {
-				if (dict[key] == value) return true;
+				if (dict[key] === value) return true;
 			}
 			return false;
 		}
 		
 		public static function keyFromValue(dict:Dictionary, value:Object):Object {
 			for (var key:Object in dict) {
-				if (dict[key] == value) return key;
+				if (dict[key] === value) return key;
 			}
 			return null;
 		}

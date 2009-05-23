@@ -2,9 +2,11 @@ package nl.mediamonkey.managers {
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Button;
+	import mx.core.IMXMLObject;
 	import mx.events.FlexEvent;
 	
 	[Event(name="added",			type="flash.events.Event")]
@@ -12,30 +14,40 @@ package nl.mediamonkey.managers {
 	[Event(name="removed",			type="flash.events.Event")]
 	[Event(name="selectionChange",	type="flash.events.Event")]
 	
-	public class ButtonGroup extends EventDispatcher {
+	[DefaultProperty("items")]
+	
+	public class ButtonGroup extends EventDispatcher implements IMXMLObject {
 		
-		protected var buttons			:ArrayCollection = new ArrayCollection();
-		protected var prevSelection		:Button;
-		protected var oldSelection		:Button; // var for temp. old selection
+		public var deselectOnDisabled		:Boolean;
+		public var deselectable				:Boolean;
 		
-		public var name					:String;
-		public var deselectOnDisabled	:Boolean;
-		public var deselectable			:Boolean;
+		protected var buttons				:ArrayCollection = new ArrayCollection();
+		protected var prevSelection			:Button;
+		protected var oldSelection			:Button; // var for temp. old selection
 		
-		public function ButtonGroup(name:String=null) {
-			this.name = name;
-		}
+		private var document				:Object;
 		
 		// ---- getters & setters ----
 		
+		protected var _innerChildren:Array;
 		protected var _enabled:Boolean = true;
 		protected var _selection:Button = null;
+		
+		[Bindable]
+		public function set items(value:Array):void {
+			_innerChildren = value;
+			assignInnerChildren();
+		}
+		
+		public function get items():Array {
+			return _innerChildren;
+		}
 		
 		[Bindable(event="enabledChange")]
 		public function get enabled():Boolean {
 			var enabledButtons:int = 0;
 			for (var i:uint=0; i<buttons.length; i++) {
-				enabledButtons += buttons.getItemAt(i).enabled;
+				enabledButtons += (buttons.getItemAt(i) as Button).enabled;
 			}
 			
 			return (enabledButtons > 0);
@@ -59,7 +71,7 @@ package nl.mediamonkey.managers {
 				}
 				
 				for (var i:uint=0; i<buttons.length; i++) {
-					Button(buttons.getItemAt(i)).enabled = _enabled;
+					(buttons.getItemAt(i) as Button).enabled = _enabled;
 				}
 				
 				dispatchEvent(new Event("enabledChange"));
@@ -72,25 +84,51 @@ package nl.mediamonkey.managers {
 		}
 		
 		public function set selection(value:Button):void {
+			var hasButton:Boolean = buttons.contains(value);
+			
+			if (_selection == value && value != null) {
+				_selection.selected = (deselectable) ? _selection.selected : true;
+				_selection.toggle = true;
+				return;
+			}
+			
+			oldSelection = _selection;
+			
+			if (oldSelection != null) {
+				oldSelection.selected = false;
+				oldSelection.toggle = false;
+			}
+			
 			if (value == null) {
+				_selection = value;
+				dispatchEvent(new Event("selectionChange"));
 				
-				if (_selection) {
-					oldSelection = _selection;
-					_selection.selected = false;
-					_selection.toggle = false;
+			} else if (hasButton) {
+				_selection = value;
+				_selection.selected = true;
+				_selection.toggle = true;
+				dispatchEvent(new Event("selectionChange"));
+				
+			}
+			
+			/*if (value == null) {
+				
+				oldSelection = _selection;
+				if (oldSelection != null) {
+					oldSelection.selected = false;
+					oldSelection.toggle = false;
 				}
 				
 				_selection = value;
 				
-				oldSelection = null;
 				dispatchEvent(new Event("selectionChange"));
 				
 			} else if (_selection != value) {
 				
-				if (_selection) {
-					oldSelection = _selection;
-					_selection.selected = false;
-					_selection.toggle = false;
+				oldSelection = _selection;
+				if (oldSelection != null) {
+					oldSelection.selected = false;
+					oldSelection.toggle = false;
 				}
 				
 				_selection = value;
@@ -102,11 +140,34 @@ package nl.mediamonkey.managers {
 				
 			} else {
 				// do nothing
-			}
+			}*/
+			
+			//trace("selection:", _selection.name);
 		}
 		
-		public function get numButtons():int {
+		public function get length():int {
 			return buttons.length;
+		}
+		
+		// ---- constructor ----
+		
+		public function ButtonGroup() {
+		}
+		
+		public function initialized(document:Object, id:String):void {
+			this.document = document;
+			
+			assignInnerChildren();
+		}
+		
+		protected function assignInnerChildren():void {
+			if (!items || items.length == 0) return;
+			
+			var item:Button;
+			for(var i:int = 0;i<items.length;i++) {
+				item = items[i] as Button;
+				if (item) addButton(item);
+			}
 		}
 		
 		// ---- public methods ----
@@ -114,46 +175,62 @@ package nl.mediamonkey.managers {
 		public function addButton(button:Button):void {
 			if (buttons.contains(button)) return;
 			
-			button.addEventListener(FlexEvent.VALUE_COMMIT, valueCommitHandler);
+			button.addEventListener(MouseEvent.CLICK, buttonClickHandler);
 			button.toggle = true;
 			buttons.addItem(button);
 			
 			dispatchEvent(new Event(Event.ADDED));
 		}
 		
+		public function getButtonAt(index:int):Button {
+			return buttons.getItemAt(index) as Button;
+		}
+		
 		public function removeButton(button:Button):void {
 			if (!buttons.contains(button)) return;
 			
-			button.removeEventListener(FlexEvent.VALUE_COMMIT, valueCommitHandler);
+			button.removeEventListener(MouseEvent.CLICK, buttonClickHandler);
 			buttons.removeItemAt(buttons.getItemIndex(button));
 			
 			dispatchEvent(new Event(Event.REMOVED));
 		}
 		
+		public function removeButtonAt(index:int):void {
+			var button:Button = buttons.getItemAt(index) as Button;
+			if (button) removeButton(button);
+		}
+		
+		public function removeAll():void {
+			var i:uint = buttons.length;
+			while (i--) {
+				removeButton(buttons.getItemAt(i) as Button);
+			} 
+		}
+		
 		// ---- event handlers ----
 		
-		protected function valueCommitHandler(event:Event):void {
+		protected function buttonClickHandler(event:Event):void {
 			var button:Button = event.target as Button;
+			selection = button;
 			
-			//trace("button == oldSelection: "+(button != oldSelection));
-			
-			if (button.selected) {
+			/*if (button.selected) {
 				selection = button;
 				
 			} else {
-				/*trace("--\ndeselecting button");
 				if (button != oldSelection && deselectable) {
 					selection = null;
+					
 				} else {
-					button.selected = true;
+					selection = button;
+					//button.selected = true;
 				}*/
 				
 				// button can toggle on deselectable
 				/*if (selection == button && selection.toggle) {
 					selection.toggle = false;
 					selection.selected = (!deselectable);
-				}*/
-			}
+				}
+			}*/
 		}
 		
 	}
