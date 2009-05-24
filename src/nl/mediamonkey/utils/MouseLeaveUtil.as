@@ -7,7 +7,21 @@ package nl.mediamonkey.utils {
 	import flash.events.MouseEvent;
 	
 	/**
-	 * http://www.bigspaceship.com/blog/labs/as3-optimization-tip
+	 * Static class that fires an event when the SWF has mouseover or not.
+	 * Original idea: http://www.bigspaceship.com/blog/labs/as3-optimization-tip
+	 * 
+	 * usage:
+	 * MouseLeaveUtil.initialize(this); // where this is preferably the root or document class
+	 * MouseLeaveUtil.addEventListener(MouseLeaveUtil.ENABLE, enableHandler);
+	 * MouseLeaveUtil.addEventListener(MouseLeaveUtil.DISABLE, disableHandler);
+	 * 
+	 * private function enableHandler(event:Event):void {
+	 * 		trace("enable the application");
+	 * }
+	 * 
+	 * private function disableHandler(event:Event):void {
+	 * 		trace("disable the application");
+	 * }
 	 */
 	
 	[Event(name="disable", type="nl.mediamonkey.utils.MouseLeaveUtil")]
@@ -33,7 +47,14 @@ package nl.mediamonkey.utils {
 			if (target == null) throw new ArgumentError("Target must be of type DisplayObject and cannot be null.");
 			MouseLeaveUtil.target = target;
 			dispatcher = new EventDispatcher();
-			target.stage.addEventListener(Event.MOUSE_LEAVE, leaveStageHandler, false, 0, true);
+			
+			if (target.stage) {
+				target.stage.addEventListener(Event.MOUSE_LEAVE, leaveStageHandler, false, 0, true);
+				
+			} else {
+				// if stage is not yet available, wait for this event to trigger
+				target.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			}
 		}
 		
 		/** add listeners directly to the static class */
@@ -41,7 +62,16 @@ package nl.mediamonkey.utils {
 			dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
+		public static function removeEventListener(type:String, listener:Function, useCapture:Boolean=false):void {
+			dispatcher.addEventListener(type, listener, useCapture);
+		}
+		
 		// ---- event handlers ----
+		
+		private static function addedToStageHandler(event:Event):void {
+			target.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			target.stage.addEventListener(Event.MOUSE_LEAVE, leaveStageHandler, false, 0, true);
+		}
 		
 		private static function leaveStageHandler(event:Event):void {
 			target.stage.addEventListener(MouseEvent.MOUSE_MOVE, returnToStageHandler, false, 0, true);
