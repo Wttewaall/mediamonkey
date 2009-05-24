@@ -9,7 +9,7 @@ package nl.mediamonkey.utils {
 	import flash.utils.getTimer;
 	
 	/**
-	 * Static class that shows a message or animation when a certain key-combination is pressed.
+	 * Static class that an event when a certain (hard-coded) keyword is typed in.
 	 * 
 	 * usage:
 	 * EasterEgg.initialize(this); // where this is preferably the root or document class
@@ -90,16 +90,23 @@ package nl.mediamonkey.utils {
 			previousTime = currentTime;
 			
 			// validate char at cursor
-			if (String.fromCharCode(event.charCode) == keyword.charAt(cursor)) {
+			if (!charAtCursor(String.fromCharCode(event.charCode)) && cursor > 0) {
+				cursor = 0; // set cursor to 0, and try once more
+				charAtCursor(String.fromCharCode(event.charCode));
+			}
+		}
+		
+		private static function charAtCursor(char:String):Boolean {
+			if (char == keyword.charAt(cursor)) {
 				if (cursor == keyword.length - 1) {
 					dispatcher.dispatchEvent(new Event(EASTER_EGG));
 					cursor = 0;
 				} else {
 					cursor++;
 				}
-			} else {
-				cursor = 0;
+				return true;
 			}
+			return false;
 		}
 		
 		// ---- null methods ----
