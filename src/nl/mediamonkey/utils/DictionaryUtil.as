@@ -16,16 +16,20 @@ package nl.mediamonkey.utils {
 			return values;
 		}
 		
+		public static function getLength(dict:Dictionary):uint {
+			return getKeys(dict).length;
+		}
+		
 		public static function contains(dict:Dictionary, value:Object):Boolean {
 			for (var key:Object in dict) {
-				if (dict[key] === value) return true;
+				if (dict[key] == value) return true;
 			}
 			return false;
 		}
 		
 		public static function keyFromValue(dict:Dictionary, value:Object):Object {
 			for (var key:Object in dict) {
-				if (dict[key] === value) return key;
+				if (dict[key] == value) return key;
 			}
 			return null;
 		}
