@@ -107,8 +107,8 @@ package nl.mediamonkey.utils {
 			content.percentHeight = 100;
 			
 			// delegate data from initObject
-			if (initObject && initObject.data)
-				(content as Container).data = initObject.data;
+			if (initObject === null) initObject = new PopUpVO();
+			if (initObject.data) (content as Container).data = initObject.data;
 			
 			// create new TitleWindow
 			var window:TitleWindow = new TitleWindow();

@@ -51,6 +51,7 @@ package nl.mediamonkey.utils {
 		
 		/** add listeners directly to the static class */
 		public static function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void {
+			if (!dispatcher) throw new Error("You'll need to initialize the EasterEgg class before adding a listener.");
 			dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
