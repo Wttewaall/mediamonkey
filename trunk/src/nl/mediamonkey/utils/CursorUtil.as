@@ -1,10 +1,13 @@
 package nl.mediamonkey.utils {
 	
 	import flash.display.InteractiveObject;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
+	import mx.core.ApplicationGlobals;
 	import mx.managers.CursorManager;
+	import mx.managers.ISystemManager;
 	
 	public class CursorUtil {
 		
@@ -70,6 +73,8 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function setCursorByVO(vo:CursorVO, forceUpdate:Boolean=false):int {
+			if (vo == null) return CursorManager.currentCursorID;
+			
 			if (currentCursorID != CursorManager.currentCursorID || forceUpdate) {
 				CursorManager.removeCursor(CursorManager.currentCursorID);
 				
@@ -102,6 +107,11 @@ package nl.mediamonkey.utils {
 		
 		public static function showCursor():void {
 			CursorManager.showCursor();
+		}
+		
+		public static function getCursorHolder():Sprite {
+			var systemManager:ISystemManager = ApplicationGlobals.application.systemManager;
+			return systemManager.cursorChildren.getChildAt(systemManager.cursorChildren.numChildren-1) as Sprite;
 		}
 		
 		// ---- event handlers ----
