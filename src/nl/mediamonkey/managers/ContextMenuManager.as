@@ -1,12 +1,16 @@
 package nl.mediamonkey.managers {
 	
 	import flash.display.InteractiveObject;
+	import flash.display.MovieClip;
 	import flash.events.ContextMenuEvent;
 	import flash.events.EventDispatcher;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuBuiltInItems;
 	import flash.ui.ContextMenuItem;
 	import flash.utils.Dictionary;
+	
+	import mx.core.ApplicationGlobals;
+	import mx.managers.ISystemManager;
 	
 	[Event(name="menuSelect", type="flash.events.ContextMenuEvent")]
 	[Event(name="menuItemSelect", type="flash.events.ContextMenuEvent")]
@@ -48,9 +52,17 @@ package nl.mediamonkey.managers {
 		
 		public function ContextMenuManager(object:InteractiveObject, builtInItems:ContextMenuBuiltInItems=null) {
 			contextMenu.addEventListener(ContextMenuEvent.MENU_SELECT, delegateMenuEventHandler);
-			
 			object.contextMenu = contextMenu;
 			this.builtInItems = builtInItems;
+		}
+		
+		// ---- public static methods ----
+		
+		public static function setSystemManagerContextMenu(contextMenu:ContextMenu=null):void {
+			// Remove ContextMenu from all SystemManager Menu items and PopUp
+			// see: http://www.adobe.com/cfusion/communityengine/index.cfm?event=showdetails&productId=2&postId=2201
+			var systemManager:ISystemManager = ApplicationGlobals.application.systemManager;
+			MovieClip(systemManager).contextMenu = (contextMenu) ? contextMenu : new ContextMenu();
 		}
 		
 		// ---- public methods ----

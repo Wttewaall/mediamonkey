@@ -7,12 +7,10 @@ package nl.mediamonkey.managers {
 	import mx.collections.ArrayCollection;
 	import mx.controls.Button;
 	import mx.core.IMXMLObject;
-	import mx.events.FlexEvent;
 	
 	[Event(name="added",			type="flash.events.Event")]
-	[Event(name="enabledChange",	type="flash.events.Event")]
+	[Event(name="change",			type="flash.events.Event")]
 	[Event(name="removed",			type="flash.events.Event")]
-	[Event(name="selectionChange",	type="flash.events.Event")]
 	
 	[DefaultProperty("items")]
 	
@@ -24,6 +22,7 @@ package nl.mediamonkey.managers {
 		protected var buttons				:ArrayCollection = new ArrayCollection();
 		protected var prevSelection			:Button;
 		protected var oldSelection			:Button; // var for temp. old selection
+		protected var selectOnAddButton	:Button;
 		
 		private var document				:Object;
 		
@@ -43,7 +42,7 @@ package nl.mediamonkey.managers {
 			return _innerChildren;
 		}
 		
-		[Bindable(event="enabledChange")]
+		[Bindable(event="change")]
 		public function get enabled():Boolean {
 			var enabledButtons:int = 0;
 			for (var i:uint=0; i<buttons.length; i++) {
@@ -74,11 +73,11 @@ package nl.mediamonkey.managers {
 					(buttons.getItemAt(i) as Button).enabled = _enabled;
 				}
 				
-				dispatchEvent(new Event("enabledChange"));
+				dispatchEvent(new Event("change"));
 			}
 		}
 		
-		[Bindable(event="selectionChange")]
+		[Bindable(event="change")]
 		public function get selection():Button {
 			return _selection;
 		}
@@ -101,14 +100,16 @@ package nl.mediamonkey.managers {
 			
 			if (value == null) {
 				_selection = value;
-				dispatchEvent(new Event("selectionChange"));
+				dispatchEvent(new Event("change"));
 				
 			} else if (hasButton) {
 				_selection = value;
 				_selection.selected = true;
 				_selection.toggle = true;
-				dispatchEvent(new Event("selectionChange"));
+				dispatchEvent(new Event("change"));
 				
+			} else {
+				selectOnAddButton = value;
 			}
 			
 			/*if (value == null) {
@@ -179,6 +180,11 @@ package nl.mediamonkey.managers {
 			button.toggle = true;
 			buttons.addItem(button);
 			
+			if (selectOnAddButton === button) {
+				selection = button;
+				selectOnAddButton = null;
+			}
+			
 			dispatchEvent(new Event(Event.ADDED));
 		}
 		
@@ -188,6 +194,8 @@ package nl.mediamonkey.managers {
 		
 		public function removeButton(button:Button):void {
 			if (!buttons.contains(button)) return;
+			
+			if (selection === button) selection = null;
 			
 			button.removeEventListener(MouseEvent.CLICK, buttonClickHandler);
 			buttons.removeItemAt(buttons.getItemIndex(button));
