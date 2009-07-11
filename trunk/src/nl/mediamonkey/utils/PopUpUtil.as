@@ -94,10 +94,12 @@ package nl.mediamonkey.utils {
 		 */
 		
 		public static function createPopUpFrom(className:Class, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+			if (className == null) throw new ArgumentError("className cannot be null");
 			return addPopUp(new className() as IUIComponent, initObject, target, childList);
 		}
 		
 		public static function addPopUp(content:IUIComponent, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+			if (content == null) throw new ArgumentError("content cannot be null");
 			
 			var contentWidth:Number = content.width;
 			var contentHeight:Number = content.height;
