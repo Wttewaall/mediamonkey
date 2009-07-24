@@ -20,20 +20,11 @@ package nl.mediamonkey.managers {
 		
 		// ---- public methods ----
 		
-		public static function getEncodedByteArray(bitmapDrawable:IBitmapDrawable, encoderType:String, jpgQuality:int=85, scale:Number=1, 
-			clipRect:Rectangle=null, backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):ByteArray {
+		public static function getBitmap(bitmapDrawable:IBitmapDrawable, scale:Number=1, clipRect:Rectangle=null,
+			backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):Bitmap {
 			
-			var bitmapData:BitmapData = getBitmapData(bitmapDrawable, scale, clipRect, backgroundColor, pixelSnapping, smoothing);
-			var byteArray:ByteArray = encodeBitmapDataToByteArray(bitmapData, encoderType, jpgQuality);
-			
-			return byteArray;
-		}
-		
-		public static function getBitmapData(bitmapDrawable:IBitmapDrawable, scale:Number=1, clipRect:Rectangle=null,
-			backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):BitmapData {
-			
-			if (bitmapDrawable is BitmapData) {
-				return bitmapDrawable as BitmapData;
+			if (bitmapDrawable is Bitmap) {
+				return bitmapDrawable as Bitmap;
 				
 			} else {
 				var displayObject:DisplayObject = bitmapDrawable as DisplayObject;
@@ -51,32 +42,67 @@ package nl.mediamonkey.managers {
 				
 				bitmapdata.draw(displayObject, matrix, null, null, clipRect, smoothing);
 				
-				return bitmapdata;
+				return bitmap;
 			}
 		}
 		
-		public static function encodeBitmapDataToByteArray(bitmapdata:BitmapData, encoderType:String, jpgQuality:int=85):ByteArray {
+		public static function getBitmapData(bitmapDrawable:IBitmapDrawable, scale:Number=1, clipRect:Rectangle=null,
+			backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):BitmapData {
+			
+			var bitmap:Bitmap = getBitmap(bitmapDrawable, scale, clipRect, backgroundColor, pixelSnapping, smoothing);
+			return bitmap.bitmapData;
+		}
+		
+		public static function getEncodedByteArray(bitmapDrawable:IBitmapDrawable, encoderType:String, jpgQuality:int=85, scale:Number=1, 
+			clipRect:Rectangle=null, backgroundColor:Number=0xFFFFFFFF, pixelSnapping:String=PixelSnapping.AUTO, smoothing:Boolean=false):ByteArray {
+			
+			var bitmapData:BitmapData = getBitmapData(bitmapDrawable, scale, clipRect, backgroundColor, pixelSnapping, smoothing);
+			var byteArray:ByteArray = encodeBitmapData(bitmapData, encoderType, jpgQuality);
+			
+			return byteArray;
+		}
+		
+		public static function encodeBitmapData(bitmapData:BitmapData, encoderType:String, jpgQuality:int=85):ByteArray {
 			
 			var encoder:IImageEncoder;
-			var bytearray:ByteArray;
+			var byteArray:ByteArray;
 			
 			switch (encoderType) {
-				
-				case PNG_ENCODER: {
-					encoder = new PNGEncoder();
-					bytearray = encoder.encode(bitmapdata);
+				case JPG_ENCODER: {
+					encoder = new JPEGEncoder(jpgQuality);
+					byteArray = encoder.encode(bitmapData);
 					break;
 				}
-				
-				case JPG_ENCODER:
-				default: {
-					encoder = new JPEGEncoder(jpgQuality);
-					bytearray = encoder.encode(bitmapdata);
+				default:
+				case PNG_ENCODER: {
+					encoder = new PNGEncoder();
+					byteArray = encoder.encode(bitmapData);
 					break;
 				}
 			}
 			
-			return bytearray;
+			return byteArray;
+		}
+		
+		public static function encodeByteArray(byteArray:ByteArray, width:uint, height:uint, encoderType:String, jpgQuality:int=85, transparent:Boolean=true):ByteArray {
+			
+			var encoder:IImageEncoder;
+			
+			switch (encoderType) {
+				case JPG_ENCODER: {
+					encoder = new JPEGEncoder(jpgQuality);
+					byteArray = encoder.encodeByteArray(byteArray, width, height, transparent);
+					break;
+				}
+				default:
+				case PNG_ENCODER: {
+					encoder = new PNGEncoder();
+					byteArray = encoder.encodeByteArray(byteArray, width, height, transparent);
+					break;
+				}
+			}
+			
+			return byteArray;
 		}
 		
 		/* Flash 10
@@ -85,7 +111,7 @@ package nl.mediamonkey.managers {
             saveByteArrayAs(byteArray, fileName);
 		}
 		
-		public static function saveByteArrayAs(byteArray:ByteArray, fileName:String=null):void {
+		private static function saveByteArrayAs(byteArray:ByteArray, fileName:String=null):void {
 			var fileReference:FileReference = new FileReference();
             fileReference.save(byteArray, fileName);
             byteArray.clear();

@@ -14,8 +14,20 @@ package nl.mediamonkey.utils {
 		public static const ROLL_OVER:String = "rollOver";
 		public static const ROLL_OUT:String = "rollOut";
 		
-		private static var currentCursorID:int = -1;
 		private static var dictionary:Dictionary = new Dictionary(true);
+		
+		// ---- getters & setters ----
+		
+		private static var _currentCursorID:int = -1;
+		private static var _currentCursor:Class;
+		
+		public static function get currentCursorID():int {
+			return _currentCursorID;
+		}
+		
+		public static function get currentCursor():Class {
+			return _currentCursor;
+		}
 		
 		// ---- public static methods ----
 		
@@ -66,7 +78,8 @@ package nl.mediamonkey.utils {
 				CursorManager.removeCursor(CursorManager.currentCursorID);
 				
 				if (cursorIcon != null) {
-					currentCursorID = CursorManager.setCursor(cursorIcon, priority, offsetX, offsetY);
+					_currentCursor = cursorIcon;
+					_currentCursorID = CursorManager.setCursor(cursorIcon, priority, offsetX, offsetY);
 				}
 			}
 			return currentCursorID;
@@ -79,7 +92,8 @@ package nl.mediamonkey.utils {
 				CursorManager.removeCursor(CursorManager.currentCursorID);
 				
 				if (vo.cursorIcon != null) {
-					currentCursorID = CursorManager.setCursor(vo.cursorIcon, vo.priority, vo.offsetX, vo.offsetY);
+					_currentCursor = vo.cursorIcon;
+					_currentCursorID = CursorManager.setCursor(vo.cursorIcon, vo.priority, vo.offsetX, vo.offsetY);
 				}
 			}
 			return currentCursorID;
