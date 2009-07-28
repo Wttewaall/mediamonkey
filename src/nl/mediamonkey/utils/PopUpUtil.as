@@ -16,7 +16,6 @@ package nl.mediamonkey.utils {
 	 * Known limitations:
 	 * . The created TitleWindow's data property will be used for storage of the initObject.
 	 *   It may be overwritten, but then the popup will not be centered on resize.
-	 * . Dragging of the popup cannot be turned off by design (see Panel.as line 1864)
 	 * . Removal of the popup's content is not tested (sound or video objects may continue to exist).
 	 * . Resizing the popup after dragging will center it on the stage (to do)
 	 * 
@@ -82,9 +81,9 @@ package nl.mediamonkey.utils {
 		public static const STYLE_NAME				:String = "popUpWindowStyle";
 		public static const CONTENT_NAME			:String = "content";
 		
-		public static var showEffectDuration		:Number = 500;
-		public static var hideEffectDuration		:Number = 500;
-		public static var resizeEffectDuration		:Number = 500;
+		public static var showEffectDuration		:Number = 200;
+		public static var hideEffectDuration		:Number = 200;
+		public static var resizeEffectDuration		:Number = 200;
 		
 		// ---- public static methods ----
 		
@@ -148,8 +147,12 @@ package nl.mediamonkey.utils {
 				target = Application.application as DisplayObject;
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
+			
 			var modal:Boolean = (initObject) ? initObject.modal : false;
 			PopUpManager.addPopUp(window, target, modal, childList);
+			
+			// overrule isPopUp, set by PopUpManager, if we don't want the window to be draggable
+			window.isPopUp = initObject.draggable;
 			
 			// remove header after creation if there are no headeritems to be shown
 			if (!window.showCloseButton && !window.title && !window.titleIcon) {
