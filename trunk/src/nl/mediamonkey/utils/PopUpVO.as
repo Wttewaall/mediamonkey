@@ -16,8 +16,9 @@ package nl.mediamonkey.utils {
 		public var data					:Object;
 		
 		public var showCloseButton		:Boolean = true;
-		public var modal				:Boolean = false;
 		public var center				:Boolean = true;
+		public var draggable			:Boolean = true;
+		public var modal				:Boolean = false;
 		
 		public function PopUpVO() {
 		}

@@ -13,15 +13,21 @@ package nl.mediamonkey.utils {
 		public static const ENLARGE			:uint = 1 << 2;
 		
 		public static function scaleToContainer(target:DisplayObject, container:DisplayObject, zoomMode:String, resizeMode:uint):void {
-			scaleToSize(target, container.width, container.height, zoomMode, resizeMode);
+			var scale:Number = getScale(target, container.width, container.height, zoomMode, resizeMode);
+			target.scaleX = target.scaleY = scale;
 		}
 		
 		public static function scaleToSize(target:DisplayObject, width:uint, height:uint, zoomMode:String, resizeMode:uint):void {
+			var scale:Number = getScale(target, width, height, zoomMode, resizeMode);
+			target.scaleX = target.scaleY = scale;
+		}
+		
+		public static function getScale(target:DisplayObject, width:uint, height:uint, zoomMode:String, resizeMode:uint):Number {
 			var sx:Number = width / target.width;
 			var sy:Number = height / target.height;
 			
 			if (resizeMode == (REDUCE | ENLARGE)) {
-				// do nothing
+				// sx = sx; sy = sy;
 				
 			} else if (resizeMode & REDUCE) {
 				sx = Math.min(sx, 1);
@@ -33,22 +39,11 @@ package nl.mediamonkey.utils {
 			}
 			
 			switch (zoomMode) {
-				case ACTUAL_SIZE: {
-					target.scaleX = target.scaleY = 1;
-					break; 
-				}
-				case FIT_WIDTH: {
-					target.scaleX = target.scaleY = sx;
-					break; 
-				}
-				case FIT_HEIGHT: {
-					target.scaleX = target.scaleY = sy;
-					break; 
-				}
-				case FIT_IMAGE: {
-					target.scaleX = target.scaleY = Math.min(sx, sy);
-					break; 
-				}
+				case ACTUAL_SIZE:	return 1;
+				case FIT_WIDTH:		return sx;
+				case FIT_HEIGHT:	return sy;
+				case FIT_IMAGE:		return Math.min(sx, sy);
+				default:			return 1;
 			}
 		}
 		
