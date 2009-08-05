@@ -1,10 +1,14 @@
 package nl.mediamonkey.managers {
 	
+	import com.universalmind.cairngorm.events.UMEvent;
+	
 	import flash.display.InteractiveObject;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
+	
+	import thales.events.ui.ToolTypeChangeEvent;
 	
 	public class KeyBindingManager {
 		
@@ -40,11 +44,11 @@ package nl.mediamonkey.managers {
 		/**
 		 * Returns wether the key could be bound to the event (will not succeed if key is occupied) 
 		 **/
-		public function bindKeyWithEvent(keyCode:uint, scope:Object, event:Event, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=false):Boolean {
+		public function bindKeyWithEvent(keyCode:uint, scope:Object, event:Event, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=true):Boolean {
 			return bindKeyWithAction(keyCode, scope, event, null, null, allowMultiBinding, triggerOnDown);
 		}
 		
-		public function bindKeyWithFunction(keyCode:uint, scope:Object, func:Function, arguments:Array=null, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=false):Boolean {
+		public function bindKeyWithFunction(keyCode:uint, scope:Object, func:Function, arguments:Array=null, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=true):Boolean {
 			return bindKeyWithAction(keyCode, scope, null, func, arguments, allowMultiBinding, triggerOnDown);
 		}
 		
@@ -106,7 +110,7 @@ package nl.mediamonkey.managers {
 			target.removeEventListener(KeyboardEvent.KEY_UP, keyUpHandler);
 		}
 		
-		private function bindKeyWithAction(keyCode:uint, scope:Object, event:Event=null, func:Function=null, arguments:Array=null, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=false):Boolean {
+		private function bindKeyWithAction(keyCode:uint, scope:Object, event:Event=null, func:Function=null, arguments:Array=null, allowMultiBinding:Boolean=false, triggerOnDown:Boolean=true):Boolean {
 			var group:KeyGroup;
 			
 			if (keysMap[keyCode] != null) {
@@ -162,14 +166,18 @@ package nl.mediamonkey.managers {
 		private function triggerItem(item:KeyItem):void {
 			if (item.event) {
 				
-				// Cairngorm events, self-dispatched
-				if (item.event.hasOwnProperty("dispatch")) {
-					(item.event["dispatch"] as Function).call(null);
-				}
+				/**
+				 * Important: add a clone method that returns a true clone.
+				 * Don't use the default CairngormEvent or UMEvent clone method
+				 */
 				
-				// Flash events, dispatched by scope
-				else if (item.scope is IEventDispatcher) {
-					(item.scope as IEventDispatcher).dispatchEvent(item.event);
+				// Cairngorm event, self-dispatched
+				if (item.event.hasOwnProperty("dispatch")) {
+					(item.event.clone()["dispatch"] as Function).call(null);
+				
+				// Flash event, dispatched by scope
+				} else if (item.scope is IEventDispatcher) {
+					(item.scope as IEventDispatcher).dispatchEvent(item.event.clone());
 				}
 			}
 			
