@@ -1,4 +1,6 @@
 package nl.mediamonkey.utils {
+	import flash.external.ExternalInterface;
+	
 	
 	public class StringUtil {
 		
@@ -63,6 +65,31 @@ package nl.mediamonkey.utils {
 			
 			date.setFullYear(year, month, day);
 			return date;
+		}
+		
+		public static function getURLParams():Object {
+			var pageURL:String = ExternalInterface.call('window.location.href.toString');
+			if (pageURL != null) {
+				var index:int = pageURL.lastIndexOf("#");
+				
+				if (index > -1) {
+					var params:Array = pageURL.substr(index+1).split("&");
+					var fragment:Object = {};
+					var arg:String;
+					var prop:String;
+					var value:String;
+					
+					for (var i:uint=0; i<params.length; i++) {
+						arg = params[i] as String;
+						prop = arg.substr(0, arg.indexOf("="));
+						value = arg.substr(arg.indexOf("=")+1);
+						fragment[prop] = value;
+					}
+					
+					return fragment;
+				}
+			}
+			return null;
 		}
 		
 	}
