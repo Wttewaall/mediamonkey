@@ -67,7 +67,7 @@ package nl.mediamonkey.managers {
 		
 		// ---- public methods ----
 		
-		public function createItem(caption:String, seperatorBefore:Boolean=false, enabled:Boolean=true, visible:Boolean=true, handler:Function=null):ContextMenuItem {
+		public function createItem(caption:String, handler:Function=null, seperatorBefore:Boolean=false, enabled:Boolean=true, visible:Boolean=true):ContextMenuItem {
 			var item:ContextMenuItem = new ContextMenuItem(caption, seperatorBefore, enabled, visible);
 			return addItemAt(item, handler);
 		}
