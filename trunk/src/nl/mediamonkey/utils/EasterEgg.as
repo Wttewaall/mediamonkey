@@ -9,7 +9,7 @@ package nl.mediamonkey.utils {
 	import flash.utils.getTimer;
 	
 	/**
-	 * Static class that an event when a certain (hard-coded) keyword is typed in.
+	 * Static class that shows a message or animation when a certain key-combination is pressed.
 	 * 
 	 * usage:
 	 * EasterEgg.initialize(this); // where this is preferably the root or document class
@@ -51,7 +51,6 @@ package nl.mediamonkey.utils {
 		
 		/** add listeners directly to the static class */
 		public static function addEventListener(type:String, listener:Function, useCapture:Boolean=false, priority:int=0, useWeakReference:Boolean=false):void {
-			if (!dispatcher) throw new Error("You'll need to initialize the EasterEgg class before adding a listener.");
 			dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 		
@@ -91,23 +90,16 @@ package nl.mediamonkey.utils {
 			previousTime = currentTime;
 			
 			// validate char at cursor
-			if (!charAtCursor(String.fromCharCode(event.charCode)) && cursor > 0) {
-				cursor = 0; // set cursor to 0, and try once more
-				charAtCursor(String.fromCharCode(event.charCode));
-			}
-		}
-		
-		private static function charAtCursor(char:String):Boolean {
-			if (char == keyword.charAt(cursor)) {
+			if (String.fromCharCode(event.charCode) == keyword.charAt(cursor)) {
 				if (cursor == keyword.length - 1) {
 					dispatcher.dispatchEvent(new Event(EASTER_EGG));
 					cursor = 0;
 				} else {
 					cursor++;
 				}
-				return true;
+			} else {
+				cursor = 0;
 			}
-			return false;
 		}
 		
 		// ---- null methods ----
