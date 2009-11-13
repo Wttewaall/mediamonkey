@@ -108,6 +108,8 @@ package nl.mediamonkey.enum {
 		public static const KEY_WINDOWS				:KeyCode = new KeyCode("Win", 91);//windows
 		public static const KEY_MENU				:KeyCode = new KeyCode("Menu", 93);//menu
 		
+		/** todo: add characters: ,./;'\[]\ etc..**/
+		
 		public var description:String;
 		public var code:uint;
 		
@@ -124,8 +126,46 @@ package nl.mediamonkey.enum {
 			return [code];
 		}
 		
+		public static function getKeyByCode(code:uint):KeyCode {
+			var key:KeyCode;
+			for each (key in KeyCode) {
+				if (key.code == code) return key;
+			}
+			return null;
+		}
+		
+		public static function getKeyByDescription(description:String):KeyCode {
+			var key:KeyCode;
+			for each (key in KeyCode) {
+				if (key.description == description) return key;
+			}
+			return null;
+		}
+		
 		public function toString():String{
 			return "[KeyCode "+description+"]";
+		}
+		
+		// ---- test
+		
+		private var _bitCode:uint;
+		
+		public function get bitCode():uint {
+			if (!_bitCode) _bitCode = 1 << (code & 7);
+			trace("KeyCode", description, "bitCode:", 1 << (code & 7));
+			return _bitCode;
+		}
+		
+		public static function getKeyCodeByCode(code:uint):KeyCode {
+			return KEY_NUMPAD_5;
+		}
+		
+		public static function getKeyCodeByLabel(label:String):KeyCode {
+			return KEY_NUMPAD_6;
+		}
+		
+		public static function getKeyCodeByBitCode(bitCode:uint):KeyCode {
+			return KEY_NUMPAD_7;
 		}
 		
 	}
