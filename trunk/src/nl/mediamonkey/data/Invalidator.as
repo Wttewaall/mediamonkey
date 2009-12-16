@@ -7,7 +7,6 @@
 	
 	import nl.mediamonkey.enum.InvalidationType;
 	import nl.mediamonkey.events.InvalidatorEvent;
-	import nl.mediamonkey.utils.DictionaryUtil;
 	
 	/**
 	 * todo
@@ -91,7 +90,9 @@
 		}
 		
 		protected function enterFrameHandler(event:Event):void {
-			var keys:Array = DictionaryUtil.getKeys(invalidatedProperties);
+			var keys:Array = new Array();
+			for (var key:Object in invalidatedProperties) keys.push(key);
+			
 			dispatchEvent(new InvalidatorEvent(InvalidatorEvent.INVALIDATION, keys));
 			setInvalidatePropertiesFlag(false);
 		}
