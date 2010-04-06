@@ -1,14 +1,10 @@
 package nl.mediamonkey.managers {
 	
-	import com.universalmind.cairngorm.events.UMEvent;
-	
 	import flash.display.InteractiveObject;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
-	
-	import thales.events.ui.ToolTypeChangeEvent;
 	
 	public class KeyBindingManager {
 		

@@ -155,10 +155,12 @@ package nl.mediamonkey.utils {
 			window.isPopUp = initObject.draggable;
 			
 			// remove header after creation if there are no headeritems to be shown
-			if (!window.showCloseButton && !window.title && !window.titleIcon) {
+			if (!window.showCloseButton && !window.title && !window.titleIcon && !initObject.draggable) {
 				window.setStyle("headerHeight", 0);
 				window.setStyle("borderThicknessTop", window.getStyle("borderThicknessBottom"));
 			}
+			
+			if (initObject.headerHeight) window.setStyle("headerHeight", initObject.headerHeight);
 			
 			var w:Number = 0;
 			w += window.getStyle("borderThicknessLeft") || 0;

@@ -10,19 +10,23 @@ package nl.mediamonkey.data {
 	import mx.collections.IViewCursor;
 	import mx.collections.ListCollectionView;
 	import mx.collections.XMLListCollection;
+	import mx.core.IMXMLObject;
 	import mx.events.CollectionEvent;
 	import mx.events.CollectionEventKind;
 	import mx.events.FlexEvent;
 	import mx.utils.UIDUtil;
 	
-	[Event(name="change", type="flash.events.Event")]
-	[Event(name="collectionChange", type="mx.events.CollectionEvent")]
-	[Event(name="value_commit", type="mx.events.FlexEvent")]
+	[Event(name="change",				type="flash.events.Event")]
+	[Event(name="collectionChange",		type="mx.events.CollectionEvent")]
+	[Event(name="value_commit",			type="mx.events.FlexEvent")]
 	
 	[DefaultProperty("data")]
 	
 	[Bindable]
-	public class DataProvider extends EventDispatcher {
+	public class DataProvider extends EventDispatcher implements IList, IMXMLObject {
+		
+		public var document:Object;
+		public var id:String;
 		
 		private var collection:ICollectionView;
 		private var iterator:IViewCursor;
@@ -80,11 +84,58 @@ package nl.mediamonkey.data {
 		
 		// ---- public methods ----
 		
+		public function initialized(document:Object, id:String):void {
+			this.document = document;
+			this.id = id;
+		}
+		
+		public function addItem(item:Object):void {
+			IList(collection).addItem(item);
+		}
+		
+		public function addItemAt(item:Object, index:int):void {
+			IList(collection).addItemAt(item, index);
+		}
+		
+		public function getItemAt(index:int, prefetch:int = 0):Object {
+			return IList(collection).getItemAt(index, prefetch);
+		}
+		
 		public function getItemIndex(item:Object):int {
-			for (var i:uint=0; i<collection.length; i++) {
-				if (collection[i] === item) return i;
-			}
-			return -1;
+			return IList(collection).getItemIndex(item);
+		}
+		
+		public function itemUpdated(item:Object, property:Object = null, oldValue:Object = null, newValue:Object = null):void {
+			return IList(collection).itemUpdated(item, property, oldValue, newValue);
+		}
+		
+		public function removeAll():void {
+			return IList(collection).removeAll();
+		}
+		
+		public function removeItemAt(index:int):Object {
+			return IList(collection).removeItemAt(index);
+		}
+		
+		public function setItemAt(item:Object, index:int):Object {
+			return IList(collection).setItemAt(item, index);
+		}
+		
+		public function toArray():Array {
+			return IList(collection).toArray();
+		}
+		
+		public function get length():int {
+			return collection.length;
+		}
+		
+		public function contains(item:Object):Boolean {
+			return collection.contains(item);
+		}
+		
+		public function replaceItemAt(index:int, item:Object):void {
+			removeItemAt(index);
+			setItemAt(item, index);
 		}
 		
 		// ---- protected methods ----
