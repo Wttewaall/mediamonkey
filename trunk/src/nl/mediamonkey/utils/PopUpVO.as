@@ -13,6 +13,7 @@ package nl.mediamonkey.utils {
 		
 		public var title				:String;
 		public var titleIcon			:Class;
+		public var headerHeight			:Number;
 		public var data					:Object;
 		
 		public var showCloseButton		:Boolean = true;
