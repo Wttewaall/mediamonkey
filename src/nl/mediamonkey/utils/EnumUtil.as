@@ -18,7 +18,7 @@ package nl.mediamonkey.utils {
 			return false;
 		}
 		
-		public static function getConstNames(classType:Class, value:*):Array {
+		public static function getConstNames(classType:Class):Array {
 			var collection:Array = [];
 			
 			var description:XML = describeType(classType);
@@ -34,7 +34,7 @@ package nl.mediamonkey.utils {
 			return collection;
 		}
 		
-		public static function getConstValues(classType:Class, value:*):Array {
+		public static function getConstValues(classType:Class):Array {
 			var collection:Array = [];
 			
 			var description:XML = describeType(classType);
@@ -50,7 +50,7 @@ package nl.mediamonkey.utils {
 			return collection;
 		}
 		
-		public static function getConstArray(classType:Class, value:*):Array {
+		public static function getConstArray(classType:Class):Array {
 			var collection:Array = [];
 			
 			var description:XML = describeType(classType);
