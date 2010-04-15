@@ -10,15 +10,11 @@
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
 	
+	import mx.graphics.codec.IImageEncoder;
+	import mx.graphics.codec.JPEGEncoder;
+	import mx.graphics.codec.PNGEncoder;
+	
 	import nl.mediamonkey.enum.FlipDirection;
-	
-	//import mx.graphics.codec.IImageEncoder;
-	//import mx.graphics.codec.JPEGEncoder;
-	//import mx.graphics.codec.PNGEncoder;
-	
-	// use these instead of mx package
-	import temple.data.encoding.image.JPGEncoder;
-	import temple.data.encoding.image.PNGEncoder;
 	
 	/**
 	 * TODO:
@@ -113,16 +109,18 @@
 		public static function encodeBitmapData(bitmapData:BitmapData, encoderType:String, jpgQuality:int=85):ByteArray {
 			
 			var byteArray:ByteArray;
+			var encoder:IImageEncoder;
 			
 			switch (encoderType) {
 				case JPG_ENCODER: {
-					var jpgEncoder:JPGEncoder = new JPGEncoder(jpgQuality);
-					byteArray = jpgEncoder.encode(bitmapData);
+					encoder = new JPEGEncoder(jpgQuality);
+					byteArray = encoder.encode(bitmapData);
 					break;
 				}
 				default:
 				case PNG_ENCODER: {
-					byteArray = PNGEncoder.encode(bitmapData);
+					encoder = new PNGEncoder();
+					byteArray = encoder.encode(bitmapData);
 					break;
 				}
 			}
