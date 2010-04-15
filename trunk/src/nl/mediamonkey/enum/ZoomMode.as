@@ -1,6 +1,6 @@
 package nl.mediamonkey.enum {
 	
-	public class ZoomType {
+	public final class ZoomMode {
 		
 		public static const ACTUAL_SIZE			:String = "actualSize";
 		public static const FIT_WIDTH			:String = "fitWidth";

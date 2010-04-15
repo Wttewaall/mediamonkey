@@ -10,40 +10,12 @@ package nl.mediamonkey.zinc {
 	
 	public class ZincFileManager {
 		
-		private static const _instance:ZincFileManager = new ZincFileManager(SingletonLock);
-		public static function get instance():ZincFileManager { return _instance; }
-		
 		/**	
 		 *	Set this to the path of your copy2.exe, relative to the main app.
 		 *	Use forward slashes for directories, regardless of which OS you're on.
 		 */
 		
-		public var pathToCopyUtil:String = 'assets/utils/Copy2.exe';
-		
-		public function ZincFileManager(lock:Class) {
-			if (lock != SingletonLock) {
-				throw new Error("Cannot instantiate a singleton, use ZincFileManager.instance");
-			}
-		}
-		
-		private function buildRealPath(aPath:String):String {
-			if (!mdm.Application.path || mdm.Application.path == '') {
-				return aPath;
-			} else {
-				aPath = mdm.Application.path + fixPath(aPath, Capabilities.os.toLowerCase().substr(0, 3));
-				return(aPath);
-    		}
-		}
-		
-		private function fixPath(aPath:String, os:String):String {
-			if(os == "win") {
-				return(aPath.split("/").join("\\"));
-			} else if(os == "mac") {
-				return(aPath.split("/").join(":"));
-			} else {
-				return(aPath);
-			}
-		}
+		public static var pathToCopyUtil:String = 'assets/utils/Copy2.exe';
 		
 		/**
 		*	Arguments are as follows
@@ -61,7 +33,7 @@ package nl.mediamonkey.zinc {
 		*  saveFile('nestedFolder/Images/SomeImage.png', 'SomeImage', 'png', 'PNG Image Files|*.png');
 		*/
 		
-		public function saveFile(pathToFile:String, baseName:String, extension:String, filterList:String):void {
+		public static function saveFile(pathToFile:String, baseName:String, extension:String, filterList:String):void {
 			var titleWindow:String = "Please give the file a name, select a destination folder, and click 'save'";;
 			var os:String = Capabilities.os.toLowerCase().substr(0, 3);
 			var appLine:String; 
@@ -96,8 +68,25 @@ package nl.mediamonkey.zinc {
 				}
 			}			
 		}
+		
+		private static function buildRealPath(aPath:String):String {
+			if (!mdm.Application.path || mdm.Application.path == '') {
+				return aPath;
+			} else {
+				aPath = mdm.Application.path + fixPath(aPath, Capabilities.os.toLowerCase().substr(0, 3));
+				return(aPath);
+    		}
+		}
+		
+		private static function fixPath(aPath:String, os:String):String {
+			if(os == "win") {
+				return(aPath.split("/").join("\\"));
+			} else if(os == "mac") {
+				return(aPath.split("/").join(":"));
+			} else {
+				return(aPath);
+			}
+		}
+		
 	}
-}
-
-internal class SingletonLock {
 }

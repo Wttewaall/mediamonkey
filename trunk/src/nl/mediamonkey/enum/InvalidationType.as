@@ -1,6 +1,6 @@
 ﻿package nl.mediamonkey.enum {
 	
-	public class InvalidationType {
+	public final class InvalidationType {
 		
 		public static const ALL					:String = "all";
 		public static const DATA				:String = "data";
