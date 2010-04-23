@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<degrafa:GraphicProgrammaticSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	addedToStage="addedToStageHandler(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.utils.ObjectUtil;
+			import mx.utils.ArrayUtil;
+			import mx.controls.sliderClasses.SliderDirection;
+			import com.degrafa.paint.GradientStop;
+			
+			import mx.controls.sliderClasses.Slider;
+			import mx.events.SliderEvent;
+			
+			import nl.mediamonkey.color.Gradient;
+			
+			public static var DEFAULT_TRACK_HEIGHT		:Number = 5;
+			
+			[Bindable] protected var _unscaledWidth		:Number;
+			[Bindable] protected var _unscaledHeight	:Number;
+			
+			[Bindable] protected var gradient			:Gradient;
+			[Bindable] protected var trackWidth			:uint;
+			[Bindable] protected var trackHeight		:uint;
+			[Bindable] protected var trackColors		:Array;
+			[Bindable] protected var angle				:Number;
+			[Bindable] protected var borderColor		:uint;
+			
+			protected var slider						:Slider;
+			
+			protected function addedToStageHandler(event:Event):void {
+				if (parent && parent.parent is Slider) {
+					updateTrackColors(parent.parent as Slider);
+				}
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+				_unscaledWidth = unscaledWidth;
+				_unscaledHeight = unscaledHeight;
+				
+				trackWidth = unscaledWidth;
+				trackHeight = 5;
+				
+				if (parent && parent.parent is Slider) {
+					slider = parent.parent as Slider;
+					angle = (slider.direction == SliderDirection.HORIZONTAL) ? 0 : 90;
+					
+					borderColor = slider.getStyle("borderColor");
+					var tc:Array = slider.getStyle("trackColors") as Array;
+					
+					// only on change
+					if (ObjectUtil.compare(trackColors, tc) != 0) {
+						trackColors = tc;
+						if (trackColors) updateTrackColors(slider);
+					}
+				}
+			}
+			
+			protected function updateTrackColors(slider:Slider):void {
+				// clear
+				while(colorTrackFill.gradientStopsCollection.items.length)
+					colorTrackFill.gradientStopsCollection.removeItemAt(0);
+				
+				gradient = Gradient.createGradientRange(trackColors);
+				
+				// populate
+				for (var i:uint=0; i<gradient.colors.length; i++) {
+					var gradientStop:GradientStop = new GradientStop(gradient.colors[i], gradient.alphas[i], gradient.ratios[i]/0xFF);
+					colorTrackFill.gradientStopsCollection.addItem(gradientStop);
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<degrafa:fills>
+		<degrafa:LinearGradientFill id="colorTrackFill" angle="{angle}">
+			<degrafa:GradientStop color="#FFFFFF" alpha="1" ratio="0" />
+			<degrafa:GradientStop color="#FFFFFF" alpha="1" ratio="1" />
+		</degrafa:LinearGradientFill>
+	</degrafa:fills>
+	
+	<degrafa:stroke>
+		<degrafa:SolidStroke id="borderStroke" color="{borderColor}"/>
+	</degrafa:stroke>
+	
+	<degrafa:geometry>
+		<degrafa:RegularRectangle
+			y="{-trackHeight}"
+			width="{trackWidth}"
+			height="{trackHeight}"
+			stroke="{borderStroke}"
+			fill="{colorTrackFill}" />
+	</degrafa:geometry>
+	
+</degrafa:GraphicProgrammaticSkin>

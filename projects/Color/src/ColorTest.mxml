@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application layout="absolute"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:components="view.components.*"
+	applicationComplete="applicationCompleteHandler(event)" xmlns:s="library://ns.adobe.com/flex/spark">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.degrafa.paint.palette.PaletteUtils;
+			import nl.mediamonkey.color.Gradient;
+			import mx.collections.ArrayCollection;
+			import mx.controls.sliderClasses.Slider;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.ValidationResult;
+			
+			import nl.mediamonkey.color.CMYKColor;
+			import nl.mediamonkey.color.HexColor;
+			import nl.mediamonkey.color.HSLColor;
+			import nl.mediamonkey.color.HSVColor;
+			import nl.mediamonkey.color.LABColor;
+			import nl.mediamonkey.color.RGBColor;
+			import nl.mediamonkey.color.enum.PantomeColors;
+			import nl.mediamonkey.color.enum.WebColors;
+			import nl.mediamonkey.color.utils.ColorUtil;
+			import nl.mediamonkey.color.utils.GradientUtil;
+			import nl.mediamonkey.utils.EnumUtil;
+			
+			[Bindable] public var colorValue:uint;
+			
+			public var hexColor			:HexColor = new HexColor();
+			public var rgbColor			:RGBColor = new RGBColor();
+			public var hsvColor			:HSVColor = new HSVColor();
+			public var hslColor			:HSLColor = new HSLColor();
+			public var cmykColor		:CMYKColor = new CMYKColor();
+			public var labColor			:LABColor = new LABColor();
+			
+			protected function applicationCompleteHandler(event:Event):void {
+				
+				var colors:Array = [];
+				var alphas:Array = [];
+				var ratios:Array = [];
+				
+				var interval:uint = 12; // max 15
+				
+				var hsv:HSLColor = new HSLColor(0, 100, 127);
+				for (var i:uint=0; i<=interval; i++) {
+					hsv.H = (360/interval) * i;
+					colors.push(hsv.colorValue);
+					alphas.push(1);
+					ratios.push((255/interval) * i);
+				}
+				
+				var shape:Shape = GradientUtil.createShape(300, 20, colors, alphas, ratios);
+				drawCanvas.addChild(shape);
+				
+				colors = [];
+				alphas = [];
+				ratios = [];
+				
+				interval = 15; // bij > 15 opsplitsen in meerdere shapes en dan de combi teruggeven
+				for (i=0; i<=interval; i++) {
+					hsv.H = (360/interval) * i;
+					colors.push(hsv.colorValue);
+					alphas.push(1);
+					ratios.push((255/interval) * i);
+				}
+				
+				shape = GradientUtil.createShape(300, 20, colors, alphas, ratios);
+				shape.y = 22;
+				drawCanvas.addChild(shape);
+				
+				var square:Sprite = GradientUtil.createSquare(100, 100, 0xFF0000);
+				square.graphics.lineStyle(1)
+				square.graphics.drawRect(-1, -1, 101, 101);
+				drawCanvas.addChild(square);
+			}
+			
+			protected function toggleSliderTicks(slider:Slider, selected:Boolean):void {
+				slider.snapInterval = slider.tickInterval = (selected) ? 0x33 : 0;
+			}
+			
+			protected function getColorsArray(enumClass:Class):Array {
+				var collection:Array = new Array();
+				var names:Array = EnumUtil.getConstNames(enumClass);
+				var values:Array = EnumUtil.getConstValues(enumClass);
+				
+				for (var i:uint=0; i<names.length; i++) {
+					collection.push({name:names[i], data:values[i]})
+				}
+				return collection.sortOn("name");
+			}
+			
+			protected function updateAll(exception:String=null):void {
+				//if (exception != "Web") trace("web");
+				//if (exception != "Pantome") trace("pantome");
+				if (exception != "Hex") updateHexInput();
+				if (exception != "RGB") updateRGBSliders();
+				if (exception != "HSV") updateHSVSliders();
+				if (exception != "HSL") updateHSLSliders();
+				if (exception != "CMYK") updateCMYKSliders();
+				if (exception != "LAB") updateLABSliders();
+			}
+			
+			protected function getNearestWebColor():void {
+				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(WebColors));
+				colorValue = result;
+				updateAll("Web");
+			}
+			
+			protected function getNearestPantomeColor():void {
+				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(PantomeColors));
+				colorValue = result;
+				updateAll("Pantome");
+			}
+			
+			protected function updateWebColor(event:Event):void {
+				colorValue = webColorsComboBox.selectedItem.data;
+				colorNameLabel.text = webColorsComboBox.selectedItem.name;
+				updateAll("Web");
+			}
+			
+			protected function updatePantomeColor(event:Event):void {
+				colorValue = pantomeColorsComboBox.selectedItem.data;
+				colorNameLabel.text = pantomeColorsComboBox.selectedItem.name;
+				updateAll("Pantome");
+			}
+			
+			protected function updateHex():void {
+				hexColor.fromString(hexInput.text);
+				colorValue = hexColor.colorValue;
+				updateAll("Hex");
+			}
+			
+			protected function updateHexInput():void {
+				hexColor.fromDecimal(colorValue);
+				hexInput.text = hexColor.toHexString();
+			}
+			
+			protected function updateRGB():void {
+				rgbColor.R = redSlider.value;
+				rgbColor.G = greenSlider.value;
+				rgbColor.B = blueSlider.value;
+				colorValue = rgbColor.colorValue;
+				updateAll("RGB");
+				
+				updateRGBSliderTracks();
+			}
+			
+			protected function updateRGBSliders():void {
+				rgbColor.fromDecimal(colorValue);
+				redSlider.value = rgbColor.R;
+				greenSlider.value = rgbColor.G;
+				blueSlider.value = rgbColor.B;
+				
+				updateRGBSliderTracks();
+			}
+			
+			protected function updateRGBSliderTracks():void {
+				var r1:uint = new RGBColor(0, greenSlider.value, blueSlider.value).colorValue;
+				var r2:uint = new RGBColor(0xFF, greenSlider.value, blueSlider.value).colorValue;
+				var g1:uint = new RGBColor(redSlider.value, 0, blueSlider.value).colorValue;
+				var g2:uint = new RGBColor(redSlider.value, 0xFF, blueSlider.value).colorValue;
+				var b1:uint = new RGBColor(redSlider.value, greenSlider.value, 0).colorValue;
+				var b2:uint = new RGBColor(redSlider.value, greenSlider.value, 0xFF).colorValue;
+				
+				redSlider.setStyle("trackColors", [r1, r2]);
+				greenSlider.setStyle("trackColors", [g1, g2]);
+				blueSlider.setStyle("trackColors", [b1, b2]);
+			}
+			
+			protected function updateHSV():void {
+				hsvColor.H = hueSlider.value;
+				hsvColor.S = saturationSlider.value;
+				hsvColor.V = valueSlider.value;
+				colorValue = hsvColor.colorValue;
+				updateAll("HSV");
+			}
+			
+			protected function updateHSVSliders():void {
+				hsvColor.fromDecimal(colorValue);
+				hueSlider.value = hsvColor.H;
+				saturationSlider.value = hsvColor.S;
+				valueSlider.value = hsvColor.V;
+			}
+			
+			protected function updateHSL():void {
+				hslColor.H = hueSlider2.value;
+				hslColor.S = saturationSlider2.value;
+				hslColor.L = lightnessSlider.value;
+				colorValue = hslColor.colorValue;
+				updateAll("HSL");
+			}
+			
+			protected function updateHSLSliders():void {
+				hslColor.fromDecimal(colorValue);
+				hueSlider2.value = hslColor.H;
+				saturationSlider2.value = hslColor.S;
+				lightnessSlider.value = hslColor.L;
+			}
+			
+			protected function updateCMYK():void {
+				cmykColor.C = cyanSlider.value;
+				cmykColor.M = magentaSlider.value;
+				cmykColor.Y = yellowSlider.value;
+				cmykColor.K = blackSlider.value;
+				colorValue = cmykColor.colorValue;
+				updateAll("CMYK");
+			}
+			
+			protected function updateCMYKSliders():void {
+				cmykColor.fromDecimal(colorValue);
+				cyanSlider.value = cmykColor.C;
+				magentaSlider.value = cmykColor.M;
+				yellowSlider.value = cmykColor.Y;
+				blackSlider.value = cmykColor.K;
+			}
+			
+			protected function updateLAB():void {
+				labColor.L = luminanceSlider.value;
+				labColor.A = redGreenSlider.value;
+				labColor.B = yellowBlueSlider.value;
+				colorValue = labColor.colorValue;
+				updateAll("LAB");
+			}
+			
+			protected function updateLABSliders():void {
+				labColor.fromDecimal(colorValue);
+				luminanceSlider.value = labColor.L;
+				redGreenSlider.value = labColor.A;
+				yellowBlueSlider.value = labColor.B;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Form height="100%" borderStyle="solid" backgroundColor="#FFFFFF" x="0" y="0">
+		<mx:FormItem label="Color" direction="horizontal">
+			<mx:Canvas id="hsvCanvas"
+				width="20" height="20"
+				borderStyle="solid" borderColor="#000000"
+				backgroundColor="{colorValue}"/>
+				
+			<mx:Label id="colorLabel" text="{ColorUtil.toHexString(colorValue)}"/>
+			
+			<mx:Label id="colorNameLabel"/>
+			
+		</mx:FormItem>
+		<mx:FormHeading label="HEX"/>
+		<mx:FormItem label="Hex">
+			<mx:TextInput id="hexInput"
+				change="hexStringValidator.validate()"
+				enter="updateHex()"/>
+		</mx:FormItem>
+		<mx:FormItem label="WebColors" direction="horizontal">
+			<mx:ComboBox id="webColorsComboBox"
+				labelField="name"
+				dataProvider="{getColorsArray(WebColors)}"
+				itemRenderer="view.renderers.ColorRenderer"
+				change="updateWebColor(event)" width="220"/>
+			<mx:Button  label="Get Nearest WebColor"
+				click="getNearestWebColor()"/>
+		</mx:FormItem>
+		<mx:FormItem label="PantomeColors" direction="horizontal">
+			<mx:ComboBox id="pantomeColorsComboBox"
+				labelField="name"
+				dataProvider="{getColorsArray(PantomeColors)}"
+				itemRenderer="view.renderers.ColorRenderer"
+				change="updatePantomeColor(event)" width="220"/>
+			<mx:Button  label="Get Nearest PantomeColor"
+				click="getNearestPantomeColor()"/>
+		</mx:FormItem>
+		
+		<mx:FormHeading label="RGB"/>
+		<mx:FormItem label="Red" direction="horizontal">
+			<s:HSlider id="redSlider"
+				minimum="0" maximum="255" liveDragging="true"
+				trackColors="[0x000000, 0xFF0000]"
+				trackMargin="5"
+				skinClass="view.skins.ColorTrackSkin"
+				change="updateRGB()"/>
+			<mx:CheckBox label="Web safe"
+				change="toggleSliderTicks(redSlider, event.target.selected)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Green" direction="horizontal">
+			<s:HSlider id="greenSlider"
+				minimum="0" maximum="255" liveDragging="true"
+				trackColors="[0x000000, 0x00FF00]"
+				trackMargin="5"
+				skinClass="view.skins.ColorTrackSkin"
+				change="updateRGB()"/>
+			<mx:CheckBox label="Web safe"
+				change="toggleSliderTicks(greenSlider, event.target.selected)"/>
+		</mx:FormItem>
+		<mx:FormItem label="Blue" direction="horizontal">
+			<s:HSlider id="blueSlider"
+				minimum="0" maximum="255" liveDragging="true"
+				trackColors="[0x000000, 0x0000FF]"
+				trackMargin="5"
+				skinClass="view.skins.ColorTrackSkin"
+				change="updateRGB()"/>
+			<mx:CheckBox label="Web safe"
+				change="toggleSliderTicks(blueSlider, event.target.selected)"/>
+		</mx:FormItem>
+		<mx:FormHeading label="HSV"/>
+		<mx:FormItem label="Hue" direction="horizontal">
+			<s:HSlider id="hueSlider"
+				minimum="0" maximum="360" liveDragging="true"
+				trackColors="{Gradient.getHueColors()}"
+				trackMargin="5"
+				skinClass="view.skins.ColorTrackSkin"
+				change="updateHSV()"/>
+			<!--<mx:HSlider id="hueSlider" change="updateHSV()" minimum="0" maximum="360" liveDragging="true"/>-->
+			<mx:Label text="°" />
+		</mx:FormItem>
+		<mx:FormItem label="Saturation" direction="horizontal">
+			<mx:HSlider id="saturationSlider" change="updateHSV()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="Value" direction="horizontal">
+			<mx:HSlider id="valueSlider" change="updateHSV()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormHeading label="HSL"/>
+		<mx:FormItem label="Hue" direction="horizontal">
+			<mx:HSlider id="hueSlider2" change="updateHSL()" minimum="0" maximum="360" liveDragging="true"/>
+			<mx:Label text="°" />
+		</mx:FormItem>
+		<mx:FormItem label="Saturation" direction="horizontal">
+			<mx:HSlider id="saturationSlider2" change="updateHSL()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="Lightness" direction="horizontal">
+			<mx:HSlider id="lightnessSlider" change="updateHSL()" minimum="0" maximum="255" liveDragging="true"/>
+		</mx:FormItem>
+		<mx:FormHeading label="CMYK"/>
+		<mx:FormItem label="Cyan" direction="horizontal">
+			<mx:HSlider id="cyanSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="Magenta" direction="horizontal">
+			<mx:HSlider id="magentaSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="Yellow" direction="horizontal">
+			<mx:HSlider id="yellowSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="Black" direction="horizontal">
+			<mx:HSlider id="blackSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormHeading label="LAB"/>
+		<mx:FormItem label="Luminance" direction="horizontal">
+			<mx:HSlider id="luminanceSlider" change="updateLAB()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:Label text="%" />
+		</mx:FormItem>
+		<mx:FormItem label="red-green">
+			<mx:HSlider id="redGreenSlider" change="updateLAB()" minimum="-128" maximum="127" liveDragging="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="yellow-blue">
+			<mx:HSlider id="yellowBlueSlider" change="updateLAB()" minimum="-128" maximum="127" liveDragging="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="GradientTest">
+			<mx:UIComponent width="400" height="100" id="drawCanvas" />
+		</mx:FormItem>
+	</mx:Form>
+	
+	<mx:RegExpValidator id="hexStringValidator"
+		source="{hexInput}"
+		property="text"
+		expression="{ColorUtil.hexPatternString}"
+		noExpressionError="Incorrect expression for a hex string"
+		noMatchError="Incorrect syntax for a hex string"/>
+	
+</mx:Application>

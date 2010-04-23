@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+	horizontalGap="5" verticalAlign="middle"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	
+	<mx:Label x="42" y="34"
+		text="{colorName}"/>
+	
+	<mx:Spacer width="100%" />
+	
+	<mx:Canvas id="colorCanvas"
+		x="123" y="34" width="15" height="15"
+		borderColor="#000000" borderStyle="solid"
+		backgroundColor="{colorValue}"/>
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable] public var colorName:String;
+			[Bindable] public var colorValue:uint;
+			
+			private var _data:Object;
+			
+			override public function get data():Object {
+				return _data;
+			}
+			
+			override public function set data(value:Object):void {
+				_data = value;
+				
+				if (value.hasOwnProperty("name")) {
+					colorName = value.name;
+				}
+				
+				if (value.hasOwnProperty("data")) {
+					colorValue = value.data;
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:HBox>
