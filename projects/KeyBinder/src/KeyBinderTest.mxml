@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application layout="absolute"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:forms="view.forms.*"
+	applicationComplete="applicationCompleteHandler(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.mediamonkey.enum.Key;
+			import nl.mediamonkey.io.KeyBinder;
+			
+			private var binder:KeyBinder;
+			
+			private function applicationCompleteHandler(event:Event):void {
+				binder = new KeyBinder(this.stage);
+				
+				binder.bind(Key.A, keyChangeHandler);
+				binder.bind(66, keyChangeHandler);
+				
+				binder.bind([Key.CONTROL, Key.A], keyChangeHandler);
+				binder.bind([17, 66], keyChangeHandler);
+			}
+			
+			
+			private function keyChangeHandler(event:Event):void {
+				trace("KeyBinderTest#keyChangeHandler", event);
+			}
+			
+			protected function assignKey():void {
+				
+			}
+			
+			protected function removeKey():void {
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<forms:BindForm
+		x="475" y="10"
+		label="Assign new Hotkey"
+		backgroundColor="#FFFFFF"
+		assignKey="assignKey()"
+		removeKey="removeKey()"/>
+	
+	<mx:DataGrid id="keyGrid"
+		x="10" y="10" width="457" height="300"
+		dataProvider="{handlersList}">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Command" dataField="@new" width="180"/>
+			<mx:DataGridColumn headerText="Binding" dataField="key" width="180"/>
+			<mx:DataGridColumn headerText="Event" dataField="@event" width="100"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:XMLList id="handlersList">
+		<command name="New" action="trace">
+			<description>Creates a new project</description>
+			<key ctrl="true" alt="false" shift="false" event="press">N</key>
+		</command>
+		<command name="Open" action="trace">
+			<description>Opens a saved project</description>
+			<key ctrl="true" alt="false" shift="false" event="press">O</key>
+		</command>
+		<command name="Save" action="trace">
+			<description>Saves the current project</description>
+			<key ctrl="true" alt="false" shift="false" event="press">S</key>
+		</command>
+		<command name="SaveAs" action="trace">
+			<description>Creates the project as...</description>
+			<key ctrl="true" alt="false" shift="true" event="press">S</key>
+		</command>
+	</mx:XMLList>
+	
+</mx:Application>
