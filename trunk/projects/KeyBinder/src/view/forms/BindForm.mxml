@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:components="view.components.*">
+	
+	<mx:Metadata>
+		[Event(name="assignKey", type="flash.events.Event")]
+		[Event(name="removeKey", type="flash.events.Event")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.RadioButton;
+			
+			protected var selectedRadioButton:RadioButton;
+			
+			protected function selectEvent(event:Event):void {
+				/* if (radiogroup1.selection == selectedRadioButton) {
+					selectedRadioButton.selected = false;
+					selectedRadioButton = null;
+					
+				} else {
+					selectedRadioButton = event.currentTarget as RadioButton;
+				} */
+			}
+			
+			protected function assignKey():void {
+				dispatchEvent(new Event("assignKey"));
+			}
+			
+			protected function copyKey():void {
+				dispatchEvent(new Event("copyKey"));
+			}
+			
+			protected function removeKey():void {
+				dispatchEvent(new Event("removeKey"));
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:FormHeading label="{label}"/>
+	
+	<mx:FormItem label="Key" direction="horizontal">
+	
+		<components:KeyboardInput id="keyboardInput" />
+		
+	</mx:FormItem>
+	
+	<mx:FormItem label="Modifier" direction="horizontal">
+	
+		<mx:CheckBox x="101" y="58" label="Ctrl"/>
+		
+		<mx:CheckBox x="173" y="58" label="Alt"/>
+		
+		<mx:CheckBox x="235" y="58" label="Shift"/>
+		
+	</mx:FormItem>
+	
+	<mx:FormItem label="Event" direction="horizontal">
+	
+		<mx:RadioButtonGroup id="radiogroup1"/>
+		
+		<mx:RadioButton x="101" y="96"
+			label="Press"
+			groupName="radiogroup1"
+			click="selectEvent(event)"/>
+			
+		<mx:RadioButton x="165" y="96"
+			label="Release"
+			groupName="radiogroup1"
+			click="selectEvent(event)"/>
+			
+	</mx:FormItem>
+	
+	<mx:FormItem label="" direction="horizontal">
+	
+		<mx:Button x="253" y="227"
+			label="Assign"
+			click="assignKey()"/>
+		<mx:Button
+			label="Copy"
+			click="copyKey()"/>
+			
+		<mx:Button x="272" y="257"
+			label="Unbind"
+			click="removeKey()"/>
+			
+	</mx:FormItem>
+	<mx:FormItem label="Conflicts">
+		<mx:Label text="None"/>
+	</mx:FormItem>
+	
+</mx:Form>
