@@ -1,0 +1,2840 @@
+Shortcut Set: C:\Users\Wttewaall\AppData\Local\Autodesk\3dsmax\2009 - 32bit\enu\UI\MaxStartUI.kbd
+
+
+---------- Snaps Action Table ----------
+
+Snap To Bounding Box Toggle	
+Snap To Center Face Toggle	
+Snap To Curve Center Toggle	
+Snap To Curve Edge Toggle	
+Snap To Curve End Toggle	
+Snap To Curve Normal Toggle	
+Snap To Curve Tangent Toggle	
+Snap To CV Toggle	
+Snap To Edge/Segment Toggle	Alt+F10
+Snap To Endpoint Toggle	Alt+F8
+Snap To Face Toggle	Alt+F11
+Snap To Grid Lines Toggle	
+Snap To Grid Points Toggle	Alt+F5
+Snap To Midpoint Toggle	Alt+F9
+Snap To Perpendicular Toggle	
+Snap To Pivot Toggle	Alt+F6
+Snap To Point Toggle	
+Snap To Surf Center Toggle	
+Snap To Surf Edge Toggle	
+Snap To Surf Normal Toggle	
+Snap To Tangent Toggle	
+Snap To Vertex Toggle	Alt+F7
+
+---------- FixAmbientActions ----------
+
+Fix Ambient All	
+Fix Ambient Selected	
+
+---------- InstanceDuplMapActions ----------
+
+Instance Duplicate Map	
+
+---------- MMCleanActions ----------
+
+Clean  MultiMaterial	
+
+---------- Action ----------
+
+Assume Pref Angles	
+IK Chain FK Snap	
+IK Chain IK Snap	
+IK Chain Snap Action	
+IK Solver Toggle	
+Set Pref Angles	
+
+---------- Action ----------
+
+
+----------  ----------
+
+Bitmap Pager Statistics Toggle	
+
+---------- PluginMgrAction ----------
+
+Plug-in Manager	
+
+---------- Scene Explorer ----------
+
+Close Last Activated Explorer	Alt+Ctrl+P
+Manage Scene Explorer...	
+New Scene Explorer...	
+Open Explorer: [Last Used]	Alt+Ctrl+O
+Saved Scene Explorers	
+Scene Explorer Quick Load 1	
+Scene Explorer Quick Load 2	
+Scene Explorer Quick Load 3	
+Scene Explorer Quick Load 4	
+Scene Explorer Quick Load 5	
+
+---------- SaveEffectFile ----------
+
+DX Display	
+Save as .FX File	
+
+---------- Main UI ----------
+
+3ds Max Help	
+Activate 3ds Max	
+Activate Grid Object	
+Activate Home Grid	
+ActiveShade Floater	
+ActiveShade Viewport	
+Adaptive Degradation Toggle	O
+Adaptive Perspective Grid Toggle	
+Add Default Lights to Scene	
+Additional Help	
+Align Camera	
+Align Grid to View	
+Align to View	
+Align Working Pivot to View	
+Align	Alt+A
+Angle Snap Toggle	A
+Apply Inverse Kinematics	
+Archive	
+Array	
+Assemble Objects	
+Assembly Attach	
+Assembly Close	
+Assembly Detach	
+Assembly Explode	
+Assembly Open	
+Asset Browser	
+Auto Key Mode Toggle	N
+AutoGrid	
+Back View	
+Backface Cull Toggle	
+Background Lock Toggle	Alt+Ctrl+B
+Backup Time One Unit	,
+Bind Space Warp Mode	
+Borrow license	
+Bottom View	B
+Box Mode Selected Toggle	
+Camera View	C
+Center Point Cycle	
+Circular Selection Region	
+Clear Set Key Mode Buffer	
+Clone and Align Tool	
+Clone	Ctrl+V
+Configure System Paths	
+Configure User Paths	
+Controller Defaults Dialog	
+Create Command Mode	
+Create Key	
+Create Position Lock Key	
+Create Rotation Lock Key	
+Create Support Request...	
+Cross Hair Cursor Toggle	
+Customer Involvement Program...	
+Customize Tool Palettes	
+Customize Toolbars	
+Customize User Interface	
+Cycle Active Snap Type	Alt+S
+Cycle Selection Method	Ctrl+F
+Cycle Snap Hit	Alt+Shift+S
+Debugger Dialog	
+Default Lighting Toggle	Ctrl+L
+Delete Objects	.
+Delete Schematic View	
+Delete Track View	
+Disable Scene Redraw Toggle	
+Disable Viewport	D
+Disassemble Objects	
+Display as See-Through Toggle	Alt+X
+Display Command Mode	
+Display Edges Only Toggle	
+Display First Tab	
+Display Floater Toggle	
+Display Selected with Edged Faces	
+Display Vertex Ticks Toggle	
+Dolly Mode	
+Dual Planes Toggle	
+Edit Modifier Stack	
+Edit Named Selections	
+Edit Render Region	
+Edit Subscription Center Profile...	
+Edit Working Pivot	
+Environment Dialog Toggle	8
+Exit 3ds Max	
+Expert Mode Toggle	Ctrl+X
+Export File	
+Export Selected	
+Fence Selection Region	
+Fetch	Alt+Ctrl+F
+Field-of-View Mode	
+File Properties	
+File Replace	
+Forward Time One Unit	.
+Freeze by Hit	
+Freeze by Name	
+Freeze Selection	
+Freeze Unselected	
+Front View	F
+Go to End Frame	End
+Go to Start Frame	Home
+Grid and Snap Settings Toggle	
+Grid View	
+Group Attach	
+Group Close	
+Group Detach	
+Group Explode	
+Group Open	
+Group	
+Hardware Display with Maps	
+Hardware Display	
+Help Menu About Box	
+Hide by Hit	
+Hide by Name	
+Hide Cameras Toggle	Shift+C
+Hide Frozen Objects Toggle	
+Hide Geometry Toggle	Shift+G
+Hide Grids Toggle	G
+Hide Helpers Toggle	Shift+H
+Hide Lights Toggle	Shift+L
+Hide Particle Systems Toggle	Shift+P
+Hide Selection	
+Hide Shapes Toggle	Shift+S
+Hide Space Warps Toggle	Shift+W
+Hide Unselected	
+Hierarchy Command Mode	
+Hold	Ctrl+H
+Ignore Extents Toggle	
+IK Terminator Toggle	
+Import File	
+Inverse Kinematics Mode Toggle	
+Key All	
+Key Position X	
+Key Position Y	
+Key Position Z	
+Key Position	
+Key Position, Rotation, Scale	
+Key Rotation X	
+Key Rotation Y	
+Key Rotation Z	
+Key Rotation	
+Key Scale X	
+Key Scale Y	
+Key Scale Z	
+Key Scale	
+Keyboard Shortcut Override Toggle	
+Lasso Selection Region	
+Last File 1	
+Last File 10	
+Last File 11	
+Last File 12	
+Last File 13	
+Last File 14	
+Last File 15	
+Last File 16	
+Last File 17	
+Last File 18	
+Last File 19	
+Last File 2	
+Last File 20	
+Last File 21	
+Last File 22	
+Last File 23	
+Last File 24	
+Last File 25	
+Last File 26	
+Last File 27	
+Last File 28	
+Last File 29	
+Last File 3	
+Last File 30	
+Last File 31	
+Last File 32	
+Last File 33	
+Last File 34	
+Last File 35	
+Last File 36	
+Last File 37	
+Last File 38	
+Last File 39	
+Last File 4	
+Last File 40	
+Last File 41	
+Last File 42	
+Last File 43	
+Last File 44	
+Last File 45	
+Last File 46	
+Last File 47	
+Last File 48	
+Last File 49	
+Last File 5	
+Last File 50	
+Last File 6	
+Last File 7	
+Last File 8	
+Last File 9	
+Left View	L
+Load Animation	
+Load Custom UI	
+Load Menu File	
+Lock Render to this View	
+Lock User Interface Toggle	Alt+0
+Macro Recorder Toggle	
+Make Preview	
+Match Camera to View	
+Material Editor Toggle	M
+Material/Map Browser Toggle	
+Maximize Viewport Toggle	Alt+W
+MAXScript Editor	
+MAXScript Listener	F11
+MAXScript Reference	
+Merge File	
+Middle Mouse Button Toggle	
+Mirror	
+Modify Command Mode	
+Motion Command Mode	
+New Scene	Ctrl+N
+New Schematic View	
+New Script	
+New Track View	
+Next Modifier	
+Next/Previous Key Mode Toggle	
+Normal Align 	Alt+N
+Nudge Grid Down	
+Nudge Grid Up	
+NURBS Shaded Lattice Toggle	
+NURBS Tessellation Preset 1	
+NURBS Tessellation Preset 2	
+NURBS Tessellation Preset 3	
+Open File	Ctrl+O
+Open Script	
+Orbit View Mode	Ctrl+R
+Ortho Snapping Mode	
+Orthographic User View	U
+Paint Selection Region	
+Pan Camera Mode	
+Pan Non-Camera View Mode	
+Pan View	Ctrl+P
+Pan Viewport	I
+Percent Snap Toggle	Shift+Ctrl+P
+Perspective Mode	
+Perspective User View	P
+Pitch Viewport Down Big	
+Pitch Viewport Down Small	
+Pitch Viewport Up Big	
+Pitch Viewport Up Small	
+Place Highlight	
+Place Pivot Surface and Align	
+Place Pivot Surface	
+Place Pivot View and Align	
+Place Pivot View	
+Play Animation	/
+Polar Snapping Mode	
+Preferences	
+Previous Modifier	
+Properties	
+Quick Align	Shift+A
+RAM Player	
+Rectangular Selection Region	
+Redo Scene Operation	Ctrl+Y
+Redo Viewport Operation	Shift+Y
+Redraw All Views	`
+Rename Preview	
+Render Effects	
+Render Iterative	
+Render Last	F9
+Render Production	
+Render SetUp...	F10
+Render	Shift+Q
+Rendered Frame Window	
+Reset Background Transform	
+Reset File	
+Reset Working Pivot	
+Restore Active View	
+Restrict Direction Cycle	
+Restrict Plane Cycle	F8
+Restrict to X	F5
+Restrict to Y	F6
+Restrict to Z	F7
+Return license	
+Revert to Startup Menu	
+Revert to Startup UI	
+Right View	
+Roll Mode	
+Roll Viewport CCW Big	
+Roll Viewport CCW Small	
+Roll Viewport CW Big	
+Roll Viewport CW Small	
+Run Script	
+Save Active View	
+Save Animation	
+Save Custom UI As	
+Save Custom UI	
+Save File As Copy	
+Save File As	
+Save File	Ctrl+S
+Save Incremental (+)	
+Save Menu File As	
+Save Menu File	
+Save Selected	
+Saved Schematic View 1	
+Saved Schematic View 10	
+Saved Schematic View 11	
+Saved Schematic View 12	
+Saved Schematic View 13	
+Saved Schematic View 2	
+Saved Schematic View 3	
+Saved Schematic View 4	
+Saved Schematic View 5	
+Saved Schematic View 6	
+Saved Schematic View 7	
+Saved Schematic View 8	
+Saved Schematic View 9	
+Saved Track View 1	
+Saved Track View 10	
+Saved Track View 11	
+Saved Track View 12	
+Saved Track View 13	
+Saved Track View 2	
+Saved Track View 3	
+Saved Track View 4	
+Saved Track View 5	
+Saved Track View 6	
+Saved Track View 7	
+Saved Track View 8	
+Saved Track View 9	
+Scale Cycle	Ctrl+E
+Schematic View (Open)	
+Select All	Ctrl+A
+Select Ancestor	PageUp
+Select and Link	
+Select and Manipulate	
+Select and Move	W
+Select and Rotate	E
+Select and Scale	
+Select By Color	
+Select by Crossing	
+Select By Layer	
+Select By Name	H
+Select by Window	
+Select Child	PageDown
+Select Children	Ctrl+PageDown
+Select Invert	Ctrl+I
+Select None	Ctrl+D
+Select Object	
+Select Sibling - Next	
+Select Sibling - Previous	
+Select Similar	Ctrl+Q
+Selection Floater	
+Selection Lock Toggle	Space
+Set Default Tangent As Auto	
+Set Default Tangent As Custom	
+Set Default Tangent As Fast	
+Set Default Tangent As Linear	
+Set Default Tangent As Slow	
+Set Default Tangent As Smooth	
+Set Default Tangent As Step	
+Set Key All Filter	
+Set Key Custom Attributes Filter	
+Set Key IK Parameters Filter	
+Set Key Materials Filter	
+Set Key Mode	'
+Set Key Modifiers Filter	
+Set Key Object Params Filter	
+Set Key Other Filter	
+Set Key Position Filter	
+Set Key Rotation Filter	
+Set Key Scale Filter	
+Set Key Selected	
+Set Keys	K
+Shade Selected Faces Toggle	F2
+Shade Selected Toggle	
+Shape Viewport	
+Show All Grids Toggle	
+Show Background Toggle	
+Show Command Panel Toggle	
+Show Dependencies	
+Show Floating Dialogs	Ctrl+`
+Show Floating Toolbars Toggle	
+Show Ghosting Toggle	
+Show Home Grid	
+Show Key Times Toggle	
+Show Last Rendering	
+Show Main Toolbar Toggle	Alt+6
+Show Safeframes Toggle	Shift+F
+Show Selection Bracket Toggle	J
+Show Statistics Toggle	7
+Show Tab Panel Toggle	
+Show Track Bar Toggle	
+Show Trajectories Toggle	
+Show Transform Gizmo	
+Show Viewport Tooltips Toggle	
+SMPTE / Frames Toggle	
+Snap Menu	
+Snap To Frozen Objects Toggle	Alt+F2
+Snaps Toggle	S
+Snaps Use Axis Constraints Toggle	Alt+D, Alt+F3
+Snapshot	
+Sound Toggle	\
+Spacing Tool	Shift+I
+Spinner Drag Update Toggle	
+Spinner Snap Toggle	
+Spot/Directional Light View	Shift+4
+Standard Display with Maps	
+Standard Display	
+Sub-object Level Cycle	Insert
+Sub-object Menu	
+Sub-object Selection Toggle	Ctrl+B
+Subscription e-Learning Catalog...	
+Summary Info	
+Texture Correction	
+Time Configuration	
+Time Slider Capture Toggle	
+Top View	T
+Track View Floater	
+Track View Viewport	
+Transform Gizmo Center Toggle	
+Transform Gizmo Labels Toggle	
+Transform Gizmo Planes Toggle	
+Transform Gizmo Size Down	-
+Transform Gizmo Size Up	=
+Transform Gizmo Toggle	X
+Transform Type-In Dialog Toggle	F12
+Truck Mode	
+Tutorials	
+Undo Scene Operation	Ctrl+Z
+Undo Viewport Operation	Shift+Z
+Unfreeze All	
+Unfreeze by Hit	
+Unfreeze by Name	
+Ungroup	
+Unhide All	
+Unhide by Name	
+Unit Setup	
+Unlink Selection	
+Update Background Image	Alt+Shift+Ctrl+B
+Use Working Pivot	
+Utility Command Mode	
+Video Post Dialog Toggle	
+View Edged Faces Toggle	F4
+View File	
+View Preview	
+View Support Requests...	
+Viewport Background	Alt+B
+Viewport Box Mode Toggle	
+Viewport Clipping	
+Viewport Configuration	
+Viewport Render Level Bounding Box 	
+Viewport Render Level Edged Faces Toggle	
+Viewport Render Level Facets + Highlights 	
+Viewport Render Level Facets	
+Viewport Render Level Flat	
+Viewport Render Level Hidden Line	
+Viewport Render Level Lit Wireframes 	
+Viewport Render Level Smooth 	
+Viewport Render Level Smooth + Highlights	
+Viewport Render Level Wireframe	
+Viewport Transparency Best	
+Viewport Transparency None 	
+Viewport Transparency Simple	
+Virtual Viewport Pan Down	NumPad 2
+Virtual Viewport Pan Left	NumPad 4
+Virtual Viewport Pan Right	NumPad 6
+Virtual Viewport Pan Up	NumPad 8
+Virtual Viewport Toggle	NumPad /
+Virtual Viewport Zoom In	NumPad +
+Virtual Viewport Zoom Out	NumPad -
+What's New	
+Window / Crossing Toggle	
+Wireframe / Facet All Toggle	
+Wireframe / Facet Shading Toggle	
+Wireframe / Smooth Shading Toggle	
+Wireframe / Smooth+Highlights All Toggle	
+Wireframe / Smooth+Highlights Toggle	F3
+XRef Objects	
+XRef Scenes	
+Yaw Viewport CCW Big	
+Yaw Viewport CCW Small	
+Yaw Viewport CW Big	
+Yaw Viewport CW Small	
+Zoom All Mode	
+Zoom Extents All Selected	Z
+Zoom Extents All	Shift+Ctrl+Z
+Zoom Extents Selected	
+Zoom Extents	Alt+Ctrl+Z
+Zoom In 2X All	
+Zoom In 2X	Alt+Shift+Ctrl+Z
+Zoom Mode	Alt+Z
+Zoom Out 2X All	
+Zoom Out 2X	Alt+Shift+Z
+Zoom Region Mode	Ctrl+W
+Zoom Viewport In	[, Ctrl+=
+Zoom Viewport Out	], Ctrl+-
+
+---------- Track View ----------
+
+Access Hierarchy Select Name Field	
+Access Time Field	
+Access Track Name Field	
+Access Value Field	
+Add Keys	A
+Add Note Track	
+Add Visibility Track	
+Align Keys	
+Apply Ease Curve	Ctrl+E
+Apply Multiplier Curve	Ctrl+M
+Assign Controller	C
+Auto Expand Animated	
+Auto Expand Keyable	
+Auto Expand Limits	
+Collapse All	
+Collapse Objects	
+Collapse Tracks	
+Copy Controller	Ctrl+C
+Copy Limit Only	
+Copy Time	
+Cut Time	
+Delete Controller	
+Delete Ease/Multiplier Curve	
+Delete Note Track	
+Delete Visibility Track	
+Draw Curves	
+Ease Curve Out-of-Range Types	
+Ease/Multiplier Curve Enable Toggle	
+Edit Keys Mode	
+Edit Ranges Mode	
+Edit Time Mode	
+Edit Track Set	
+Exclude Left End Point Toggle	
+Exclude Right End Point Toggle	
+Expand All	
+Expand Object Toggle	O
+Expand Objects	
+Expand Track Toggle	Enter, T
+Expand Tracks	
+Filter - Active Layer Toggle	
+Filter - Animated Tracks Toggle	
+Filter - Keyable Tracks Toggle	
+Filter - Selected Objects Toggle	
+Filter - Selected Tracks Toggle	
+Filter - Visible Objects Toggle	
+Filters	Q
+Freeze Nonselected Curves	
+Function Curves Mode	
+Ignore Animation Range	
+Insert Time	
+Keyable Property Toggle	
+Lock Selection	Space
+Lock Tangents Toggle	L
+Make Controller Unique	U
+Modify Subtree Toggle	
+Move Highlight Down	Down Arrow
+Move Highlight Up	Up Arrow
+Move Keys Horizontal	
+Move Keys Vertical	
+Move Keys	M
+Move Object Down	
+Move Object Up	
+Multiplier Curve Out-of-Range Types	
+Nudge Keys Left	Left Arrow
+Nudge Keys Right	Right Arrow
+Pan	Ctrl+P
+Parameter Curve Out-of-Range Types	
+Paste Controller	Ctrl+V
+Paste Limit Only	
+Paste Time	
+Position Ranges Mode	
+Properties	
+Reduce Keys	
+Remove Limit	
+Respect Animation Range	
+Reverse Time	
+Scale Keys	
+Scale Time	
+Scale Values	
+Scroll Down	Ctrl+Down Arrow
+Scroll Up	Ctrl+Up Arrow
+Select All	
+Select Children	
+Select Invert	
+Select None	
+Select Time	
+Set Lower Limit	
+Set Tangents to Auto	
+Set Tangents to Custom	
+Set Tangents to Fast	
+Set Tangents to Linear	
+Set Tangents to Slow	
+Set Tangents to Smooth	
+Set Tangents to Step	
+Set Upper Limit	
+Show All Tangents	
+Show Keys on Frozen Curves	
+Show Selected Key Stats	
+Show Tangents Toggle	
+Slide Keys	
+Snap Frames	S
+Toggle Limit	
+Track View Utilities	
+Zoom Horizontal Extents Keys	Alt+X
+Zoom Horizontal Extents	Alt+Ctrl+Z
+Zoom Region	Ctrl+W
+Zoom Selected Object	
+Zoom Time	
+Zoom Value Extents	
+Zoom Values	
+Zoom	Alt+Z
+
+---------- Material Editor ----------
+
+Access Editable Name Field	
+Assign Material to Selection	
+Background	B
+Backlight	L
+Change Material/Map Type	
+Copy/Rotate Drag Mode Toggle	
+Custom Background Toggle	
+Cycle 3X2, 5X3, 6X4 Sample Slots	X
+Get Material 	G
+Go Backward to Sibling	Left Arrow
+Go Forward to Sibling	Right Arrow
+Go to Parent	Up Arrow
+Highlight Assets in ATS Dialog	
+Launch Magnify Window	
+Make Material Copy	
+Make Preview	P
+Manual Update Toggle	
+Options	O
+Pick Material from Object	
+Propagate Materials to Instances	
+Put Material to Scene	
+Put to Library	
+Render Map	
+Reset Sample Slot Rotation	
+Save Preview	
+Select by Material	
+Show End Result	
+Show Map in Viewport	
+Update Active Material	
+Video Color Check	
+View Preview	
+
+---------- Schematic View ----------
+
+Access Schematic View Name Field	
+Access Select Name Field	
+Add Bookmark	B
+All Relationships	
+Arrange Children	
+Bring Selection In	
+Deselect Children	
+Display Floater Base Objects	
+Display Floater Controllers Pos	
+Display Floater Controllers Rot	
+Display Floater Controllers Scale	
+Display Floater Controllers	
+Display Floater Expand	
+Display Floater Focus	
+Display Floater Materials	
+Display Floater Modifiers	
+Display Floater Rel Constraints	
+Display Floater Rel Controllers	
+Display Floater Rel Lights	
+Display Floater Rel Modifiers	
+Display Floater Rel Param Wires	
+Display Floater	D
+Edit Properties	
+Filters	P
+Free All	Alt+F
+Free Selected	Alt+S
+Hide Downstream	
+Hide Selected	
+Hierarchy Mode	
+Invert Selected Nodes	Ctrl+I
+List Viewer Pan to Selected	
+List Viewer Respect Display	
+List Viewer Shade Selected	
+List Viewer Sync Selection	
+List Viewer Zoom to Selected	
+Move Children	Alt+C
+Move Selection Out	
+Next Bookmark	Right Arrow
+Pan to Selected	
+Previous Bookmark	Left Arrow
+Reference Mode	
+Refresh View	Ctrl+U
+Rename Object	R
+Right Justify Labels	
+Select All Nodes	Ctrl+A
+Select Children	Ctrl+C
+Select None	Ctrl+D
+Selected Relationships	
+Show All	
+Show Background Image	
+Show Downstream	
+Show Grid	G
+Show Instances All	
+Show Instances Selected	
+Show Like Objects	
+Show Tooltips	
+Sync Selection	
+Toggle Shrink	Ctrl+S
+Unlink Selected	
+Use Connect Tool	C
+Use Pan Tool	Ctrl+P
+Use Select Tool	S, Q
+Use Zoom Region Tool	Ctrl+W
+Use Zoom Tool	Alt+Z
+Zoom Extents	Alt+Ctrl+Z
+Zoom Selected Extents	Z
+Zoom Selected Viewport Objects	
+
+---------- ActiveShade ----------
+
+Act Only on Mouse Up	
+Close	Q
+Draw Region	D
+Render	R
+Select Object	S
+Toggle Toolbar (Docked)	Space
+
+---------- Video Post ----------
+
+Abut Selected	
+Add External Event	
+Add Image Filter Event	Ctrl+F
+Add Image Input Event	Ctrl+I
+Add Image Layer Event	Ctrl+L
+Add Image Output Event	Ctrl+O
+Add Loop Event	
+Add New Event	Ctrl+A
+Add Scene Event	Ctrl+S
+Align Selected Left	
+Align Selected Right	
+Edit Current Event	Ctrl+E
+Edit Range Bar	
+Execute Sequence	Ctrl+R
+Make Selected Same Size	
+New Sequence	Ctrl+N
+Open Sequence	
+Pan	
+Save Sequence	
+Swap Events	
+Zoom Extents	
+Zoom Region	
+Zoom Time	
+
+---------- Edit/Editable Patch ----------
+
+Edit/Editable Patch Menu	
+
+---------- NURBS ----------
+
+Break Both	
+Break Column	
+Break Curve	
+Break Row	
+Create 1-Rail Sweep	
+Create 2-Rail Sweep	
+Create a Multicurve Trimmed Surface	
+Create a Multisided Blend Surface	
+Create Blend Curve	
+Create Blend Surface	
+Create Cap Surface	
+Create Chamfer Curve	
+Create Curve Point	
+Create Curve-Curve Point	
+Create CV Curve on Surface	
+Create CV Curve	
+Create CV Surface	
+Create Extrude Surface	
+Create Fillet Curve	
+Create Fillet Surface	
+Create Fit Curve	
+Create Lathe Surface	
+Create Mirror Curve	
+Create Mirror Surface	
+Create Normal Projected Curve	
+Create Offset Curve	
+Create Offset Point	
+Create Offset Surface	
+Create Point Curve on Surface	
+Create Point Curve	
+Create Point Surface	
+Create Point	
+Create Ruled Surface	
+Create Surf Point	
+Create Surface Edge Curve	
+Create Surface Offset Curve	
+Create Surface-Curve Point	
+Create Surface-Surface Intersection Curve	
+Create Transform Curve	
+Create Transform Surface	
+Create U Iso Curve	
+Create U Loft Surface	
+Create UV Loft Surface	
+Create V Iso Curve	
+Create Vector Projected Curve	
+CV Constrained Normal Move	Alt+N
+CV Constrained U Move	Alt+U
+CV Constrained V Move	Alt+V
+Display Curves	Shift+Ctrl+C
+Display Dependents	Ctrl+D
+Display Lattices	Ctrl+L
+Display Shaded Lattice	Alt+L
+Display Surfaces	Shift+Ctrl+S
+Display Toolbox	Ctrl+T
+Display Trims	Shift+Ctrl+T
+Extend CV Curve	
+Extend Point Curve	
+Extend Surface	
+Fuse Curve CVs	
+Fuse Points	
+Fuse Surface CVs	
+Insert CV Both	
+Insert CV Column	
+Insert CV In Curve	
+Insert CV Row	
+Join Curves	
+Join Surfaces	
+Local Select Sub-Object By Name	Ctrl+H
+Lock 2D Selection	Space
+Make First	
+Refine CV Both	
+Refine CV Column	
+Refine CV Curve	
+Refine CV Row	
+Refine Point Both	
+Refine Point Column	
+Refine Point Curve	
+Refine Point Row	
+Select Next in U	Ctrl+Right Arrow
+Select Next in V	Ctrl+Up Arrow
+Select Previous in U	Ctrl+Left Arrow
+Select Previous in V	Ctrl+Down Arrow
+Select Sub-Object By Name	H
+Set Tessellation Preset 1	Alt+1
+Set Tessellation Preset 2	Alt+2
+Set Tessellation Preset 3	Alt+3
+Soft Selection	Ctrl+S
+Switch To Curve CV Level	Alt+Shift+Z
+Switch To Curve Level	Alt+Shift+C
+Switch To Imports Level	Alt+Shift+I
+Switch To Point Level	Alt+Shift+P
+Switch To Surface CV Level	Alt+Shift+V
+Switch To Surface Level	Alt+Shift+S
+Switch To Top Level	Alt+Shift+T
+Transform Degrade	Ctrl+X
+
+---------- Editable Poly ----------
+
+Affect Backfacing	
+Align To Grid	
+Align To View	
+Attach List	
+Attach	
+Auto Smooth	
+Bevel Mode	Shift+Ctrl+B
+Bevel Settings	
+Border Level	3
+Break	
+Bridge Settings	
+Bridge	
+Cap	
+Chamfer Mode	Shift+Ctrl+C
+Chamfer Settings	
+Collapse	
+Connect Edge Settings	
+Connect	Shift+Ctrl+E
+Constrain to Edges	Shift+X
+Constrain to Faces	
+Constrain to None	
+Constrain to Normals	
+Create Shape From Edges	
+Create	
+Cut	Alt+C
+Detach	
+Edge Level	2
+Edit Soft Selection Mode	
+Edit Triangulation Mode	
+Element Level	5
+Extrude along Spline Mode	
+Extrude along Spline Settings	
+Extrude Mode	Shift+E
+Extrude Settings	
+Face Level	4
+Flip Normals	
+Grow Selection	Ctrl+PageUp
+Hide Unselected	Alt+I
+Hide	Alt+H
+Hinge from Edge Mode	
+Hinge from Edge Settings	
+Ignore Backfacing in Selections	
+Insert Vertex Mode	
+Inset Mode	
+Inset Settings	
+Lock Soft Selection	
+Make Planar	
+MeshSmooth Settings	
+MeshSmooth	
+Object Level	6
+Outline Mode	
+Outline Settings	
+Paint Deform Push/Pull	
+Paint Deform Relax	
+Paint Soft Selection	
+Preview Select Mode	
+Quickslice Mode	Shift+Ctrl+Q
+Remove Isolated Vertices	
+Remove Unused Map Vertices	
+Remove	
+Repeat Last Operation	;
+Reset Slice Plane	
+Retriangulate	
+Select By Vertex	
+Select Edge Loop Down Add	
+Select Edge Loop Down Subtract	
+Select Edge Loop Down	
+Select Edge Loop Up Add	
+Select Edge Loop Up SubTract	
+Select Edge Loop Up	
+Select Edge Loop	Alt+L
+Select Edge Ring Down Add 	
+Select Edge Ring Down Subtract	
+Select Edge Ring Down	
+Select Edge Ring Up Add	
+Select Edge Ring Up Subtract	
+Select Edge Ring Up	
+Select Edge Ring	Alt+R
+Shaded Face Toggle	
+Shrink Selection	Ctrl+PageDown
+Slice Plane Mode	
+Slice	
+Split Edges	
+Target Weld Mode	Shift+Ctrl+W
+Tessellate Settings	
+Tessellate	
+Turn	
+Unhide All	Alt+U
+Use Soft Selection	
+Vertex Level	1
+Weld Settings	
+
+---------- Edit/Editable Mesh ----------
+
+Attach List	
+Attach Mode	
+Auto Edge	
+Auto Smooth	
+Bevel Mode	Ctrl+V, Ctrl+B
+Break Vertices	
+Chamfer Mode	Ctrl+C
+Collapse	
+Copy Named Selection	
+Create Mode	
+Cut Mode	Alt+C
+Delete Isolated Vertices	
+Detach	Ctrl+D
+Divide Mode	
+Edge Invisible	Ctrl+I
+Edge Level	2
+Edge Turn	Ctrl+T
+Edge Visible	
+Edit Soft Selection	
+Element Level	5
+Explode	
+Extrude Mode	Ctrl+E
+Face Level	3
+Flip Normal Mode	
+Flip Normals	
+Grid Align	
+Hide Selected	
+Ignore Backfacing in Selections	
+Ignore Visible Edges (for Polygons)	
+Make Planar	
+Next Sub-object Level	
+Object Level	
+Paste Named Selection	
+Polygon Level	4
+Previous Sub-object Level	
+Refine Cut Ends	
+Select By Vertex Toggle	
+Select Open Edges	
+Set Vertex Color	
+Set Vertex Illumination	
+Show Normals	
+Slice Plane	
+Slice	
+Soft Selection Affect Backfacing	
+Soft Selection	
+Split	
+Unhide All	
+Unify Normals	
+Vertex Level	1
+View Align	
+Weld Selected	Ctrl+W
+Weld Target Mode	Alt+W
+
+---------- Edit/Editable Spline ----------
+
+Edit/Editable Spline Menu	
+
+---------- Poly Select ----------
+
+Edit Soft Selection Mode	7
+
+---------- Edit Normals ----------
+
+Average Mode	
+Average Normals	
+Break Normals	B
+Copy Normal	Ctrl+C
+Edge Level	Ctrl+3
+Face Level	Ctrl+4
+Make Explicit	E
+Normal Level	Ctrl+1
+Object Level	Ctrl+0
+Paste Normal	Ctrl+V
+Reset Normals	R
+Specify Normals	S
+Unify Normals	U
+Vertex Level	Ctrl+2
+
+---------- FFD ----------
+
+Switch To Control Point Level	Alt+Shift+C
+Switch To Lattice Level	Alt+Shift+L
+Switch To Set Volume Level	Alt+Shift+S
+Switch To Top Level	Alt+Shift+T
+
+---------- WeightTable ----------
+
+Affect All Vertices	
+Alternate Global Method	
+Copy	
+Create Vertex Set	
+DebugMode	
+Delete Vertex Set	
+Drag Left/Right Mode	
+Flip UI	
+Paste	
+Remove Zero Weights	
+Right Justify Bone Names	
+Select All	Ctrl+A
+Select Invert	Ctrl+I
+Select None	Ctrl+D
+Shortern Labels	
+Show Affected Bones	
+Show Attributes	
+Show Copy and Paste UI	
+Show Exclusions	
+Show Global	
+Show Menu	
+Show Options UI	
+Show Set Sets UI	
+Show Weight Table Marker	
+Update On Mouse Up	
+
+---------- Cloth ----------
+
+Add Objects	
+Change Group	
+Check Intersections	
+Cloth Constraint	
+Cloth Forces	
+Copy Group	
+Create Keys	
+Delete Group	
+Delete Object Cache	
+Detach Constraint	
+Drag Constraint	
+Erase Simulation	
+Forcefield Constraint	
+Get Group	
+Grab State	
+Group Constraint	
+Initialize Constraint	
+Live Drag	
+Live Rotate	
+Make Group	
+NoCollide Constraint	
+Node Constraint	
+Object Properties	
+Paste Group	
+Preserve Constraint	
+Rename Group	
+Reset State	
+Self Collision	
+Set Initial State	
+Show Current State	
+Show Sewing Springs	
+Sim on Mouse Down	
+SimNode Constraint	
+Simulate Local Damped	
+Simulate Local	
+Simulate	
+Solid Collision	
+Surface Constraint	
+Truncate Simulation	
+Use End Frame	
+Use Gravity	
+
+---------- Edit Spline ----------
+
+Edit Soft Selection	7
+
+---------- Edit Patch ----------
+
+Edit Soft Selection	7
+
+---------- Edit Poly ----------
+
+Affect Backfacing	Ctrl+F
+Align To Grid	G
+Align To View	V
+Attach List	Shift+Ctrl+A
+Attach	Shift+A
+Auto Smooth	A
+Bevel Mode	Shift+Ctrl+B
+Bevel Settings	Ctrl+B
+Border Level	3
+Break	Shift+B
+Bridge Settings	
+Bridge	
+Cap	Alt+P
+Chamfer Mode	Shift+Ctrl+C
+Chamfer Settings	Alt+Ctrl+C
+Collapse	Shift+L
+Connect Edge Settings	Ctrl+N
+Connect	Shift+Ctrl+E
+Constrain to Edges	Shift+X
+Constrain to Faces	X
+Constrain to None	
+Constrain to Normals	
+Create Shape From Edges	Shift+M
+Create	C
+Cut	Alt+C
+Detach	Ctrl+D
+Edge Level	2
+Edit Soft Selection Mode	
+Edit Triangulation Mode	Shift+T
+Element Level	5
+Extrude along Spline Mode	Alt+E
+Extrude along Spline Settings	
+Extrude Mode	E
+Extrude Settings	Ctrl+E
+Flip Normals	F
+Grow Selection	Ctrl+PageUp
+Hide Unselected	Alt+I
+Hide	H
+Hinge from Edge Mode	L
+Hinge from Edge Settings	Ctrl+L
+Ignore Backfacing in Selections	Shift+Ctrl+I
+Insert Vertex Mode	Shift+I
+Inset Mode	I
+Inset Settings	Ctrl+I
+Lock Soft Selection	
+Make Planar	P
+MeshSmooth Settings	Ctrl+M
+MeshSmooth	M
+Object Level	6
+Outline Mode	O
+Outline Settings	Ctrl+O
+Paint Deform Push/Pull	
+Paint Deform Relax	
+Paint Soft Selection	
+Polygon Level	4
+Preview Select Mode	
+Quickslice Mode	Shift+Ctrl+Q
+Remove Isolated Vertices	Shift+Ctrl+R
+Remove Unused Map Vertices	Alt+Shift+Ctrl+R
+Remove	Shift+R
+Repeat Last Operation	;
+Reset Slice Plane	Alt+S
+Retriangulate	Shift+Ctrl+T
+Select By Vertex	Alt+V
+Select Edge Loop Down Add	
+Select Edge Loop Down Subtract	
+Select Edge Loop Down	
+Select Edge Loop Up Add	
+Select Edge Loop Up Subtract	
+Select Edge Loop Up	
+Select Edge Loop	Alt+L
+Select Edge Ring Down Add	
+Select Edge Ring Down Subtract	
+Select Edge Ring Down	
+Select Edge Ring Up Add	
+Select Edge Ring Up Subtract	
+Select Edge Ring Up	
+Select Edge Ring	Alt+R
+Shaded Face Toggle	Alt+F
+Shrink Selection	Ctrl+PageDown
+Slice Plane Mode	S
+Slice	Shift+S
+Split Edges	Shift+P
+Target Weld Mode	Shift+Ctrl+W
+Tessellate Settings	Ctrl+T
+Tessellate	T
+Turn	
+Unhide All	Alt+U
+Use Soft Selection	Ctrl+S
+Vertex Level	1
+Weld Settings	Ctrl+W
+
+---------- Garment Maker ----------
+
+Arranged Panels	
+Auto Mesh	
+Break Multisegment	
+Create Seam	
+Delete All Seams	
+Delete Seam	
+Enable Seam	
+Flat Panels	
+Make Multisegment	
+Mesh It Preserve	
+Mesh It	
+Panel Curved	
+Panel No Deformation	
+Panel Preserved	
+Preserve	
+Preserved Surface	
+Reset All Panels Deformation	
+Reset All Panels Position	
+Reset Panel Deformation	
+Reset Panel Position	
+Reverse Seam	
+Seam Cut	
+Show Mesh	
+Show Seams	
+Stretch Map Coords	
+x axis	
+y axis	
+
+---------- HSDS ----------
+
+Edit Soft Selection	7
+
+---------- Edit Mesh ----------
+
+Edit Soft Selection	7
+
+---------- Vol. Select ----------
+
+Edit Soft Selection	7
+
+---------- Mesh Select ----------
+
+Edit Soft Selection	7
+
+---------- MeshSmooth ----------
+
+Edit Soft Selection Mode	7
+
+---------- Patch Select ----------
+
+Edit Soft Selection	7
+
+---------- Physique ----------
+
+Copy Envelope	Ctrl+C
+Delete	Ctrl+D
+Next Selection Level		
+Next	PageDown
+Paste Envelope	Ctrl+V
+Previous Selection Level	Shift+	
+Previous	PageUp
+Reset Envelopes	Ctrl+E
+
+---------- Projection Modifier ----------
+
+Edit Soft Selection	7
+
+---------- Unwrap UVW ----------
+
+Allow Selections Inside Tranform Gizmo	
+Always Bring Up The Edit Window	
+Blend Tiles To background	
+Box Map	
+Break Selected Vertices	Ctrl+B
+Brightness Affects Center Tile	
+Contract Geom. Faces	
+Copy	
+Cylindrical Map	
+Detach Edge Verts	D, Ctrl+D
+Display Seams	
+Edge Sel to Pelt Seam(Add)	
+Edge Sel to Pelt Seam(Replace)	
+Edge Snap	
+Edge to Face Select	
+Edge to Vertex Select	
+Edit UVW's	Ctrl+E
+Expand Geom. Faces	
+Face to Edge  Select	
+Face to Vertex Select	
+Filter Selected Faces	Alt+F
+Flatten Map Dialog	
+Flatten Map	
+Flip Horizontal	
+Flip Vertical	
+Freeform Mode	
+Freeze Selected	Ctrl+F
+Geom. Edge Loop Selection	
+Geom. Edge Ring Selection	
+Geom. Element Select Mode	
+Get Face Selection From Stack	Alt+Shift+Ctrl+F
+Get Selection From Faces	Alt+Shift+Ctrl+P
+Grid Snap	
+Grid Visible	
+Hide Selected	Ctrl+H
+Ignore Back Faces	
+Load Defaults	
+Load UVW	Alt+Shift+Ctrl+L
+Lock selected vertices	Space
+Mapping Align Normal	
+Mapping Align To View	
+Mapping Align X	
+Mapping Align Y	
+Mapping Align Z	
+Mapping Center	
+Mapping Fit	
+Mapping Reset	
+Mirror Horizontal	Alt+Shift+Ctrl+N
+Mirror Vertical	Alt+Shift+Ctrl+M
+Move Horizontal	Alt+Shift+Ctrl+J
+Move Vertical	Alt+Shift+Ctrl+K
+Normal Map Dialog	
+Normal Map	
+Open Edge Mode	
+Open Edge Select	
+Pack Dialog	
+Pack	
+Paint Select Decrement Cursor Size	
+Paint Select Increment Cursor Size	
+Paint Select Mode	
+Pan	Ctrl+P
+Paste Instance	
+Paste	
+Pelt Always Show Seams	
+Pelt Dialog Mirror Stretcher	
+Pelt Dialog Relax Simulation Heavy	
+Pelt Dialog Relax Simulation Light	
+Pelt Dialog Reset Stretcher	
+Pelt Dialog Run Simulation	
+Pelt Dialog Select Pelt UV's	
+Pelt Dialog Select Stretcher	
+Pelt Dialog Snap Seams	
+Pelt Dialog Straighten Stretcher	
+Pelt Dialog	
+Pelt Edit Seams	
+Pelt Expand Selection To Seams	
+Pelt Map	
+Pelt Seam to Edge Sel(Add)	
+Pelt Seam to Edge Sel(Replace)	
+Pivot Snap Left Center	
+Pivot Snap Lower Center	
+Pivot Snap Lower Left	
+Pivot Snap Lower Right	
+Pivot Snap Right Center	
+Pivot Snap To Center	
+Pivot Snap Upper Center	
+Pivot Snap Upper Right	
+Pivot Snap Upperr Left	
+Planar map faces/patches	Enter
+Planar Threshold	
+Point To Point Edge Selection	
+Polygon Mode	
+Polygon Select	
+Prevent Reflattening	
+Quick Planar map	
+Relax Dialog	
+Relax	
+Render UVW Template	
+Reset Pivot On Selection	
+Reset UVWs	
+Save Current Settings As Default	
+Save UVW	
+Scale Horizontal	
+Scale Vertical	
+Select Inverted Faces	
+Select Overlapped Faces	
+Show Edge Distortion	
+Show Hidden Edges	
+Show Local Distortion	
+Show Map	
+Show Seams In Viewport	Alt+E
+Show Shared Sub-objects	
+Show Subobject Counter	
+Show Vertex Connections	
+Sketch Dialog	
+Sketch Reverse Vertex Order	
+Sketch	
+Snap To Grid/Vertex/Edge	
+Snap	Ctrl+S
+Soft Selection Edge Distance Range 1	
+Soft Selection Edge Distance Range 2	
+Soft Selection Edge Distance Range 3	
+Soft Selection Edge Distance Range 4	
+Soft Selection Edge Distance Range 5	
+Soft Selection Edge Distance Range 6	
+Soft Selection Edge Distance Range 7	
+Soft Selection Edge Distance Range 8	
+Soft Selection Edge Distance	
+Spherical Map	
+Stitch Dialog	
+Stitch	
+Sync Selection Mode	
+Sync Texture Selection To Viewport	
+Sync Viewport Selection To Texture	
+Texture Vertex Contract Selection	NumPad -, -
+Texture Vertex Expand Selection	NumPad +, =
+Texture Vertex Move Mode	W
+Texture Vertex Rotate Mode	E
+Texture Vertex Scale Mode	R
+Texture Vertex Weld Selected	Ctrl+W
+Texture VertexTarget Weld 	Ctrl+T
+TV Edge Sub-object Mode	
+TV Element Mode	
+TV Face Sub-object Mode	
+TV Vertex Sub-object Mode	
+Unfold Map Dialog	
+Unfold Map	
+Unfreeze All	
+Unhide All	
+Unwrap Options	Ctrl+O
+Update Map	Ctrl+U
+UV Edge Mode	
+UV Edge Select	
+Vertex Snap	
+Vertex to Edge Select	
+Vertex to Face Select	
+Zoom Extents Selected	Z
+Zoom Extents	Alt+Ctrl+Z
+Zoom Region	Ctrl+X
+Zoom Selected Element	
+Zoom To Gizmo	Shift+Space
+Zoom	Alt+Z
+
+---------- Hair Styling ----------
+
+Attenuate	Shift+Ctrl+A
+Brush Clump	Shift+Ctrl+4
+Brush Puff	Shift+Ctrl+3
+Brush Rotate	Shift+Ctrl+5
+Brush Scale	Shift+Ctrl+6
+Brush Stand	Shift+Ctrl+2
+Brush Translate	Shift+Ctrl+1
+Brush	Ctrl+B
+Clump	Ctrl+M
+Cut	Ctrl+C
+Expand Selection	Shift+Ctrl+E
+Guide	Ctrl+2
+Hide Selected	Shift+Ctrl+H
+Ignore Back	Shift+Ctrl+B
+Invert Selection	Shift+Ctrl+N
+Lock	Shift+Ctrl+L
+Merge Hairgroups	Shift+Ctrl+=
+Pop Selected	Shift+Ctrl+P
+Pop Zerosized	Shift+Ctrl+Z
+Puff	Ctrl+P
+Recomb	Shift+Ctrl+M
+Reset Rest	Shift+Ctrl+T
+Root	Ctrl+4
+Rotate Selection	Shift+Ctrl+R
+Rotate	Ctrl+R
+Scale 	Ctrl+E
+Select	Ctrl+S
+Show Hidden	Shift+Ctrl+W
+Soft Falloff	Shift+Ctrl+F
+Split Hairgroups	Shift+Ctrl+-
+Stand	Ctrl+N
+Tip	Ctrl+1
+Toggle Collisions	Shift+Ctrl+C
+Toggle Hairs	Shift+Ctrl+I
+Translate	Ctrl+T
+Undo	Ctrl+Z
+Unlock	Shift+Ctrl+U
+Verts	Ctrl+3
+
+---------- Crowd ----------
+
+Solve	S
+Step Solve	
+
+---------- Biped ----------
+
+Bend Links - Bend Links	
+Bend Links - Smooth Twist	
+Bend Links - Twist Individual	
+Bend Links - Twist Links	
+Bend Links - Zero All	
+Bend Links - Zero Twist	
+Biped Mode	
+Buffer Mode	
+Clear All Animation	
+Clear Selected Tracks	
+Copy/Paste - Copy	Alt+C
+Copy/Paste - Paste Opposite	Alt+B
+Copy/Paste - Paste to Selected Xtras	
+Copy/Paste - Paste	Alt+V
+Display Biped Trajectory	
+Display Bones and Objects	
+Display Bones	
+Display Footstep Numbers	
+Display Footsteps	
+Display Objects	
+Figure Mode	
+Fix Graphs	Alt+Ctrl+F
+Footstep Mode	
+In Place Mode	
+In Place X Mode	
+In Place Y Mode	
+Layer - Active	
+Layer - Collapse	
+Layer - Create	
+Layer - Delete	
+Layer - Left Arm Retarget	
+Layer - Left Leg Retarget	
+Layer - Load	
+Layer - Next	
+Layer - Previous	
+Layer - Right Arm Retarget	
+Layer - Right Leg Retarget	
+Layer - Save	
+Layer - Set Snap Key	
+Layer - Update Retargetting	
+Load Biped File	
+Mirror In Place	
+Mirror	
+Mixer Mode	
+Motion Flow Mode	
+Move All - Collapse	Alt+M
+Move All Mode	
+Play Biped	V
+Reset All Limb Keys	Alt+K
+Rubber Band Mode	
+Save Biped File	
+Scale In Transform	Alt+Ctrl+E
+Scale Stride Mode	
+Select Body Horizontal	
+Select Body Rotation	
+Select Body Vertical	
+Select Opposite	
+Select Pivot Dialog	
+Select Pivot	
+Select Symmetrical	
+Selection - Lock COM	
+Set Animation Range	Alt+R
+Set Free Key	
+Set Key	0
+Set Multiple Keys	
+Set Planted Key	
+Set Sliding Key	
+Subanims - Enable	
+Subanims - Maniuplate	
+Trackbar - Toggle Biped Keys	Alt+T
+TV Select end of footsteps	Alt+D
+TV Select entire foostep	Alt+S
+TV Select start of foosteps	Alt+A
+
+---------- Biped Curve Editing ----------
+
+Pos Curve Relative To Bip Root	
+Pos Curve Relative To World	
+Show Pos Accel Curve	
+Show Pos Curve	
+Show Pos Jerk Curve	
+Show Pos Speed Curve	
+Show Rot Accel Curve	
+Show Rot Curve	
+Show Rot Jerk Curve	
+Show Rot Speed Curve	
+Toggle Draw Every Frame	
+Toggle Layered Edit	
+Toggle Limit Quat Curve to 180	
+Toggle Manipulate Subanims	
+Toggle Show  Z	
+Toggle Show X	
+Toggle Show Y	
+Toggle Subanims	
+
+---------- Reaction Manager ----------
+
+Add Master	
+Add Selected	
+Add Slave	
+Append Selected	
+Create State	
+Create States Mode	
+Delete Selected	
+Delete State	
+Edit Slave State Mode	
+Replace Master	
+Set Max Influence	Ctrl+I
+Set Min Influence	Alt+I
+Set State	
+
+---------- Particle Flow ----------
+
+Particle Emission Toggle	;
+Particle View Toggle	6
+
+---------- Particle Flow ----------
+
+Selected Particle Emission Toggle	Shift+;
+
+---------- Particle Flow ----------
+
+Copy Selected In Particle View	Ctrl+C
+Paste In Particle View	Ctrl+V
+Select All In Particle View	Ctrl+A
+
+---------- FileLinkActionTable ----------
+
+Toggle display of the File Link Manager	
+
+---------- Anim Layers ----------
+
+Add Anim Layer	
+Anim Layer Properties	
+Collapse Anim Layer	
+Copy Anim Layer	
+Delete Anim Layer	
+Disable Anim Layer	
+Enable Anim Layers	
+Paste Active Anim Layer	
+Paste New Layer	
+Select Active Layer Objects	
+
+---------- Asset Tracking System ----------
+
+Generate Proxies	
+Set Proxy Resolution...	
+
+----------  ----------
+
+mental ray Message Window Toggle	
+
+---------- ActiveShade (Scanline) ----------
+
+Automatic Reinitialization	
+Automatic Update	
+Initialize	P
+Update	U
+
+---------- ToneOperatorAndRadiosityActionTable ----------
+
+Advanced Lighting Panel	9
+
+---------- Batch Render Manager ----------
+
+Batch Render Dialog Toggle	
+
+---------- RayFXActionTable ----------
+
+Global Raytracing exclude list	
+Global Raytracing Parameters	
+Reset Raytrace globals	
+
+---------- Scene State Manager ----------
+
+Restore Scene State	
+Save Scene State	
+Scene State Manager Dialog Toggle	
+
+---------- Asset Tracking System ----------
+
+Browse...	
+Convert file paths to UNC	
+Convert local file paths to Relative	
+Highlight Editable Assets	
+Make Path Absolute	
+Make Path Relative to Project Folder	
+Open from Provider 1...	
+Open from Provider 2...	
+Open from Provider 3...	
+Open from Provider 4...	
+Open from Provider 5...	
+Open from Provider 6...	
+Open from Vault...	
+Resolve Path to UNC Location	
+Retarget Common Root...	
+Reveal In Explorer...	
+Set Path...	
+Strip Path	
+
+---------- ViewCube ----------
+
+Configure	
+Down	
+Draw Compass	
+Fit-to-View on view change	
+Home	Alt+Ctrl+H
+Keep scene upright	
+Left	
+Orthographic	
+Perspective	
+Reset Front	
+Right	
+Set Current View as Front	
+Set Current View as Home	
+Snap to closest view	
+Toggle ViewCube Visibility	Alt+Ctrl+V
+Up	
+ViewCube Animated Transition	
+ViewCube Visibility For Active View	
+ViewCube Visibility For All 3D Viewports	
+
+---------- SteeringWheels ----------
+
+Configure	
+Decrease Walk Speed	Shift+Ctrl+,
+Full Navigation Wheel	
+Increase Walk Speed	Shift+Ctrl+.
+Mini Full Navigation Wheel	
+Mini Tour Building Wheel	
+Mini View Object Wheel	
+Start SteeringWheels CommandMode	
+Toggle SteeringWheels	Shift+W
+Tour Building Wheel	Shift+Ctrl+J
+View Object Wheel	
+
+---------- WalkThrough ----------
+
+Accelerate Toggle	Q
+Back	S, Down Arrow
+Decelerate Toggle	Z
+Decrease Rotation Sensitivity	
+Decrease Step Size	[
+Down	C, Shift+Down Arrow
+Forward	W, Up Arrow
+Increase Rotation Sensitivity	
+Increase Step Size	]
+Invert Vertical Rotation Toggle	
+Left	A, Left Arrow
+Level	Shift+Space
+Lock Horizontal Rotation	
+Lock Vertical Rotation	Space
+Reset Step Size	Alt+[
+Right	D, Right Arrow
+Up	E, Shift+Up Arrow
+
+---------- Macro Scripts ----------
+
+About reactor...	
+Absolute	
+Activate Grid (Context)	
+Activate HomeGrid (Context)	
+Add a Pop-up Note	
+Add Bones (Skin)	
+Add Brush Preset	
+Add Cross Section (Skin)	
+Add Files...	
+Add Hair Effect	
+Add Hair Modifier	
+Add hair properties	
+Add Quad (Patch)	
+Add Selection to Current Layer	
+Add to Selected	
+Add Toolbar	
+Add Tri (Patch)	
+Add Weight (Skin)	
+Add	
+Add/Edit Parameters... (SV)	
+Add/Edit Parameters... (TV)	Ctrl+1
+Advanced Quad Option Menu	
+Affect Diffuse Toggle	
+Affect Pivot Only Mode Toggle	
+Affect Region Modifier	
+Affect Specular Toggle	
+Align Bottom	
+Align Horizontal Center	
+Align Left	
+Align Right	
+Align Top	
+Align Vertical Center	
+Always Arrange	
+Ambient Only Toggle	
+Analyze World	
+Angle Shape	
+Animation Layers...	
+Apply Camera Correction Modifier (Context)	
+Apply Cloth Modifier	
+Apply Rope Modifier	
+Apply Soft Body Modifier	
+Arc Shape	
+Arrange Selected	
+Asset Tracking...	Shift+T
+Assign Controller	
+Assign Vertex Colors...	
+Assume Skin Pose	
+Attach (Mesh)	
+Attach (Patch)	
+Attach (Poly)	
+Attach (Spline)	
+Attach Multiple (Spline)	
+Attachment Constraint	
+Attribute Holder Modifier	
+Audio Position Controller	
+Audio Rotation Controller	
+Audio Scale Controller	
+Auto Expand Base Objects	
+Auto Expand Children	
+Auto Expand Materials	
+Auto Expand Modifiers	
+Auto Expand Selected Only	
+Auto Expand Transforms	
+Auto Expand XYZ Components	
+Auto Login	
+Auto Scroll To Root	
+Auto Scroll To Selected	
+Auto Select Animated	
+Auto Select Position	
+Auto Select Rotation	
+Auto Select Scale	
+Auto Select XYZ Components	
+Auto Smooth (Poly)	
+Awning Window	
+Backface Cull Vertices (Skin)	
+Bend Modifier	
+Bend Space Warp	
+Bevel (Poly)	Shift+Ctrl+B
+Bevel Element (Patch)	
+Bevel Face (Mesh)	
+Bevel Face (Poly)	
+Bevel Modifier	
+Bevel Patch (Patch)	
+Bevel Polygon (Mesh)	
+Bevel Profile Modifier	
+Bezier Position Controller	
+Bezier Scale Controller	
+BiFold Door	
+Bind (Patch)	
+Bind (Spline)	
+Biped	
+Blend Weights (Skin)	
+Blizzard Particle System	
+BlobMesh Compound Object	
+Blur Brush Mode (VertexPaint)	
+Bomb Space Warp	
+Bone Options	
+Bone Tools...	
+Bones IK Chain	
+Boolean Compound Object	
+Box Gizmo (Atmospheres)	
+Box	
+Break (Poly)	
+Break Vertex (Patch)	
+Break Vertex (Poly)	
+Break Vertices (Mesh)	
+Break Vertices (Spline)	
+Brush Opacity Down (VertexPaint)	
+Brush Opacity Up (VertexPaint)	
+Brush Size Down (VertexPaint)	
+Brush Size Up (VertexPaint)	
+By Layer Properties for Selected Objects	
+Camera Correction Modifier	
+Camera Map (WSM)	
+Camera Map Modifier	
+Camera Match...	
+Camera Point	
+Cap (Poly)	Alt+P
+Cap Border (Poly)	
+Cap Holes Modifier	
+Capsule	
+Casement Window	
+C-Extrusion	
+Chamfer (Poly)	Shift+Ctrl+C
+Chamfer Cylinder	
+Chamfer Edge (Mesh)	
+Chamfer Edge (Poly)	
+Chamfer Vertex (Mesh)	
+Chamfer Vertex (Poly)	
+Chamfer Vertex (Spline)	
+ChamferBox	
+Change Photometric File...	
+Channel Info Editor...	
+Channel Shape	
+Check Network Paths	
+Checkin...	
+Checkout...	
+Circle Shape	
+Clear All Smoothing Groups (Patch)	
+Clear All Smoothing Groups (Poly)	
+Clear Hair InstanceMesh	
+Clear mental ray Geometry Cache	
+Close (Spline)	
+CloseUnwrapUI	
+Cloth Modifier	
+Collapse (Mesh)	
+Collapse (Poly)	Alt+Ctrl+C
+Collapse Controller...	
+Collapse Stack	
+Collect Parameters SV	Alt+3
+Collect Parameters TV	Alt+4
+Color Clipboard...	
+Compass	
+Condense Material Editor Slots	
+Cone	
+Conform Compound Object	
+Conform Space Warp	
+Connect (no dialog) (Poly)	Shift+Ctrl+E
+Connect (Spline)	
+Connect (with dialog) (Poly)	
+Connect Compound Object	
+Connect Edge (Poly)	
+Connect Vertex (Poly)	
+Controller Range Editor (Open)	
+Controller Ranges(Switch To)	
+Convert Guides To Splines	
+Convert Hairs To Mesh	
+Convert Hairs To Splines	
+Convert Object to mental ray Proxy...	
+Convert to Area Light	
+Convert to Edge (Poly)	
+Convert to Editable Mesh	
+Convert to Editable Patch	
+Convert to Editable Polygon	
+Convert to Editable Spline	
+Convert to Face (Poly)	
+Convert to NURBS Surface	
+Convert To Patch Modifier	
+Convert to Vertex (Poly)	
+Convexity Test	
+Copy Envelope (Skin)	
+Copy Hairdo	
+Copy Weights (Skin)	
+Create (Patch)	
+Create (Poly)	
+Create a Character	
+Create Angular Dashpot	
+Create Animation	
+Create Camera From View	Ctrl+C
+Create Car-Wheel Constraint	
+Create Cloth Collection	
+Create Constraint Solver	
+Create Deforming Mesh Collection	
+Create Edge (Poly)	
+Create Faces (Mesh)	
+Create Fracture	
+Create Hinge Constraint	
+Create Line (Spline)	
+Create Linear Dashpot	
+Create Mode	
+Create Motor	
+Create New Layer	
+Create Plane	
+Create Point-Path Constraint	
+Create Point-Point Constraint	
+Create Polygon (Poly)	
+Create Polygons (Mesh)	
+Create Prismatic Constraint	
+Create Rag Doll Constraint	
+Create Rigid Body Collection	
+Create Rope Collection	
+Create Shape (Poly)	
+Create Shape from Edges (Mesh)	
+Create Shape From Edges (Patch)	
+Create Shape from Edges (Poly)	
+Create Soft Body Collection	
+Create Spring	
+Create Toy Car	
+Create Vertex (Poly)	
+Create Vertices (Mesh)	
+Create Water	
+Create Wind	
+Cross Insert (Spline)	
+CrossSection Modifier	
+Crowd	
+Curve Editor (Open)	
+Curve Editor (Switch To)	
+Custom Dependencies...	
+Custom UI and Defaults Switcher	
+Cut (Poly)	Alt+C
+Cut Edge (Mesh)	
+Cut Faces (Mesh)	
+Cut Polygons (Mesh)	
+CV Curve	
+CV Surface	
+Cycle Vertices (Spline)	
+Cylinder Gizmo (Atmospheres)	
+Cylinder	
+Damper	
+Data Exchange Solutions...	
+Daylight System	
+Deflector Space Warp	
+Delegate	
+Delete All	
+Delete Collection	
+Delete Keys (All)	
+Delete Keys (Selection)	
+Delete Mesh Modifier	
+Delete Patch (Patch)	
+Delete Patch Edge (Patch)	
+Delete Patch Element (Patch)	
+Delete Patch Modifier	
+Delete Patch Vertex (Patch)	
+Delete Rollout Move Down	
+Delete Rollout Move Up	
+Delete Rollout	
+Delete Segment (Spline)	
+Delete Selected Animation	
+Delete Selected	
+Delete Selected	
+Delete Spline (Spline)	
+Delete Spline Modifier	
+Delete the Pop-up Note	
+Delete Toolbar	
+Delete Vertex (Spline)	
+Destroy Character	
+Detach (Mesh)	
+Detach (Patch)	
+Detach (Poly)	
+Detach Element (Patch)	
+Detach Segment (Spline)	
+Detach Spline (Spline)	
+Diagnose Video Hardware	
+Disable Asset Tracking	
+Disable Viewport Shadows Selected	
+Disp Approx Modifier	
+Displace Mesh Modifier (WSM)	
+Displace Modifier	
+Displace Space Warp	
+Display Channel Down (VertexPaint)	
+Display Channel Up (VertexPaint)	
+Display Excluded Files	
+Display Floater	
+Display Only Selected Lights On/Off Toggle	
+Display Only Selected Lights	
+Display Toggle Enable	
+Display Toggle Mode	
+Divide (Spline)	
+Divide Edges (Mesh)	
+Divide Faces (Mesh)	
+Divide Polygons (Mesh)	
+Donut Shape	
+Dope Sheet (Switch To)	
+Dope Sheet(Open)	
+Drag Space Warp	
+Draw CrossSections On Top (Skin)	
+Draw Envelope On Top (Skin)	
+Dummy	
+Duplicate Collection	
+DX Effect Toggle Display Selected	
+DX Effect Toggle Display	
+Edge Constraint Toggle (Poly)	Shift+X
+Edit Mesh Modifier	
+Edit Normals Modifier	
+Edit Notes	
+Edit Patch Modifier	
+Edit Poly Modifier	
+Edit Spline Modifier	
+Edit Triangulation (Poly)	
+Ellipse Shape	
+Enable Anim Layer...	
+Enable Proxy System	
+Enable Viewport Shadows for Daylight System	
+Enable Viewport Shadows Selected	
+Erase Mode (VertexPaint)	
+Euler XYZ Controller	
+Exclude Output Files	
+Exclude Verts (Skin)	
+Explode (Spline)	
+Expose Transform	
+Exposure Control..	
+Extend (Spline)	
+Extrude (Poly)	
+Extrude along Spline (Poly)	Alt+E
+Extrude Edge (Mesh)	
+Extrude Edge (Patch)	
+Extrude Edge (Poly)	
+Extrude Element (Patch)	
+Extrude Face (Mesh)	
+Extrude Face (Poly)	Shift+E
+Extrude Face along Spline (Poly)	
+Extrude Modifier	
+Extrude Patch (Patch)	
+Extrude Polygons (Mesh)	
+Extrude Vertex (Poly)	
+Face Constraint Toggle (Poly)	
+Face Extrude Modifier	
+FFD 2x2x2 Modifier	
+FFD 3x3x3 Modifier	
+FFD 4x4x4 Modifier	
+FFD Box Modifier	
+FFD Cylinder Modifier	
+FFD Select Modifier	
+FFD(Box) Space Warp	
+FFD(Cyl) Space Warp	
+FG Pass Through (Invisible)	
+FG Return Black	
+FG Return Object Color (Physically Correct)	
+Fillet (Spline)	
+Fillet/Chamfer Modifier	
+Filter Cross Sections (Skin)	
+Filter Envelopes (Skin)	
+Filter Vertices (Skin)	
+Fixed Window	
+Flex Modifier	
+Flip Face Normals (Poly)	
+Flip Faces (Mesh)	
+Flip Normals (Poly)	
+Flip Normals Mode (Patch)	
+Flip Normals Selected (Mesh)	
+Flip Normals Selected (Patch)	
+Flip Polygon (Mesh)	
+Foliage	
+Free Camera	
+Free Directional	
+Free Light Photometric	
+Free Rotate	
+Free Spotlight	
+Freeze Nonselected Curves	
+Freeze Position	
+Freeze Rotation	
+Freeze Selection's Layer	
+Freeze Transform	
+Fuse Vertices (Spline)	
+Garment Maker Modifier	
+Gengon	
+Geometry Selection Visibility Toggle	Alt+G
+GeoSphere	
+Get from Object	
+Get From Provider...	
+Get Latest	
+Gimbal Coordinate System	
+Gizmo Reset Reset Rotation Plane (Skin)	
+Global Settings...	
+Grab Viewport...	
+Gravity Space Warp	
+Grid Align (Mesh)	
+Grid Align (Poly)	
+Grid Coordinate System	
+Grid	
+Grow Selection (Poly)	Ctrl+PageUp
+Grow Selection (Skin)	
+Hair and Fur (WSM) Modifier	
+Hedra	
+Helix Shape	
+Hide (Mesh)	
+Hide (Patch)	
+Hide (Poly)	Alt+H
+Hide (Spline)	
+Hide All Toolbars	
+Hide Nonselected Curves	
+Hide Selection's Layer	
+Hide Tangents	
+Hide Unselected (Poly)	Alt+I
+Hinge Face from Edge (Poly)	
+Hinge from Edge (Poly)	
+History...	
+History-Dependent IK Solver	
+History-Independent IK Solver	
+Hose	
+Hotkey Flash Movie	
+HSDS Modifier	
+Ignore Backfacing (VertexPaint)	
+Ignore Backfacing Toggle (Poly)	Shift+Ctrl+I
+IK Limb Solver	
+Include Verts (Skin)	
+Indirect Illumination...	
+Insert a Character	
+Insert Selection (Spline)	
+Insert Vertex (Poly)	
+Insert Vertex in Edge (Poly)	
+Insert Vertex in Face (Poly)	
+Inset (Poly)	
+Inset Face (Poly)	
+Inset selection (Mesh)	
+Interactive Update	
+Invisible Edge (Mesh)	
+Isolate Keys in Track Bar	
+Isolate Selected Keys in Track Bar	
+Isolate Selection	Alt+Q
+Isolate Selection's Layer	
+Isolate Unselected...	
+Key All	
+Key Selected	
+Lathe Modifier	
+Lattice Modifier	
+Launch Provider...	
+Layer Opacity Down (VertexPaint)	
+Layer Opacity Up (VertexPaint)	
+Learn More...	
+Learning Movies...	
+Learning Path...	
+L-Extrusion	
+Light Include/Exclude Tool	
+Light Lister...	
+Light Meter	
+Light On/Off Toggle	
+Light Tracer...	
+Lighting Analysis Assistant...	
+Lighting Analysis Image Overlay...	
+Lighting Analysis...	
+Line Shape	
+Linear Position Controller	
+Linear Rotation Controller	
+Linear Scale Controller	
+Link Constraint	
+Link to Object	
+Linked XForm Modifier	
+List View - Animated Controllers	
+Load Animation...	
+Load Controller Quad Menu	
+Load Custom UI Scheme	
+Load Key Quad Menu	
+Load Layout	
+Load Menu Bar	
+Local Coordinate System	
+Lock a Character	
+Lock Display Channel (VertexPaint)	
+Lock Selected Lights	
+Loft Compound Object	
+Log in...	
+Log out	
+LookAt Constraint	
+Loop Selection (Skin)	
+L-Type Stair	
+Maintain Custom Attributes on Stack Collapse	
+Make First (Spline)	
+Make Planar (Mesh)	
+Make Planar (Poly)	
+Manage Layers...	
+Manage Selection Sets...	
+Manipulator Cone Angle	
+Manipulator Plane Angle	
+Manipulator Slider	
+Manual Navigation	
+Map Scaler Modifier	
+Map/Photometric Path Editor...	
+MapScaler Modifier (WSM)	
+Mask Unselected (VertexPaint)	
+Material By Element Modifier	
+Material Modifier	
+Measure Distance...	
+Melt Modifier	
+mental ray Area Omni	
+mental ray Area Spot	
+mental ray Message Window...	
+mental ray Sky Portal	
+Merge Animation	
+Mesh Select Modifier	
+MesherCompound Object	
+Meshsmooth (Poly)	Ctrl+M
+MeshSmooth Modifier	
+Mirror Both H&V (Spline)	
+Mirror Horizontally (Spline)	
+Mirror Mode (VertexPaint)	
+Mirror Mode Axis (VertexPaint)	
+Mirror Modifier	
+Mirror Vertically (Spline)	
+Modify Child Keys	
+Modify Mode	
+Morph Compound Object	
+Morpher Modifier	
+Motion Mixer (Close)	
+Motion Mixer (Open)	
+Motion Mixer	
+Motor Space Warp	
+Move Parameters Down by Rollout	
+Move Parameters Down	
+Move Parameters Up by Rollout	
+Move Parameters Up	
+Move	
+MoveUnwrapUI	
+mrProxy	
+Multiple Edits	
+MultiRes Modifier	
+New Collection	
+New Rollout Selected Parameters	
+New Rollout	
+NGon Shape	
+Noise Modifier	
+Noise Position Controller	
+Noise Rotation Controller	
+Noise Scale Controller	
+Noise Space Warp	
+Non-uniform Scale	
+Normal Constraint Toggle (Poly)	
+Normal Modifier	
+Normalize Spline Modifier	
+NURMS Toggle (Poly)	
+Oil Tank	
+Omni Light	
+On/Off Apply Atmospherics	
+On/Off Cast Shadows	
+On/Off Exclude From Caustics	
+On/Off Exclude From Global Illumination	
+On/Off Generate Caustics	
+On/Off Generate Global Illumination	
+On/Off Inherit Visibility	
+On/Off Motion Blur	
+On/Off Receive Caustics	
+On/Off Receive Global Illumination	
+On/Off Receive Illumination from Final Gather	
+On/Off Receive Shadows	
+On/Off Render Occluded	
+On/Off Renderable	
+On/Off Visible to Camera	
+On/Off Visible to Reflection	
+Online Partners...	
+Online Resources...	
+Online Support...	
+Online Updates...	
+Open Brush Preset Manager	
+Open Property Editor	
+OpenUnwrapUI	
+Optimize Modifier	
+Options...	
+Orientation Constraint	
+Outline (Poly)	
+Outline (Spline)	
+Outline Face (Poly)	
+Pack UVs	
+Paint Channel Down (VertexPaint)	
+Paint Channel Up (VertexPaint)	
+Paint Mode (VertexPaint)	
+Paint Selection Size Down	
+Paint Selection Size Up	
+Panorama Exporter...	
+Parameter Collector	Alt+2
+Parameter Editor	Alt+1
+Parameter Wiring Dialog...	Alt+5
+Parent Coordinate System	
+PArray Particle System	
+Particle Flow Find Target	
+Particle Flow Source Particle System	
+Particle Flow Speed by Icon	
+Paste Envelope (Skin)	
+Paste Hairdo	
+Paste To All Envelopes (Skin)	
+Paste Weights (Skin)	
+Paste Weights By Pos(Skin)	
+Patch Deform Modifier (WSM)	
+Patch Deform Modifier	
+Patch Select Modifier	
+Path Constraint	
+Path Deform Modifier (WSM)	
+Path Deform Modifier	
+Path Follow Space Warp	
+PBomb Space Warp	
+PCloud Particle System	
+PDynaFlect Space Warp	
+Physique Modifier	
+Pick Mode (VertexPaint)	
+Pivot Door	
+Pivoted Window	
+Plane	
+Point Cache Modifier (WSM)	
+Point Cache Modifier	
+Point Curve	
+Point Surface	
+Point	
+Poly Select Modifier	
+POmniFlect Space Warp	
+Position Constraint	
+Position Expression Controller	
+Position Motion Capture Controller	
+Position To Zero	
+Preferences...	
+Preserve Modifier	
+Preview Animation	
+Preview Depth of Field in Viewport	
+Preview Select Mode (Poly)	
+Print Size Assistant...	
+Prism	
+ProBoolean Compound Object	
+ProCutter Compound Object	
+Projected Window	
+Projection Modifier	
+Prompts Dialog...	
+Properties...	
+Protractor	
+PRS Controller	
+Publish To DWF...	
+Purge	
+Push Modifier	
+Push Space Warp	
+Put to Object	
+Pyramid	
+Quad Patch	
+Quad Swap to Animation	
+Quad Swap to Default	
+Quad Swap to Modeling	
+Quad Swap to Rendering	
+Quickslice (Poly)	
+Ra&ytracer Settings...	
+Radiosity...	
+Railing	
+Raytrace &Global Include/Exclude...	
+Reaction Manager...	
+Reaction Position Controller	
+Reaction Rotation Controller	
+Reaction Scale Controller	
+Reads the Pop-up Note	
+Rectangle Shape	
+Reduce Keys (All)	
+Reduce Keys (Selection)	
+Refine (Spline)	
+Refine Connect (Spline)	
+Refresh View	
+Refresh	
+Regrow Hair	
+Relationship Viewer All	
+Relationship Viewer Selected	
+Relative	
+Relax Modifier	
+Relax	
+Remove (Poly)	
+Remove Cross Section (Skin)	
+Remove Edge (Poly)	
+Remove from Object	
+Remove Isolated Vertices (Mesh)	
+Remove Isolated Vertices (Poly)	
+Remove Link To Object	
+Remove Multiple Bones (Skin)	
+Remove Unused Map Vertices (Poly)	
+Remove Vertex (Poly)	
+Remove Zero Weights (Skin)	
+Rename Objects...	
+Rename Rollout	
+Render Preset Slot A (shift+click to save)	
+Render Preset Slot B (shift+click to save)	
+Render Preset Slot C (shift+click to save)	
+Render Selected	
+Render to Texture Dialog Toggle	0
+Renderable Spline Modifier	
+RenderElements to combustion(tm)	
+Repeat Last (Poly)	;
+Replace Rest	
+Reset All	
+Reset Material Editor Slots	
+Reset Plane (Poly)	
+Reset Selected	
+Resource Collector...	
+Restore Material Editor Slots	
+Retriangulate (Poly)	
+Retriangulate Face (Poly)	
+Reverse (Spline)	
+Ring Array	
+Ring Selection (Skin)	
+RingWave	
+Ripple Modifier	
+Ripple Space Warp	
+Roll Angle Manipulator Toggle	
+Rotate	
+Rotation Motion Capture Controller	
+Rotation To Zero	
+Save a Character	
+Save Animation...	
+Save Custom UI Scheme	
+Save Layout	
+Scale Expression Controller	
+Scale Motion Capture Controller	
+Scale Weight Custom (Skin)	
+Scale Weight Down (Skin)	
+Scale Weight Up (Skin)	
+Scale	
+Scatter Compound Object	
+Screen Coordinate System	
+Script Position Controller	
+Script Rotation Controller	
+Script Scale Controller	
+SDeflector Space Warp	
+SDynaFlect Space Warp	
+Section Shape	
+Select All Rollout	
+Select All	
+Select By Channel Modifier	
+Select by Material ID (Patch)	
+Select Camera	
+Select Child Bone (Skin)	
+Select End Point (Skin)	
+Select Excluded Verts (Skin)	
+Select Instances	
+Select Invert	
+Select Light	
+Select Lights Displaying Lighting	
+Select Lights Displaying Shadows	
+Select Loop (Poly)	
+Select Luminaire Target	
+Select Next Bone (Skin)	
+Select Next Sibling Bone (Skin)	
+Select None	
+Select Object From Target	
+Select Objects in Current Layer	
+Select Open Edges (Mesh)	
+Select Open Edges (Patch)	
+Select Parent Bone (Skin)	
+Select Previous Bone (Skin)	
+Select Previous Sibling Bone (Skin)	
+Select Ring (Poly)	
+Select Start Point (Skin)	
+Select Target (Cameras)	
+Select Target (Lights)	
+Select Vertices By Bone (Skin)	
+Selected by Smoothing Group (Patch)	
+Separator	
+Set Current Layer to Selection's Layer	
+Set Project Folder...	
+Set Skin Pose	
+Set View to Selected Camera	
+Set View to Selected Light	
+Set View to Selected Luminaire	
+Set Weight Custom (Skin)	
+Set Weight To 0.0 (Skin)	
+Set Weight To 0.10 (Skin)	
+Set Weight To 0.25 (Skin)	
+Set Weight To 0.5 (Skin)	
+Set Weight To 0.75 (Skin)	
+Set Weight To 0.90 (Skin)	
+Set Weight To 1.0 (Skin)	
+Shaded Face Toggle (Poly)	
+Shading Best On/Off Toggle	
+Shading Good On/Off Toggle	
+Shading None On/Off Toggle	
+Shadows On/Off Toggle	
+ShapeMerge Compound Object	
+Shell Modifier	
+Show All Tangents	
+Show All Toolbars	
+Show Custom Icons	
+Show End Result	
+Show Frozen Keys	
+Show Keyable Icons	
+Show Keys in Track Bar	
+Show Nonselected Curves	
+Show Selected Keys in Track Bar	
+Show Selected Tangents	
+Show Time Slider	
+Show/Hide Controller Window	
+Show/Hide Key Window	
+Show/Hide Menu Bar	
+Show/Hide Name Toolbar	
+Show/Hide Scroll Bars	
+Show/Hide Time Ruler	
+Shrink Selected	
+Shrink Selection (Poly)	
+Shrink Selection (Skin)	
+Sketch Vertices	
+Skew Modifier	
+Skew Space Warp	
+Skin Modifier	
+Skin Morph Modifier	
+Skin Pose Mode, On/Off Toggle	
+Skin Wrap Modifier	
+Skin Wrap Patch Modifier	
+Skylight	
+Slave Position Controller	
+Slave Rotation Controller	
+Slave Scale Controller	
+Slice (Poly)	Shift+Ctrl+Q
+Slice Modifier	
+Slice Plane (Mesh)	
+Slice Plane (Poly)	
+Sliding Door	
+Sliding Window	
+Smart Scale	R
+Smart Select	Q
+Smooth Modifier	
+Smooth Rotation Controller	
+Snow Particle System	
+Soft Select Settings	
+Soft Selection Lock (Poly)	
+Soft Selection Toggle (Poly)	
+SOmniFlect Space Warp	
+Sphere Gizmo (Atmospheres)	
+Sphere	
+Spherify Modifier	
+Spindle	
+Spiral Stair	
+Spline IK Solver	
+Spline Select Modifier	
+SplineIk Control Modifier	
+Split (Poly)	
+Split Edges (Poly)	
+Spray Particle System	
+Spring Position Controller	
+Spring	
+Squeeze Modifier	
+Star Shape	
+Start New Shape Lock	
+Start New Shape	
+Start Parameter Wiring...	Ctrl+5
+Stitch Selected	
+STL Check Modifier	
+Store Direct Illumination: Sky	
+Store Direct Illumination: Sun	
+Straight Stair	
+Stretch Modifier	
+Stretch Space Warp	
+Subdivide Edge (Patch)	
+Subdivide Element (Patch)	
+Subdivide Modifier (WSM)	
+Subdivide Modifier	
+Subdivide Patch (Patch)	
+Sub-Object Level 1	1
+Sub-Object Level 2	2
+Sub-Object Level 3	3
+Sub-Object Level 4	4
+Sub-object Level 5	5
+Substitute Modifier	
+Subtract (Spline)	
+Subtract Weight (Skin)	
+Sunlight System	
+Super Spray Particle System	
+Suppress a persistent Pop-up Note	
+Surf Deform Modifier	
+Surface Constraint	
+Surface Modifier	
+Surface Selection Modifier	
+SurfDeform (WSM)	
+Sweep Modifier	
+Symmetry Modifier	
+Sync Cursor Time	
+Sync Selection	
+Table View	
+Tape Measure	
+Taper Modifier	
+Taper Space Warp	
+Target Camera	
+Target Directional	
+Target Light Photometric	
+Target Spotlight	
+Target Weld (Mesh)	
+Target Weld (Patch)	
+Target Weld (Poly)	
+Target Weld Edge (Poly)	
+Target Weld Vertex (Poly)	
+TCB Position Controller	
+TCB Rotation Controller	
+TCB Scale Controller	
+Teapot	
+Tee Shape	
+Terrain Compound Object	
+Tessellate (Poly)	
+Tessellate Modifier	
+Text Shape	
+The AREA...	
+Toggle Limits	
+Toggle Trackbar	
+Torus Knot	
+Torus	
+Training...	
+Trajectory Add Key Mode Toggle	
+Trajectory Delete Key	
+Trajectory Key Mode Toggle	
+Trajectory Toggle	
+Transform Script	
+Transform To Zero	
+Tree View	
+Tri Patch	
+Trim (Spline)	
+Trim/Extend Modifier	
+Tube	
+TurboSmooth Modifier	
+Turn Edges (Mesh)	
+Turn To Mesh Modifier	
+Turn To Patch Modifier	
+Turn To Poly Modifier	
+Twist Modifier	
+Twist Space Warp	
+UDeflector Space Warp	
+UDynaFlect Space Warp	
+Unbind (Patch)	
+Unbind (Spline)	
+Undo Checkout...	
+Unhide All (Mesh)	
+Unhide All (Patch)	
+Unhide All (Poly)	Alt+U
+Unhide All (Splines)	
+Uniform Planar Scale	
+Unify Normals (Mesh)	
+Unify Normals (Patch)	
+Unlock a Character	
+Unlock Selected Lights	
+UnShrink All	
+UnShrink Selected	
+Unwrap UVW Modifier	
+UOmniFlect Space Warp	
+Use Soft Select	
+U-Type Stair	
+UVW Map Modifier	
+UVW Mapping Add Modifier	
+UVW Mapping Clear Modifier	
+UVW XForm Modifier	
+Vector Field Space Warp	
+Vertex Paint Modifier	
+Vertex Weld Modifier	
+View Align (Mesh)	
+View Align (Poly)	
+View Attribute Dialog... (SV)	
+View Attribute Dialog... (TV)	
+View Coordinate System	
+View Image File...	
+View Selected Curves	
+View Stored Collisions...	
+Viewport Lighting On/Off Toggle	
+Viewport Shadows On/Off Toggle	
+Visible Edge (Mesh)	
+Visual MAXScript Editor...	
+Volume Select Modifier	
+Vortex Space Warp	
+VRML Anchor	
+VRML Audio Clip	
+VRML Background	
+VRML Billboard	
+VRML Fog	
+VRML Inline	
+VRML LOD	
+VRML NavInfo	
+VRML ProxSensor	
+VRML Sound	
+VRML TimeSensor	
+VRML TouchSensor	
+Walkthrough Assistant...	
+WalkThrough View Mode	Up Arrow
+Wall	
+Wave Modifier	
+Wave Space Warp	
+Weight Table Dialog (Skin)	
+Weight Tool Dialog (Skin)	
+Weld (Poly)	Shift+Ctrl+W
+Weld Edge (Poly)	
+Weld Vertex (Poly)	
+Weld Vertices (Mesh)	
+Weld Vertices (Patch)	
+Weld Vertices (Spline)	
+Wide Flange Shape	
+Wind Space Warp	
+Wire Parameters	
+Working Comment...	
+World Coordinate System	
+WRectangle Shape	
+XForm Modifier	
+XYZ Position Controller	
+XYZ Scale Controller	
+Zoom To Selected Bone (Skin)	
+Zoom To Selected Gizmo (Skin)	
+
+---------- Quad Menu Sets ----------
+
+ActiveShade Quad	
+Animation                [Alt+RMB]	
+Asset Tracking Quad	
+Custom                    [Shift+Ctrl+Alt+RMB]	
+Custom                    [Shift+Ctrl+RMB]	
+Default Viewport Quad	
+Lighting | Render     [Ctrl+Alt+RMB]	
+Modeling                 [Ctrl+RMB]	
+reactor                   [Shift+Alt+RMB]	
+Schematic View Quad	
+Snap                       [Shift+RMB]	
+Track View Key Quad	
+Track View Key Quad	
+Track View Quad	
+Trackbar Quad	
+Trackbar Quad	
+Unwrap UVW Quad	
+Viewports	V
