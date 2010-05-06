@@ -1,6 +1,6 @@
 package nl.mediamonkey.utils {
 	
-	public class PopUpVO {
+	public class PopUpSettings {
 		
 		public var x					:Number;
 		public var y					:Number;
@@ -21,7 +21,7 @@ package nl.mediamonkey.utils {
 		public var draggable			:Boolean = true;
 		public var modal				:Boolean = false;
 		
-		public function PopUpVO() {
+		public function PopUpSettings() {
 		}
 	 
 	}

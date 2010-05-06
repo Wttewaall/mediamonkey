@@ -64,6 +64,7 @@ package nl.mediamonkey.utils {
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
+	import mx.core.FlexGlobals;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.IUIComponent;
 	import mx.effects.*;
@@ -108,7 +109,7 @@ package nl.mediamonkey.utils {
 			content.percentHeight = 100;
 			
 			// delegate data from initObject
-			if (initObject === null) initObject = new PopUpVO();
+			if (initObject === null) initObject = new PopUpSettings();
 			if (initObject.data) (content as Container).data = initObject.data;
 			
 			// create new TitleWindow
@@ -144,7 +145,7 @@ package nl.mediamonkey.utils {
 			
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
-				target = Application.application as DisplayObject;
+				target = FlexGlobals.topLevelApplication as DisplayObject;// was Application.application
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
 			
