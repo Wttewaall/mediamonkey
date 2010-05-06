@@ -230,6 +230,42 @@
 			return new Bitmap(canvas);
 		}
 		
+		// http://flanture.blogspot.com/2010/05/as3-dynamic-bitmap-split-function.html
+		function splitBitmap(data:BitmapData, columns:int, rows:int):void {
+		    var _bitmapWidth:int = data.width;
+		    var _bitmapHeight:int = data.height;
+		    
+		    var _onePieceWidth:Number = Math.round(_bitmapWidth / columns);
+		    var _onePieceHeight:Number = Math.round(_bitmapWidth / rows);
+		    
+		    var _copyRect:Rectangle = new Rectangle(0, 0, _onePieceWidth, _onePieceHeight);
+		    
+		    for(var i:int = 0; i < columns; i++) {
+		        var tempArray:Array = new Array();
+		        
+		        for(var j:int = 0; j < rows; j++) {
+		            var _piece:String = "piece"+String(i)+String(j);
+		            var temp:* = [_piece];
+		            temp = new BitmapData(_onePieceWidth, _onePieceHeight, true, 0xFF0000CC);
+		            
+		            var newBytes:ByteArray = data.getPixels(_copyRect);
+		            newBytes.position = 0;
+		            temp.setPixels(_copyRect, newBytes);
+		            
+		            var _newBitmap:String = "newBitmap"+String(i)+String(j);
+		            var tempBitmap:* = [_newBitmap];
+		            tempBitmap = new Bitmap(temp);
+		            
+		            tempBitmap.x = i * (_onePieceWidth) + bm1.x;
+		            tempBitmap.y = j * (_onePieceHeight)+ bm1.y;
+		            addChild(tempBitmap);
+		            
+		            tempArray.push(tempBitmap);
+		        }
+		        bitmapsArray.push(tempArray);
+		    }
+		}
+		
 		/* Flash 10
 		public static function saveAs(image:Object, fileName:String=null, encoderType:String="image/png", jpgQuality:int=85):Boolean {
 			if (image is Bitmap) {
