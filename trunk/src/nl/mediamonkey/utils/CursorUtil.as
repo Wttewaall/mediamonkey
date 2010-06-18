@@ -5,7 +5,7 @@ package nl.mediamonkey.utils {
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
-	import mx.core.ApplicationGlobals;
+	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
 	import mx.managers.ISystemManager;
 	
@@ -31,7 +31,7 @@ package nl.mediamonkey.utils {
 		
 		// ---- public static methods ----
 		
-		public static function register(object:InteractiveObject, cursor:CursorVO, overEvents:Array=null, outEvents:Array=null):void {
+		public static function register(object:InteractiveObject, cursor:Cursor, overEvents:Array=null, outEvents:Array=null):void {
 			if (!dictionary[object]) {
 				var eventName:String;
 				
@@ -85,7 +85,7 @@ package nl.mediamonkey.utils {
 			return currentCursorID;
 		}
 		
-		public static function setCursorByVO(vo:CursorVO, forceUpdate:Boolean=false):int {
+		public static function setCursorByVO(vo:Cursor, forceUpdate:Boolean=false):int {
 			if (vo == null) return CursorManager.currentCursorID;
 			
 			if (currentCursorID != CursorManager.currentCursorID || forceUpdate) {
@@ -124,7 +124,7 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function getCursorHolder():Sprite {
-			var systemManager:ISystemManager = ApplicationGlobals.application.systemManager;
+			var systemManager:ISystemManager = FlexGlobals.topLevelApplication.systemManager;
 			return systemManager.cursorChildren.getChildAt(systemManager.cursorChildren.numChildren-1) as Sprite;
 		}
 		
@@ -144,16 +144,16 @@ package nl.mediamonkey.utils {
 
 // ---- CursorValue ----
 
-import nl.mediamonkey.utils.CursorVO;
+import nl.mediamonkey.utils.Cursor;
 import nl.mediamonkey.utils.CursorUtil;
 
 class CursorValue {
 	
-	public var cursor:CursorVO;
+	public var cursor:Cursor;
 	public var overEvents:Array;
 	public var outEvents:Array;
 	
-	public function CursorValue(cursor:CursorVO, overEvents:Array=null, outEvents:Array=null) {
+	public function CursorValue(cursor:Cursor, overEvents:Array=null, outEvents:Array=null) {
 		this.cursor = cursor;
 		this.overEvents = (overEvents) ? overEvents : [CursorUtil.ROLL_OVER];
 		this.outEvents = (outEvents) ? outEvents : [CursorUtil.ROLL_OUT];

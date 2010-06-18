@@ -1,6 +1,6 @@
 package nl.mediamonkey.utils {
 	
-	public class CursorVO {
+	public class Cursor {
 		
 		public var cursorIcon		:Class;
 		public var priority			:int;
@@ -8,7 +8,7 @@ package nl.mediamonkey.utils {
 		public var offsetY			:Number;
 		public var blendMode		:String;
 		
-		public function CursorVO(cursorIcon:Class, priority:int=2, offsetX:Number=0, offsetY:Number=0, blendMode:String="normal") {
+		public function Cursor(cursorIcon:Class, priority:int=2, offsetX:Number=0, offsetY:Number=0, blendMode:String="normal") {
 			this.cursorIcon = cursorIcon;
 			this.priority = priority;
 			this.offsetX = offsetX;
