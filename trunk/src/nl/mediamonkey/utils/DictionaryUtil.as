@@ -34,7 +34,7 @@ package nl.mediamonkey.utils {
 			return null;
 		}
 		
-		public static function valueFromKey(dict:Dictionary, key:String):Object {
+		public static function valueFromKey(dict:Dictionary, key:Object):Object {
 			return dict[key];
 		}
 		

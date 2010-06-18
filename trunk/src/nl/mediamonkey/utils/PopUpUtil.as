@@ -60,13 +60,13 @@ package nl.mediamonkey.utils {
 	*/
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
-	import mx.core.FlexGlobals;
 	import mx.core.IFlexDisplayObject;
-	import mx.core.IUIComponent;
+	import mx.core.UIComponent;
 	import mx.effects.*;
 	import mx.effects.easing.*;
 	import mx.events.CloseEvent;
@@ -76,6 +76,8 @@ package nl.mediamonkey.utils {
 	import mx.managers.PopUpManagerChildList;
 	
 	import nl.mediamonkey.events.PopUpEvent;
+	
+	import view.components.DraggableTitleWindow;
 	
 	public class PopUpUtil {
 		
@@ -95,10 +97,10 @@ package nl.mediamonkey.utils {
 		
 		public static function createPopUpFrom(className:Class, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (className == null) throw new ArgumentError("className cannot be null");
-			return addPopUp(new className() as IUIComponent, initObject, target, childList);
+			return addPopUp(new className() as UIComponent, initObject, target, childList);
 		}
 		
-		public static function addPopUp(content:IUIComponent, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+		public static function addPopUp(content:UIComponent, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (content == null) throw new ArgumentError("content cannot be null");
 			
 			var contentWidth:Number = content.width;
@@ -107,13 +109,16 @@ package nl.mediamonkey.utils {
 			content.name = CONTENT_NAME;
 			content.percentWidth = 100;
 			content.percentHeight = 100;
+			content.addEventListener(Event.RESIZE, contentResizeHandler, false, 0, true);
 			
 			// delegate data from initObject
-			if (initObject === null) initObject = new PopUpSettings();
+			if (initObject === null) initObject = new PopUpVO();
 			if (initObject.data) (content as Container).data = initObject.data;
 			
 			// create new TitleWindow
 			var window:TitleWindow = new TitleWindow();
+			//var window:DraggableTitleWindow = new DraggableTitleWindow();
+			
 			window.addEventListener(CloseEvent.CLOSE, windowCloseHandler)
 			window.addEventListener(PopUpEvent.CANCEL, eventHandler);
 			window.addEventListener(PopUpEvent.CLOSE, eventHandler);
@@ -145,7 +150,7 @@ package nl.mediamonkey.utils {
 			
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
-				target = FlexGlobals.topLevelApplication as DisplayObject;// was Application.application
+				target = Application.application as DisplayObject;
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
 			
@@ -197,7 +202,12 @@ package nl.mediamonkey.utils {
 		
 		public static function centerPopUp(popUp:IFlexDisplayObject):void {
 			// todo: calculate the center ourself, we may need it when resizing the content
-			PopUpManager.centerPopUp(popUp);
+			try {
+				PopUpManager.centerPopUp(popUp);
+				
+			} catch (e:Error) {
+				if (popUp.parent) centerPopUp(popUp.parent as IFlexDisplayObject);
+			}
 		}
 		
 		public static function removePopUp(popUp:IFlexDisplayObject):void {
@@ -300,5 +310,32 @@ package nl.mediamonkey.utils {
 				window.y = window.y + (window.height - nextHeight);*/
 			}
 		}
+		
+		protected static function contentResizeHandler(event:Event):void {
+			var window:TitleWindow = event.currentTarget.parent as TitleWindow;
+			if (!window) return;
+			
+			var content:UIComponent = window.getChildAt(0) as UIComponent;
+			if (!content) return;
+			
+			var w:Number = 0;
+			w += window.getStyle("borderThicknessLeft") || 0;
+			w += window.getStyle("paddingLeft") || 0;
+			w += content.width;
+			w += window.getStyle("paddingRight") || 0;
+			w += window.getStyle("borderThicknessRight") || 0;
+			
+			var h:Number = 0;
+			h += window.getStyle("headerHeight") || 0;
+			h += window.getStyle("borderThicknessTop") || 0;
+			h += window.getStyle("paddingTop") || 0;
+			h += content.height;
+			h += window.getStyle("paddingBottom") || 0;
+			h += window.getStyle("borderThicknessBottom") || 0;
+			
+			window.width = w;
+			window.height = h;
+		}
+		
 	}
 }
