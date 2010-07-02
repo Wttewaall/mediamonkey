@@ -14,7 +14,7 @@ package nl.mediamonkey.utils {
 	 * When no target is given (null), the target will be set to Application.application per default.
 	 * 
 	 * Known limitations:
-	 * . The created TitleWindow's data property will be used for storage of the initObject.
+	 * . The created TitleWindow's data property will be used for storage of the settings.
 	 *   It may be overwritten, but then the popup will not be centered on resize.
 	 * . Removal of the popup's content is not tested (sound or video objects may continue to exist).
 	 * . Resizing the popup after dragging will center it on the stage (to do)
@@ -29,17 +29,17 @@ package nl.mediamonkey.utils {
 	 * import nl.mediamonkey.events.PopUpEvent;
 	 * import nl.mediamonkey.utils.PopUpUtil;
 	 * 
-	 * var initObject:Object = new Object();
-	 * initObject.width = 300;
-	 * initObject.height = null; // if null, this property will be set automatically
-	 * initObject.title = "PopUp";
-	 * initObject.titleIcon = null;
-	 * initObject.showCloseButton = true;
-	 * initObject.modal = true;
-	 * initObject.center = true;
-	 * initObject.data = {message:"test"};
+	 * var settings:Object = new Object();
+	 * settings.width = 300;
+	 * settings.height = null; // if null, this property will be set automatically
+	 * settings.title = "PopUp";
+	 * settings.titleIcon = null;
+	 * settings.showCloseButton = true;
+	 * settings.modal = true;
+	 * settings.center = true;
+	 * settings.data = {message:"test"};
 	 * 
-	 * var popup:IFlexDisplayObject = PopUpUtil.createPopUpFrom(MyPopUpForm, initObject);
+	 * var popup:IFlexDisplayObject = PopUpUtil.createPopUpFrom(MyPopUpForm, settings);
 	 * popup.addEventListener(PopUpEvent.SUBMIT, popupSubmitHandler);
 	 * 
 	 * private function popupSubmitHandler(event:PopUpEvent):void {
@@ -95,12 +95,12 @@ package nl.mediamonkey.utils {
 		 * If the target is null, target will be set to Application.application
 		 */
 		
-		public static function createPopUpFrom(className:Class, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+		public static function createPopUpFrom(className:Class, settings:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (className == null) throw new ArgumentError("className cannot be null");
-			return addPopUp(new className() as UIComponent, initObject, target, childList);
+			return addPopUp(new className() as UIComponent, settings, target, childList);
 		}
 		
-		public static function addPopUp(content:UIComponent, initObject:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+		public static function addPopUp(content:UIComponent, settings:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (content == null) throw new ArgumentError("content cannot be null");
 			
 			var contentWidth:Number = content.width;
@@ -111,9 +111,9 @@ package nl.mediamonkey.utils {
 			content.percentHeight = 100;
 			content.addEventListener(Event.RESIZE, contentResizeHandler, false, 0, true);
 			
-			// delegate data from initObject
-			if (initObject === null) initObject = new PopUpVO();
-			if (initObject.data) (content as Container).data = initObject.data;
+			// delegate data from settings
+			if (settings === null) settings = new PopUpSettings();
+			if (settings.data) (content as Container).data = settings.data;
 			
 			// create new TitleWindow
 			var window:TitleWindow = new TitleWindow();
@@ -127,16 +127,16 @@ package nl.mediamonkey.utils {
 			window.addEventListener(PopUpEvent.SUBMIT, eventHandler);
 			window.addEventListener(PopUpEvent.YES, eventHandler);
 			
-			// set properties from initObject
-			if (initObject != null) {
-				window.title = initObject.title;
-				window.titleIcon = initObject.titleIcon;
-				window.showCloseButton = initObject.showCloseButton;
-				window.minWidth = initObject.minWidth;
-				window.maxWidth = initObject.maxWidth;
-				window.minHeight = initObject.minHeight;
-				window.maxHeight = initObject.maxHeight;
-				window.data = {center:initObject.center}; // used to center on resize
+			// set properties from settings
+			if (settings != null) {
+				window.title = settings.title;
+				window.titleIcon = settings.titleIcon;
+				window.showCloseButton = settings.showCloseButton;
+				window.minWidth = settings.minWidth;
+				window.maxWidth = settings.maxWidth;
+				window.minHeight = settings.minHeight;
+				window.maxHeight = settings.maxHeight;
+				window.data = {center:settings.center}; // used to center on resize
 			}
 			
 			// add styles & effects
@@ -154,24 +154,24 @@ package nl.mediamonkey.utils {
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
 			
-			var modal:Boolean = (initObject) ? initObject.modal : false;
+			var modal:Boolean = (settings) ? settings.modal : false;
 			PopUpManager.addPopUp(window, target, modal, childList);
 			
 			// overrule isPopUp, set by PopUpManager, if we don't want the window to be draggable
-			window.isPopUp = initObject.draggable;
+			window.isPopUp = settings.draggable;
 			
 			// remove header after creation if there are no headeritems to be shown
-			if (!window.showCloseButton && !window.title && !window.titleIcon && !initObject.draggable) {
+			if (!window.showCloseButton && !window.title && !window.titleIcon && !settings.draggable) {
 				window.setStyle("headerHeight", 0);
 				window.setStyle("borderThicknessTop", window.getStyle("borderThicknessBottom"));
 			}
 			
-			if (initObject.headerHeight) window.setStyle("headerHeight", initObject.headerHeight);
+			if (settings.headerHeight) window.setStyle("headerHeight", settings.headerHeight);
 			
 			var w:Number = 0;
 			w += window.getStyle("borderThicknessLeft") || 0;
 			w += window.getStyle("paddingLeft") || 0;
-			w += (initObject && initObject.width > -1) ? initObject.width : contentWidth;
+			w += (settings && settings.width > -1) ? settings.width : contentWidth;
 			w += window.getStyle("paddingRight") || 0;
 			w += window.getStyle("borderThicknessRight") || 0;
 			
@@ -179,20 +179,20 @@ package nl.mediamonkey.utils {
 			h += window.getStyle("headerHeight") || 0;
 			h += window.getStyle("borderThicknessTop") || 0;
 			h += window.getStyle("paddingTop") || 0;
-			h += (initObject && initObject.height > -1) ? initObject.height : contentHeight;
+			h += (settings && settings.height > -1) ? settings.height : contentHeight;
 			h += window.getStyle("paddingBottom") || 0;
 			h += window.getStyle("borderThicknessBottom") || 0;
 			
 			// after creation, set the width, height and center the popup
-			if ((initObject && initObject.width > -1) || (contentWidth > 0)) window.width = w;
-			if ((initObject && initObject.height > -1) || (contentHeight > 0)) window.height = h;
+			if ((settings && settings.width > -1) || (contentWidth > 0)) window.width = w;
+			if ((settings && settings.height > -1) || (contentHeight > 0)) window.height = h;
 			
-			if (initObject) {	
-				if (initObject.x || initObject.y) {
-					window.x = initObject.x;
-					window.y = initObject.y;
+			if (settings) {	
+				if (settings.x || settings.y) {
+					window.x = settings.x;
+					window.y = settings.y;
 					
-				} else if (initObject.center) {
+				} else if (settings.center) {
 					centerPopUp(window);
 				}
 			}
