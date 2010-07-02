@@ -150,7 +150,7 @@ package nl.mediamonkey.utils {
 			
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
-				target = Application.application as DisplayObject;
+				target = FlexGlobals.topLevelApplication as DisplayObject;// was Application.application
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
 			
