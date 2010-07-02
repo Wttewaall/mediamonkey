@@ -21,7 +21,12 @@ package nl.mediamonkey.utils {
 		public var draggable			:Boolean = true;
 		public var modal				:Boolean = false;
 		
-		public function PopUpSettings() {
+		public function PopUpSettings(title:String = "", showCloseButton:Boolean = true, center:Boolean = true, draggable:Boolean = true, modal:Boolean = false) {
+			this.title = title;
+			this.showCloseButton = showCloseButton;
+			this.center = center;
+			this.draggable = draggable;
+			this.modal = modal;
 		}
 	 
 	}
