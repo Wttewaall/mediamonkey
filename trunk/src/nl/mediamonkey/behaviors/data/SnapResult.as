@@ -1,7 +1,9 @@
-package nl.mediamonkey.behaviors {
+package nl.mediamonkey.behaviors.data {
 	
 	import flash.display.DisplayObject;
 	import flash.geom.Rectangle;
+	
+	import nl.mediamonkey.utils.DebugUtil;
 	
 	public class SnapResult {
 		
@@ -30,8 +32,7 @@ package nl.mediamonkey.behaviors {
 		// ---- public methods ----
 		
 		public function setResult(object:DisplayObject, rect:Rectangle, side:String):void {
-			if (side != LEFT && side != RIGHT && side != TOP && side != BOTTOM)
-				throw new ArgumentError("wrong string for size");
+			DebugUtil.expect(side, LEFT, RIGHT, TOP, BOTTOM);
 			
 			this.object = object;
 			this.rect = rect;
