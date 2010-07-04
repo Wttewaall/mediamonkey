@@ -8,6 +8,7 @@ package nl.mediamonkey.utils {
 	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
 	import mx.managers.ISystemManager;
+	
 	import nl.mediamonkey.utils.data.Cursor;
 	
 	public class CursorUtil {
@@ -145,8 +146,8 @@ package nl.mediamonkey.utils {
 
 // ---- CursorValue ----
 
-import nl.mediamonkey.utils.data.Cursor;
 import nl.mediamonkey.utils.CursorUtil;
+import nl.mediamonkey.utils.data.Cursor;
 
 class CursorValue {
 	
