@@ -17,7 +17,7 @@ package nl.mediamonkey.utils.data {
 		}
 		
 		public function toString():String {
-			return "[CursorVO {"+cursorIcon+", "+priority+", "+offsetX+", "+offsetY+", "+blendMode+"}]";
+			return "[Cursor {"+cursorIcon+", "+priority+", "+offsetX+", "+offsetY+", "+blendMode+"}]";
 		}
 
 	}
