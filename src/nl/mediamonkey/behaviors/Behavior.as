@@ -73,13 +73,10 @@ package nl.mediamonkey.behaviors {
 		// ---- protected methods ----
 		
 		protected function addListeners(target:InteractiveObject):void {
-			// always make sure to remove possible duplicate listeners
 			removeListeners(target);
-			// add logic
 		}
 		
 		protected function removeListeners(target:InteractiveObject):void {
-			// add logic
 		}
 		
 		// ---- event handlers ----

@@ -7,7 +7,6 @@ package nl.mediamonkey.behaviors {
 	
 	import designtool.view.components.GuideLine;
 	
-	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.InteractiveObject;
 	import flash.events.MouseEvent;
@@ -18,6 +17,9 @@ package nl.mediamonkey.behaviors {
 	import mx.core.IUIComponent;
 	import mx.events.SandboxMouseEvent;
 	
+	import nl.mediamonkey.behaviors.data.SnapResult;
+	import nl.mediamonkey.behaviors.enum.Direction;
+	import nl.mediamonkey.behaviors.enum.SnapAccuracy;
 	import nl.mediamonkey.behaviors.events.MoveEvent;
 	import nl.mediamonkey.behaviors.events.SnapEvent;
 	import nl.mediamonkey.utils.CoordsUtil;
@@ -64,9 +66,10 @@ package nl.mediamonkey.behaviors {
 			// if unsuccessful, try snapping on grid
 			if (!pos) pos = snapToGrid(origin.x + dx, origin.y + dy);
 			
-			// if all fails, don't snap but just move with the mouse offset
+			// if all fails, don't snap but just use the mouse offset
 			if (!pos) pos = new Point(origin.x + dx, origin.y + dy); 
 			
+			// now move to the position, whether snapped or not
 			moveTo(pos.x, pos.y);
 			
 			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.DRAG_MOVE, false, false, oldPosition.x, oldPosition.y));
@@ -221,7 +224,7 @@ package nl.mediamonkey.behaviors {
 		public var bottomResult		:SnapResult = new SnapResult();
 		
 		protected function findNearestSnapPoint():Point {
-			var object				:DisplayObject;
+			var object				:InteractiveObject;
 			
 			var targetRect			:Rectangle;
 			var rect				:Rectangle;

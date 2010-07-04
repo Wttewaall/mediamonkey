@@ -11,6 +11,7 @@ package nl.mediamonkey.behaviors {
 	import flash.geom.Rectangle;
 	
 	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.behaviors.enum.Direction;
 	
 	/** Fires on the element for the movable behavior when the user first starts a drag operation.
 	 * @eventType mx.events.DragEvent.DRAG_START */
