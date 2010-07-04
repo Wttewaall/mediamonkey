@@ -65,6 +65,7 @@ package nl.mediamonkey.utils {
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
+	import mx.core.FlexGlobals;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
 	import mx.effects.*;
@@ -77,7 +78,7 @@ package nl.mediamonkey.utils {
 	
 	import nl.mediamonkey.events.PopUpEvent;
 	
-	import view.components.DraggableTitleWindow;
+	//import view.components.DraggableTitleWindow;
 	
 	public class PopUpUtil {
 		
