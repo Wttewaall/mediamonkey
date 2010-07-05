@@ -1,4 +1,4 @@
-package nl.mediamonkey.events {
+package nl.mediamonkey.helpers.events {
 	
 	import flash.events.Event;
 	

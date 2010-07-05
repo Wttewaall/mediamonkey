@@ -1,4 +1,4 @@
-package nl.mediamonkey.managers {
+package nl.mediamonkey.io {
 	
 	import flash.display.InteractiveObject;
 	import flash.events.Event;
@@ -6,7 +6,7 @@ package nl.mediamonkey.managers {
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	
-	public class KeyBindingManager {
+	public class KeyBinder {
 		
 		private var keysMap:Dictionary;
 		private var keyDown:Boolean;
@@ -30,7 +30,7 @@ package nl.mediamonkey.managers {
 		
 		// ---- constructor ----
 		
-		public function KeyBindingManager(target:InteractiveObject) {
+		public function KeyBinder(target:InteractiveObject) {
 			keysMap = new Dictionary();
 			this.target = target;
 		}

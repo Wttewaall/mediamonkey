@@ -3,7 +3,6 @@ package nl.mediamonkey.air {
 	import flash.events.Event;
 	import flash.filesystem.*;
 	import flash.utils.ByteArray;
-	import nl.mediamonkey.log.Logger;
 	
 	/* Usage:
 	
@@ -37,7 +36,6 @@ package nl.mediamonkey.air {
 		public static function loadFile(path:String):ByteArray {
 			var file:File = File.applicationDirectory;
 			file = file.resolvePath(path);
-			Logger.info("loading file: "+file.name);
 			
 			if (file.exists) {
 				var stream:FileStream = new FileStream();
@@ -58,7 +56,7 @@ package nl.mediamonkey.air {
 				file.addEventListener(Event.SELECT, instance.saveFileAsSelectedHandler);
 				
 			} catch (error:Error) {
-				Logger.warn(error.message);
+				trace(error.message);
 			}
 		}
 		

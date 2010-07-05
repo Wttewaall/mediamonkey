@@ -1,4 +1,4 @@
-package nl.mediamonkey.zinc {
+package nl.mediamonkey.data {
 	
 	import flash.system.Capabilities;
 	

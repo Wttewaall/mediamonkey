@@ -1,8 +1,7 @@
-﻿package nl.mediamonkey.events {
+﻿package nl.mediamonkey.invalidation {
 	
 	import flash.events.Event;
 	
-	import nl.mediamonkey.enum.InvalidationType;
 	
 	public class InvalidatorEvent extends Event {
 		

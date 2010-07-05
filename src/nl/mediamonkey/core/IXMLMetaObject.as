@@ -1,4 +1,4 @@
-package nl.mediamonkey.data {
+package nl.mediamonkey.core {
 	
 	public interface IXMLMetaObject {
 		

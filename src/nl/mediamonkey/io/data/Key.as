@@ -1,4 +1,4 @@
-package nl.mediamonkey.enum {
+package nl.mediamonkey.io.data {
 	
 	import flash.utils.Dictionary;
 	

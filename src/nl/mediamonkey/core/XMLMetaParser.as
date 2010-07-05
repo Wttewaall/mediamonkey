@@ -27,7 +27,7 @@
 * OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package nl.mediamonkey.data
+package nl.mediamonkey.core
 {
 	
 	import flash.utils.describeType;
