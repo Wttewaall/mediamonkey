@@ -1,4 +1,4 @@
-package nl.mediamonkey.utils {
+package nl.mediamonkey.utils.data {
 	
 	public class PopUpSettings {
 		

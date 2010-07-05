@@ -1,4 +1,4 @@
-package nl.mediamonkey.enum {
+package nl.mediamonkey.utils.enum {
 	
 	public final class ZoomMode {
 		

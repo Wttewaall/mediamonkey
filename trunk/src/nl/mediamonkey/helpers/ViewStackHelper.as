@@ -11,13 +11,13 @@ package nl.mediamonkey.helpers {
 	import mx.events.FlexEvent;
 	import mx.events.IndexChangedEvent;
 	
-	import nl.mediamonkey.events.ViewStackHelperEvent;
+	import nl.mediamonkey.helpers.events.ViewStackHelperEvent;
 	
-	[Event(name="viewstackChange",						type="nl.mediamonkey.events.ViewStackHelperEvent")]
-	[Event(name="selectedPageIndexChange",				type="nl.mediamonkey.events.ViewStackHelperEvent")]
-	[Event(name="selectedPageChange",					type="nl.mediamonkey.events.ViewStackHelperEvent")]
-	[Event(name="hasNextPageChange",					type="nl.mediamonkey.events.ViewStackHelperEvent")]
-	[Event(name="hasPreviousPageChange",				type="nl.mediamonkey.events.ViewStackHelperEvent")]
+	[Event(name="viewstackChange",						type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
+	[Event(name="selectedPageIndexChange",				type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
+	[Event(name="selectedPageChange",					type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
+	[Event(name="hasNextPageChange",					type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
+	[Event(name="hasPreviousPageChange",				type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
 	
 	public class ViewStackHelper extends EventDispatcher implements IMXMLObject {
 		

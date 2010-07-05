@@ -76,7 +76,8 @@ package nl.mediamonkey.utils {
 	import mx.managers.PopUpManager;
 	import mx.managers.PopUpManagerChildList;
 	
-	import nl.mediamonkey.events.PopUpEvent;
+	import nl.mediamonkey.utils.events.PopUpEvent;
+	import nl.mediamonkey.utils.data.PopUpSettings;
 	
 	//import view.components.DraggableTitleWindow;
 	

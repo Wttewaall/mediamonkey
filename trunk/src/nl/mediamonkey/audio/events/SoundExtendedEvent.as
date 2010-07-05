@@ -1,4 +1,4 @@
-﻿package nl.mediamonkey.events {
+﻿package nl.mediamonkey.audio.events {
 	
 	import flash.events.Event;
 	import flash.media.SoundTransform;

@@ -4,6 +4,7 @@ package nl.mediamonkey.communication {
 	import mx.controls.Alert;
 	import flash.net.LocalConnection;
 	import flash.events.SecurityErrorEvent;
+	import nl.mediamonkey.communication.events.LocalConnectionEvent;
 	
 	public class FlashConnection extends EventDispatcher {
 		

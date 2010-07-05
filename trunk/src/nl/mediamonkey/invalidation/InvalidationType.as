@@ -1,4 +1,4 @@
-﻿package nl.mediamonkey.enum {
+﻿package nl.mediamonkey.invalidation {
 	
 	public final class InvalidationType {
 		

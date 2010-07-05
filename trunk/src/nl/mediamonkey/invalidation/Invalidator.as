@@ -1,19 +1,17 @@
-﻿package nl.mediamonkey.data {
+﻿package nl.mediamonkey.invalidation {
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	
-	import nl.mediamonkey.enum.InvalidationType;
-	import nl.mediamonkey.events.InvalidatorEvent;
 	
 	/**
 	 * todo
 	 *	. try using Object.watch to register a property and fire an invalidationEvent on change?
 	 */
 	
-	[Event(name="invalidation", type="nl.mediamonkey.events.InvalidatorEvent")]
+	[Event(name="invalidation", type="nl.mediamonkey.invalidation.InvalidatorEvent")]
 	
 	/**
 	 * We make use of a DisplayObjectContainer (most basic class) to recieve Event.ENTER_FRAME events

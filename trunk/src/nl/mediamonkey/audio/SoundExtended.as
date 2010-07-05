@@ -28,7 +28,7 @@ package nl.mediamonkey.audio {
 	import flash.utils.Timer;
 	import flash.utils.setTimeout;
 	
-	import nl.mediamonkey.events.SoundExtendedEvent;
+	import nl.mediamonkey.audio.events.SoundExtendedEvent;
 
 	/**
 	 * This class was originally Adobe's podcastplayer example.
