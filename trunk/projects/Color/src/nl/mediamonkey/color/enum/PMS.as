@@ -1,6 +1,6 @@
 ﻿package nl.mediamonkey.color.enum {
 	
-	public final class PantomeColors {
+	public final class PMS {
 		
 		public static const PMS_100			:uint = 0xF4ED7C;
 		public static const PMS_101			:uint = 0xF4ED47;

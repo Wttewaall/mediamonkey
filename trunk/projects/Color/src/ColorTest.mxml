@@ -19,8 +19,8 @@
 			import nl.mediamonkey.color.HSVColor;
 			import nl.mediamonkey.color.LABColor;
 			import nl.mediamonkey.color.RGBColor;
-			import nl.mediamonkey.color.enum.PantomeColors;
-			import nl.mediamonkey.color.enum.WebColors;
+			import nl.mediamonkey.color.enum.PMS;
+			import nl.mediamonkey.color.enum.Web;
 			import nl.mediamonkey.color.utils.ColorUtil;
 			import nl.mediamonkey.color.utils.GradientUtil;
 			import nl.mediamonkey.utils.EnumUtil;
@@ -102,13 +102,13 @@
 			}
 			
 			protected function getNearestWebColor():void {
-				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(WebColors));
+				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(Web));
 				colorValue = result;
 				updateAll("Web");
 			}
 			
 			protected function getNearestPantomeColor():void {
-				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(PantomeColors));
+				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(PMS));
 				colorValue = result;
 				updateAll("Pantome");
 			}
@@ -254,7 +254,7 @@
 		<mx:FormItem label="WebColors" direction="horizontal">
 			<mx:ComboBox id="webColorsComboBox"
 				labelField="name"
-				dataProvider="{getColorsArray(WebColors)}"
+				dataProvider="{getColorsArray(Web)}"
 				itemRenderer="view.renderers.ColorRenderer"
 				change="updateWebColor(event)" width="220"/>
 			<mx:Button  label="Get Nearest WebColor"
@@ -263,7 +263,7 @@
 		<mx:FormItem label="PantomeColors" direction="horizontal">
 			<mx:ComboBox id="pantomeColorsComboBox"
 				labelField="name"
-				dataProvider="{getColorsArray(PantomeColors)}"
+				dataProvider="{getColorsArray(PMS)}"
 				itemRenderer="view.renderers.ColorRenderer"
 				change="updatePantomeColor(event)" width="220"/>
 			<mx:Button  label="Get Nearest PantomeColor"
@@ -272,42 +272,42 @@
 		
 		<mx:FormHeading label="RGB"/>
 		<mx:FormItem label="Red" direction="horizontal">
-			<s:HSlider id="redSlider"
+			<mx:HSlider id="redSlider"
 				minimum="0" maximum="255" liveDragging="true"
 				trackColors="[0x000000, 0xFF0000]"
 				trackMargin="5"
-				skinClass="view.skins.ColorTrackSkin"
+				trackSkin="view.skins.ColorTrackSkin"
 				change="updateRGB()"/>
 			<mx:CheckBox label="Web safe"
 				change="toggleSliderTicks(redSlider, event.target.selected)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Green" direction="horizontal">
-			<s:HSlider id="greenSlider"
+			<mx:HSlider id="greenSlider"
 				minimum="0" maximum="255" liveDragging="true"
 				trackColors="[0x000000, 0x00FF00]"
 				trackMargin="5"
-				skinClass="view.skins.ColorTrackSkin"
+				trackSkin="view.skins.ColorTrackSkin"
 				change="updateRGB()"/>
 			<mx:CheckBox label="Web safe"
 				change="toggleSliderTicks(greenSlider, event.target.selected)"/>
 		</mx:FormItem>
 		<mx:FormItem label="Blue" direction="horizontal">
-			<s:HSlider id="blueSlider"
+			<mx:HSlider id="blueSlider"
 				minimum="0" maximum="255" liveDragging="true"
 				trackColors="[0x000000, 0x0000FF]"
 				trackMargin="5"
-				skinClass="view.skins.ColorTrackSkin"
+				trackSkin="view.skins.ColorTrackSkin"
 				change="updateRGB()"/>
 			<mx:CheckBox label="Web safe"
 				change="toggleSliderTicks(blueSlider, event.target.selected)"/>
 		</mx:FormItem>
 		<mx:FormHeading label="HSV"/>
 		<mx:FormItem label="Hue" direction="horizontal">
-			<s:HSlider id="hueSlider"
+			<mx:HSlider id="hueSlider"
 				minimum="0" maximum="360" liveDragging="true"
 				trackColors="{Gradient.getHueColors()}"
 				trackMargin="5"
-				skinClass="view.skins.ColorTrackSkin"
+				trackSkin="view.skins.ColorTrackSkin"
 				change="updateHSV()"/>
 			<!--<mx:HSlider id="hueSlider" change="updateHSV()" minimum="0" maximum="360" liveDragging="true"/>-->
 			<mx:Label text="°" />
