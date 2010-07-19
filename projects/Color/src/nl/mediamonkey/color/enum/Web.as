@@ -1,6 +1,6 @@
 package nl.mediamonkey.color.enum {
 	
-	public final class WebColors {
+	public final class Web {
 		
 		public static const ALICEBLUE				:uint = 0xF0F8FF; //240,248,255
 		public static const ANTIQUEWHITE			:uint = 0xFAEBD7; //250,235,215
