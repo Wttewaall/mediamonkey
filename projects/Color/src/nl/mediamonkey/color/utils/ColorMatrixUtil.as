@@ -16,16 +16,16 @@ package nl.mediamonkey.color.utils {
 														 1,  1,  1,
 														 0,  1,  0	];
 		
-		public static const SHARPEN			:Array = [	 0, -1,  0
-														-1,  5, -1
+		public static const SHARPEN			:Array = [	 0, -1,  0,
+														-1,  5, -1,
 														 0, -1,  0	];
 		
-		public static const EDGE_DETECT		:Array = [	 0, -1,  0
-														-1,  4, -1
+		public static const EDGE_DETECT		:Array = [	 0, -1,  0,
+														-1,  4, -1,
 														 0, -1,  0	];
 		
-		public static const EXTRUDE			:Array = [	-30, 30, 0
-														-30, 30, 0
+		public static const EXTRUDE			:Array = [	-30, 30, 0,
+														-30, 30, 0,
 														-30, 30, 0	];
 		
 		// ---- 5x4 ColorFilter matrices ----

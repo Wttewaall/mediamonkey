@@ -4,73 +4,93 @@ package nl.mediamonkey.color {
 	
 	public class HSVColor extends Color {
 		
-		private var _H			:uint; // 0 to 360 hue in degrees
-		private var _S			:uint; // 0 to 100 saturation in percentage
-		private var _V			:uint; // 0 to 100 lightness/value/tone in percentage
+		public static const MIN_H	:Number = 0;
+		public static const MAX_H	:Number = 360;
+		public static const MIN_S	:Number = 0;
+		public static const MAX_S	:Number = 100;
+		public static const MIN_V	:Number = 0;
+		public static const MAX_V	:Number = 100;
 		
-		public function get H():uint {
-			return _H;
+		// ---- getters & setters ----
+		
+		private var _h			:uint; // 0 to 360 hue in degrees
+		private var _s			:uint; // 0 to 100 saturation in percentage
+		private var _v			:uint; // 0 to 100 lightness/value/tone in percentage
+		
+		public function get h():uint {
+			return _h;
 		}
 		
-		public function set H(value:uint):void {
-			if (_H != value) {
-				_H = Math.max(0, Math.min(value, 360));
+		public function set h(value:uint):void {
+			if (_h != value) {
+				setProperties(value, s, v);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get S():uint {
-			return _S;
+		public function get s():uint {
+			return _s;
 		}
 		
-		public function set S(value:uint):void {
-			if (_S != value) {
-				_S = Math.max(0, Math.min(value, 100));
+		public function set s(value:uint):void {
+			if (_s != value) {
+				setProperties(h, value, v);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get V():uint {
-			return _V;
+		public function get v():uint {
+			return _v;
 		}
 		
-		public function set V(value:uint):void {
-			if (_V != value) {
-				_V = Math.max(0, Math.min(value, 100));
+		public function set v(value:uint):void {
+			if (_v != value) {
+				setProperties(h, s, value);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function HSVColor(H:uint=0, S:uint=0, V:uint=0) {
-			_H = Math.max(0, Math.min(H, 360));
-			_S = Math.max(0, Math.min(S, 100));
-			_V = Math.max(0, Math.min(V, 100));
+		// ---- constructor ----
+		
+		public function HSVColor(hue:uint=0, saturation:uint=0, value:uint=0) {
+			setProperties(hue, saturation, value);
 			setColorValue(toDecimal());
+		}
+		
+		// ---- protected methods ----
+		
+		protected function setProperties(h:Number, s:Number, v:Number):void {
+			_h = Math.max(MIN_H, Math.min(h, MAX_H));
+			_s = Math.max(MIN_S, Math.min(s, MAX_S));
+			_v = Math.max(MIN_V, Math.min(v, MAX_V));
 		}
 		
 		// ---- conversion methods ----
 		
-		override public function fromDecimal(value:uint):IColor {
+		public static function fromDecimal(value:uint):HSVColor {
+			var color:HSVColor = new HSVColor();
+			color.fromDecimal(value);
+			return color;
+		}
+		
+		override public function fromDecimal(value:uint):void {
 			setColorValue(value);
 			
-			var rgb:RGBColor = new RGBColor();
-			rgb.fromDecimal(value);
+			var rgb:RGBColor = RGBColor.fromDecimal(value);
 			
-			var hsv:HSVColor = ColorUtil.RGBToHSV(rgb.R, rgb.G, rgb.B);
-			_H = hsv.H;
-			_S = hsv.S;
-			_V = hsv.V;
-			
-			return hsv;
+			var hsv:HSVColor = ColorUtil.RGBToHSV(rgb.r, rgb.g, rgb.b);
+			_h = hsv.h;
+			_s = hsv.s;
+			_v = hsv.v;
 		}
 		
 		override public function toDecimal():uint {
-			var rgb:RGBColor = ColorUtil.HSVToRGB(H, S, V);
+			var rgb:RGBColor = ColorUtil.HSVToRGB(h, s, v);
 			return rgb.colorValue;
 		}
 		
 		override public function toString():String {
-			return "[HSVColor H:"+H+" S:"+S+" V:"+V+"]";
+			return "[HSVColor h:"+h+" s:"+s+" v:"+v+"]";
 		}
 		
 	}

@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application layout="absolute"
 	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:components="view.components.*"
-	applicationComplete="applicationCompleteHandler(event)" xmlns:s="library://ns.adobe.com/flex/spark">
+	applicationComplete="applicationCompleteHandler(event)">
 	
 	<mx:Script>
 		<![CDATA[
 			import com.degrafa.paint.palette.PaletteUtils;
-			import nl.mediamonkey.color.Gradient;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.sliderClasses.Slider;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.ValidationResult;
 			
+			import nl.mediamonkey.color.ARGBColor;
 			import nl.mediamonkey.color.CMYKColor;
-			import nl.mediamonkey.color.HexColor;
+			import nl.mediamonkey.color.Gradient;
 			import nl.mediamonkey.color.HSLColor;
 			import nl.mediamonkey.color.HSVColor;
+			import nl.mediamonkey.color.HexColor;
 			import nl.mediamonkey.color.LABColor;
 			import nl.mediamonkey.color.RGBColor;
 			import nl.mediamonkey.color.enum.PMS;
@@ -35,7 +38,6 @@
 			public var labColor			:LABColor = new LABColor();
 			
 			protected function applicationCompleteHandler(event:Event):void {
-				
 				var colors:Array = [];
 				var alphas:Array = [];
 				var ratios:Array = [];
@@ -44,7 +46,7 @@
 				
 				var hsv:HSLColor = new HSLColor(0, 100, 127);
 				for (var i:uint=0; i<=interval; i++) {
-					hsv.H = (360/interval) * i;
+					hsv.h = (360/interval) * i;
 					colors.push(hsv.colorValue);
 					alphas.push(1);
 					ratios.push((255/interval) * i);
@@ -59,7 +61,7 @@
 				
 				interval = 15; // bij > 15 opsplitsen in meerdere shapes en dan de combi teruggeven
 				for (i=0; i<=interval; i++) {
-					hsv.H = (360/interval) * i;
+					hsv.h = (360/interval) * i;
 					colors.push(hsv.colorValue);
 					alphas.push(1);
 					ratios.push((255/interval) * i);
@@ -137,9 +139,9 @@
 			}
 			
 			protected function updateRGB():void {
-				rgbColor.R = redSlider.value;
-				rgbColor.G = greenSlider.value;
-				rgbColor.B = blueSlider.value;
+				rgbColor.r = redSlider.value;
+				rgbColor.g = greenSlider.value;
+				rgbColor.b = blueSlider.value;
 				colorValue = rgbColor.colorValue;
 				updateAll("RGB");
 				
@@ -148,9 +150,9 @@
 			
 			protected function updateRGBSliders():void {
 				rgbColor.fromDecimal(colorValue);
-				redSlider.value = rgbColor.R;
-				greenSlider.value = rgbColor.G;
-				blueSlider.value = rgbColor.B;
+				redSlider.value = rgbColor.r;
+				greenSlider.value = rgbColor.g;
+				blueSlider.value = rgbColor.b;
 				
 				updateRGBSliderTracks();
 			}
@@ -169,65 +171,65 @@
 			}
 			
 			protected function updateHSV():void {
-				hsvColor.H = hueSlider.value;
-				hsvColor.S = saturationSlider.value;
-				hsvColor.V = valueSlider.value;
+				hsvColor.h = hueSlider.value;
+				hsvColor.s = saturationSlider.value;
+				hsvColor.v = valueSlider.value;
 				colorValue = hsvColor.colorValue;
 				updateAll("HSV");
 			}
 			
 			protected function updateHSVSliders():void {
 				hsvColor.fromDecimal(colorValue);
-				hueSlider.value = hsvColor.H;
-				saturationSlider.value = hsvColor.S;
-				valueSlider.value = hsvColor.V;
+				hueSlider.value = hsvColor.h;
+				saturationSlider.value = hsvColor.s;
+				valueSlider.value = hsvColor.v;
 			}
 			
 			protected function updateHSL():void {
-				hslColor.H = hueSlider2.value;
-				hslColor.S = saturationSlider2.value;
-				hslColor.L = lightnessSlider.value;
+				hslColor.h = hueSlider2.value;
+				hslColor.s = saturationSlider2.value;
+				hslColor.l = lightnessSlider.value;
 				colorValue = hslColor.colorValue;
 				updateAll("HSL");
 			}
 			
 			protected function updateHSLSliders():void {
 				hslColor.fromDecimal(colorValue);
-				hueSlider2.value = hslColor.H;
-				saturationSlider2.value = hslColor.S;
-				lightnessSlider.value = hslColor.L;
+				hueSlider2.value = hslColor.h;
+				saturationSlider2.value = hslColor.s;
+				lightnessSlider.value = hslColor.l;
 			}
 			
 			protected function updateCMYK():void {
-				cmykColor.C = cyanSlider.value;
-				cmykColor.M = magentaSlider.value;
-				cmykColor.Y = yellowSlider.value;
-				cmykColor.K = blackSlider.value;
+				cmykColor.c = cyanSlider.value;
+				cmykColor.m = magentaSlider.value;
+				cmykColor.y = yellowSlider.value;
+				cmykColor.k = blackSlider.value;
 				colorValue = cmykColor.colorValue;
 				updateAll("CMYK");
 			}
 			
 			protected function updateCMYKSliders():void {
 				cmykColor.fromDecimal(colorValue);
-				cyanSlider.value = cmykColor.C;
-				magentaSlider.value = cmykColor.M;
-				yellowSlider.value = cmykColor.Y;
-				blackSlider.value = cmykColor.K;
+				cyanSlider.value = cmykColor.c;
+				magentaSlider.value = cmykColor.m;
+				yellowSlider.value = cmykColor.y;
+				blackSlider.value = cmykColor.k;
 			}
 			
 			protected function updateLAB():void {
-				labColor.L = luminanceSlider.value;
-				labColor.A = redGreenSlider.value;
-				labColor.B = yellowBlueSlider.value;
+				labColor.l = luminanceSlider.value;
+				labColor.a = redGreenSlider.value;
+				labColor.b = yellowBlueSlider.value;
 				colorValue = labColor.colorValue;
 				updateAll("LAB");
 			}
 			
 			protected function updateLABSliders():void {
 				labColor.fromDecimal(colorValue);
-				luminanceSlider.value = labColor.L;
-				redGreenSlider.value = labColor.A;
-				yellowBlueSlider.value = labColor.B;
+				luminanceSlider.value = labColor.l;
+				redGreenSlider.value = labColor.a;
+				yellowBlueSlider.value = labColor.b;
 			}
 			
 		]]>

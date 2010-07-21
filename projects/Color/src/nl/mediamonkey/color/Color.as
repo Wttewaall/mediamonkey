@@ -15,7 +15,7 @@ package nl.mediamonkey.color {
 		
 		public function set colorValue(value:uint):void {
 			if (_colorValue != value) {
-				_colorValue = value;
+				_colorValue = value; // just to be sure not to break the binding
 				fromDecimal(value);
 			}
 		}
@@ -26,7 +26,7 @@ package nl.mediamonkey.color {
 		
 		// ---- conversion methods ----
 		
-		public function fromDecimal(value:uint):IColor {
+		public function fromDecimal(value:uint):void {
 			throw new Error("Class must override fromDecimal method");
 		}
 		
@@ -46,6 +46,12 @@ package nl.mediamonkey.color {
 		
 		public function toRGBColor():RGBColor {
 			var color:RGBColor = new RGBColor();
+			color.fromDecimal(colorValue);
+			return color;
+		}
+		
+		public function toARGBColor():ARGBColor {
+			var color:ARGBColor = new ARGBColor();
 			color.fromDecimal(colorValue);
 			return color;
 		}
@@ -88,34 +94,44 @@ package nl.mediamonkey.color {
 		
 		// ---- color manipulation ----
 		
-		public function lighten(scale:Number):Color {
-			return null;
+		public function tint(color:IColor, ratio:Number = 0.5):void {
+			var result:uint = ColorUtil.interpolate(this, color, ratio);
+			fromDecimal(result);
 		}
 		
-		public function darken(scale:Number):Color {
-			return null;
+		public function saturate(saturation:Number):void {
+			var result:uint = ColorUtil.saturate(this, saturation);
+			fromDecimal(result);
 		}
 		
-		public function saturate(scale:Number):Color {
-			return null;
+		public function lighten(lightness:Number):void {
+			var result:uint = ColorUtil.lighten(this, lightness);
+			fromDecimal(result);
 		}
 		
-		public function deSaturate(scale:Number):Color {
-			return null;
+		public function multiply(color:IColor):void {
+			var result:uint = ColorUtil.multiply(this, color);
+			fromDecimal(result);
 		}
 		
-		public function invert():Color {
-			return null;
+		public function brighten():void {
+			var result:uint = ColorUtil.brighten(this);
+			fromDecimal(result);
 		}
 		
-		public function multiply(color:Color):Color {
-			return null;
+		public function darken():void {
+			var result:uint = ColorUtil.darken(this);
+			fromDecimal(result);
 		}
 		
-		public function tint(color:Color):Color {
-			return null;
+		public function invert():void {
+			fromDecimal(0xFFFFFF - colorValue);
 		}
 		
-
+		public function desaturate():void {
+			var result:uint = ColorUtil.desaturate(this);
+			fromDecimal(result);
+		}
+		
 	}
 }

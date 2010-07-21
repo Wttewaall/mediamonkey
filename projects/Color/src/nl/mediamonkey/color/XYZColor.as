@@ -4,73 +4,91 @@ package nl.mediamonkey.color {
 	
 	public class XYZColor extends Color {
 		
-		private var _X			:Number; // 0 to 95.047 Observer= 2°, Illuminant= D65
-		private var _Y			:Number; // 0 to 100.000
-		private var _Z			:Number; // 0 to 108.883
+		public static const MIN_VALUE	:Number = 0;
+		public static const MAX_X		:Number = 95.047;
+		public static const MAX_Y		:Number = 100.000;
+		public static const MAX_Z		:Number = 108.883;
 		
-		public function get X():uint {
-			return _X;
+		// ---- getters & setters ----
+		
+		private var _x			:Number; // 0 to 95.047 Observer= 2°, Illuminant= D65
+		private var _y			:Number; // 0 to 100.000
+		private var _z			:Number; // 0 to 108.883
+		
+		public function get x():uint {
+			return _x;
 		}
 		
-		public function set X(value:uint):void {
-			if (_X != value) {
-				_X = Math.max(0, Math.min(value, 95.047));
+		public function set x(value:uint):void {
+			if (_x != value) {
+				setProperties(value, y, z);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get Y():uint {
-			return _Y;
+		public function get y():uint {
+			return _y;
 		}
 		
-		public function set Y(value:uint):void {
-			if (_Y != value) {
-				_Y = Math.max(0, Math.min(value, 100.000));
+		public function set y(value:uint):void {
+			if (_y != value) {
+				setProperties(x, value, z);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get Z():uint {
-			return _Z;
+		public function get z():uint {
+			return _z;
 		}
 		
-		public function set Z(value:uint):void {
-			if (_Z != value) {
-				_Z = Math.max(0, Math.min(value, 108.883));
+		public function set z(value:uint):void {
+			if (_z != value) {
+				setProperties(x, y, value);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function XYZColor(X:Number=0, Y:Number=0, Z:Number=0) {
-			_X = Math.max(0, Math.min(X, 95.047));
-			_Y = Math.max(0, Math.min(Y, 100.000));
-			_Z = Math.max(0, Math.min(Z, 108.883));
+		// ---- constructor ----
+		
+		public function XYZColor(x:Number=0, y:Number=0, z:Number=0) {
+			setProperties(x, y, z);
 			setColorValue(toDecimal());
+		}
+		
+		// ---- protected methods ----
+		
+		protected function setProperties(x:Number, y:Number, z:Number):void {
+			_x = Math.max(MIN_VALUE, Math.min(x, MAX_X));
+			_y = Math.max(MIN_VALUE, Math.min(y, MAX_Y));
+			_z = Math.max(MIN_VALUE, Math.min(z, MAX_Z));
 		}
 		
 		// ---- conversion methods ----
 		
-		override public function fromDecimal(value:uint):IColor {
+		public static function fromDecimal(value:uint):XYZColor {
+			var color:XYZColor = new XYZColor();
+			color.fromDecimal(value);
+			return color;
+		}
+		
+		override public function fromDecimal(value:uint):void {
 			setColorValue(value);
 			
-			var rgb:RGBColor = new RGBColor();
-			rgb.fromDecimal(value);
+			var rgb:RGBColor = RGBColor.fromDecimal(value);
 			
-			var xyz:XYZColor = ColorUtil.RGBToXYZ(rgb.R, rgb.G, rgb.B);
-			_X = xyz.X;
-			_Y = xyz.Y;
-			_Z = xyz.Z;
-			
-			return xyz;
+			var xyz:XYZColor = ColorUtil.RGBToXYZ(rgb.r, rgb.g, rgb.b);
+			_x = xyz.x;
+			_y = xyz.y;
+			_z = xyz.z;
 		}
 		
 		override public function toDecimal():uint {
-			var rgb:RGBColor = ColorUtil.XYZToRGB(X, Y, Z);
+			var rgb:RGBColor = ColorUtil.XYZToRGB(x, y, z);
 			return rgb.colorValue;
 		}
 		
 		override public function toString():String {
-			return "[XYZColor X:"+X+" Y:"+Y+" Z:"+Z+"]";
+			return "[XYZColor x:"+x+" y:"+y+" z:"+z+"]";
 		}
 		
 	}
