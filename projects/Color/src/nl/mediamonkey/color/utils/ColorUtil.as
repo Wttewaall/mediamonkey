@@ -100,8 +100,8 @@ package nl.mediamonkey.color.utils {
 		// ---- color methods ----
 		
 		public static function multiply(color1:Object, color2:Object):uint {
-			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1));
-			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2));
+			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1, true));
+			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2, true));
 			
 			return (
 				((argb1.a * argb2.a / 255) << 24) |
@@ -112,8 +112,21 @@ package nl.mediamonkey.color.utils {
 		}
 		
 		public static function interpolate(color1:Object, color2:Object, ratio:Number=0.5):uint {
-			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1));
-			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2));
+			var rgb1:RGBColor = RGBColor.fromDecimal(getColorValue(color1));
+			var rgb2:RGBColor = RGBColor.fromDecimal(getColorValue(color2));
+			
+			var inverseRatio:Number = 1 - ratio;
+			
+			var r:uint = Math.round(ratio * rgb2.r + inverseRatio * rgb1.r);
+			var g:uint = Math.round(ratio * rgb2.g + inverseRatio * rgb1.g);
+			var b:uint = Math.round(ratio * rgb2.b + inverseRatio * rgb1.b);
+			
+			return r << 16 | g << 8 | b;
+		}
+		
+		public static function interpolate32(color1:Object, color2:Object, ratio:Number=0.5):uint {
+			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1, true));
+			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2, true));
 			
 			var inverseRatio:Number = 1 - ratio;
 			
@@ -141,7 +154,7 @@ package nl.mediamonkey.color.utils {
 		
 		public static function brighten(color:Object):uint {
 			var baseScale:Number = 0.7;
-			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color, true));
 			
 			var i:int = (1.0/(1.0-baseScale));
 			
@@ -162,7 +175,7 @@ package nl.mediamonkey.color.utils {
 		
 		public static function darken(color:Object):uint {
 			var baseScale:Number = 0.7;
-			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color, true));
 			
 			argb.r = Math.max(0, argb.r * baseScale);
 			argb.g = Math.max(0, argb.g * baseScale);
@@ -172,7 +185,7 @@ package nl.mediamonkey.color.utils {
 		}
 		
 		public static function desaturate(color:Object):uint {
-			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color, true));
 			
 			argb.r *= 0.2125; // red band weight
 			argb.g *= 0.7154; // green band weight
@@ -182,14 +195,16 @@ package nl.mediamonkey.color.utils {
 			return argb.a | (gray << 16) | (gray << 8) | gray;
 		}
 		
-		public static function getColorValue(object:Object):uint {
-			var color:ARGBColor;
+		public static function getColorValue(object:Object, argb:Boolean=false):uint {
+			var color:IColor;
 			
 			if (object is IColor) {
-				color = ARGBColor.fromDecimal((object as IColor).colorValue)
+				if (argb) color = ARGBColor.fromDecimal((object as IColor).colorValue);
+				else color = RGBColor.fromDecimal((object as IColor).colorValue)
 					
 			} else if (object is Number) {
-				color = ARGBColor.fromDecimal(object as uint);
+				if (argb) color = ARGBColor.fromDecimal(object as uint);
+				else color = RGBColor.fromDecimal(object as uint);
 			}
 			
 			return (color) ? color.colorValue : 0;

@@ -38,7 +38,7 @@ package nl.mediamonkey.color {
 		
 		// ---- constructor ----
 		
-		public function HexColor(value:*=0) {
+		public function HexColor(value:*="#000000") {
 			var type:String = typeof(value);
 			
 			if (value is String) {

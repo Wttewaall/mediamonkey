@@ -14,5 +14,7 @@ package nl.mediamonkey.color {
 		function toString():String;
 		function toHexString(prefix:String="#"):String;
 		
+		function clone():IColor;
+		
 	}
 }

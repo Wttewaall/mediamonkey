@@ -7,14 +7,8 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import com.degrafa.paint.palette.PaletteUtils;
-			
-			import mx.collections.ArrayCollection;
 			import mx.controls.sliderClasses.Slider;
-			import mx.events.ValidationResultEvent;
-			import mx.validators.ValidationResult;
 			
-			import nl.mediamonkey.color.ARGBColor;
 			import nl.mediamonkey.color.CMYKColor;
 			import nl.mediamonkey.color.Gradient;
 			import nl.mediamonkey.color.HSLColor;
@@ -28,16 +22,16 @@
 			import nl.mediamonkey.color.utils.GradientUtil;
 			import nl.mediamonkey.utils.EnumUtil;
 			
-			[Bindable] public var colorValue:uint;
+			[Bindable] public var colorValue	:uint;
 			
-			public var hexColor			:HexColor = new HexColor();
-			public var rgbColor			:RGBColor = new RGBColor();
-			public var hsvColor			:HSVColor = new HSVColor();
-			public var hslColor			:HSLColor = new HSLColor();
-			public var cmykColor		:CMYKColor = new CMYKColor();
-			public var labColor			:LABColor = new LABColor();
+			public var hexColor		:HexColor = new HexColor();
+			[Bindable] public var rgbColor		:RGBColor = new RGBColor();
+			[Bindable] public var hsvColor		:HSVColor = new HSVColor();
+			public var hslColor		:HSLColor = new HSLColor();
+			public var cmykColor	:CMYKColor = new CMYKColor();
 			
 			protected function applicationCompleteHandler(event:Event):void {
+				
 				var colors:Array = [];
 				var alphas:Array = [];
 				var ratios:Array = [];
@@ -52,7 +46,7 @@
 					ratios.push((255/interval) * i);
 				}
 				
-				var shape:Shape = GradientUtil.createShape(300, 20, colors, alphas, ratios);
+				/*var shape:Shape = GradientUtil.createShape(300, 20, colors, alphas, ratios);
 				drawCanvas.addChild(shape);
 				
 				colors = [];
@@ -69,12 +63,7 @@
 				
 				shape = GradientUtil.createShape(300, 20, colors, alphas, ratios);
 				shape.y = 22;
-				drawCanvas.addChild(shape);
-				
-				var square:Sprite = GradientUtil.createSquare(100, 100, 0xFF0000);
-				square.graphics.lineStyle(1)
-				square.graphics.drawRect(-1, -1, 101, 101);
-				drawCanvas.addChild(square);
+				drawCanvas.addChild(shape); */
 			}
 			
 			protected function toggleSliderTicks(slider:Slider, selected:Boolean):void {
@@ -100,7 +89,6 @@
 				if (exception != "HSV") updateHSVSliders();
 				if (exception != "HSL") updateHSLSliders();
 				if (exception != "CMYK") updateCMYKSliders();
-				if (exception != "LAB") updateLABSliders();
 			}
 			
 			protected function getNearestWebColor():void {
@@ -117,13 +105,11 @@
 			
 			protected function updateWebColor(event:Event):void {
 				colorValue = webColorsComboBox.selectedItem.data;
-				colorNameLabel.text = webColorsComboBox.selectedItem.name;
 				updateAll("Web");
 			}
 			
 			protected function updatePantomeColor(event:Event):void {
 				colorValue = pantomeColorsComboBox.selectedItem.data;
-				colorNameLabel.text = pantomeColorsComboBox.selectedItem.name;
 				updateAll("Pantome");
 			}
 			
@@ -176,6 +162,8 @@
 				hsvColor.v = valueSlider.value;
 				colorValue = hsvColor.colorValue;
 				updateAll("HSV");
+				
+				updateHSVSliderTracks();
 			}
 			
 			protected function updateHSVSliders():void {
@@ -183,6 +171,17 @@
 				hueSlider.value = hsvColor.h;
 				saturationSlider.value = hsvColor.s;
 				valueSlider.value = hsvColor.v;
+				
+				updateHSVSliderTracks();
+			}
+			
+			protected function updateHSVSliderTracks():void {
+				var s1:HSVColor = new HSVColor(hsvColor.h, HSVColor.MIN_S, hsvColor.v);
+				var s2:HSVColor = new HSVColor(hsvColor.h, HSVColor.MAX_S, hsvColor.v);
+				var v:HSVColor = new HSVColor(hsvColor.h, hsvColor.s, HSVColor.MAX_V);
+				
+				saturationSlider.setStyle("trackColors", [s1.colorValue, s2.colorValue]);
+				valueSlider.setStyle("trackColors", [0x000000, v.colorValue]);
 			}
 			
 			protected function updateHSL():void {
@@ -191,6 +190,8 @@
 				hslColor.l = lightnessSlider.value;
 				colorValue = hslColor.colorValue;
 				updateAll("HSL");
+				
+				updateHSLSliderTracks();
 			}
 			
 			protected function updateHSLSliders():void {
@@ -198,6 +199,15 @@
 				hueSlider2.value = hslColor.h;
 				saturationSlider2.value = hslColor.s;
 				lightnessSlider.value = hslColor.l;
+				
+				updateHSLSliderTracks();
+			}
+			
+			protected function updateHSLSliderTracks():void {
+				var s1:HSLColor = new HSLColor(hslColor.h, HSLColor.MIN_S, hslColor.l);
+				var s2:HSLColor = new HSLColor(hslColor.h, HSLColor.MAX_S, hslColor.l);
+				
+				saturationSlider2.setStyle("trackColors", [s1.colorValue, s2.colorValue]);
 			}
 			
 			protected function updateCMYK():void {
@@ -217,41 +227,31 @@
 				blackSlider.value = cmykColor.k;
 			}
 			
-			protected function updateLAB():void {
-				labColor.l = luminanceSlider.value;
-				labColor.a = redGreenSlider.value;
-				labColor.b = yellowBlueSlider.value;
-				colorValue = labColor.colorValue;
-				updateAll("LAB");
-			}
-			
-			protected function updateLABSliders():void {
-				labColor.fromDecimal(colorValue);
-				luminanceSlider.value = labColor.l;
-				redGreenSlider.value = labColor.a;
-				yellowBlueSlider.value = labColor.b;
-			}
-			
 		]]>
 	</mx:Script>
 	
 	<mx:Form height="100%" borderStyle="solid" backgroundColor="#FFFFFF" x="0" y="0">
-		<mx:FormItem label="Color" direction="horizontal">
-			<mx:Canvas id="hsvCanvas"
+		
+		<mx:FormHeading label="Color values" />
+		<mx:FormItem label="RGB" direction="horizontal">
+			<mx:Label text="R:"/>
+			<mx:TextInput width="30" text="{rgbColor.r}"/>
+			<mx:Label text="G:"/>
+			<mx:TextInput width="30" text="{rgbColor.g}"/>
+			<mx:Label text="B:"/>
+			<mx:TextInput width="30" text="{rgbColor.b}"/>
+			
+			<mx:Label text="value:"/>
+			<mx:TextInput width="80" text="{rgbColor.colorValue}"/>
+		</mx:FormItem>
+		<mx:FormItem label="Hex" direction="horizontal">
+			<mx:TextInput id="hexInput"
+				change="if (hexStringValidator.validate()) updateHex()"
+				enter="if (hexStringValidator.validate()) updateHex()"/>
+			<mx:Canvas
 				width="20" height="20"
 				borderStyle="solid" borderColor="#000000"
 				backgroundColor="{colorValue}"/>
-				
-			<mx:Label id="colorLabel" text="{ColorUtil.toHexString(colorValue)}"/>
-			
-			<mx:Label id="colorNameLabel"/>
-			
-		</mx:FormItem>
-		<mx:FormHeading label="HEX"/>
-		<mx:FormItem label="Hex">
-			<mx:TextInput id="hexInput"
-				change="hexStringValidator.validate()"
-				enter="updateHex()"/>
 		</mx:FormItem>
 		<mx:FormItem label="WebColors" direction="horizontal">
 			<mx:ComboBox id="webColorsComboBox"
@@ -259,7 +259,7 @@
 				dataProvider="{getColorsArray(Web)}"
 				itemRenderer="view.renderers.ColorRenderer"
 				change="updateWebColor(event)" width="220"/>
-			<mx:Button  label="Get Nearest WebColor"
+			<mx:Button  label="Nearest"
 				click="getNearestWebColor()"/>
 		</mx:FormItem>
 		<mx:FormItem label="PantomeColors" direction="horizontal">
@@ -268,9 +268,11 @@
 				dataProvider="{getColorsArray(PMS)}"
 				itemRenderer="view.renderers.ColorRenderer"
 				change="updatePantomeColor(event)" width="220"/>
-			<mx:Button  label="Get Nearest PantomeColor"
+			<mx:Button  label="Nearest"
 				click="getNearestPantomeColor()"/>
 		</mx:FormItem>
+		
+		<!-- RGB -->
 		
 		<mx:FormHeading label="RGB"/>
 		<mx:FormItem label="Red" direction="horizontal">
@@ -303,6 +305,9 @@
 			<mx:CheckBox label="Web safe"
 				change="toggleSliderTicks(blueSlider, event.target.selected)"/>
 		</mx:FormItem>
+		
+		<!-- HSV -->
+		
 		<mx:FormHeading label="HSV"/>
 		<mx:FormItem label="Hue" direction="horizontal">
 			<mx:HSlider id="hueSlider"
@@ -311,60 +316,119 @@
 				trackMargin="5"
 				trackSkin="view.skins.ColorTrackSkin"
 				change="updateHSV()"/>
-			<!--<mx:HSlider id="hueSlider" change="updateHSV()" minimum="0" maximum="360" liveDragging="true"/>-->
 			<mx:Label text="°" />
 		</mx:FormItem>
 		<mx:FormItem label="Saturation" direction="horizontal">
-			<mx:HSlider id="saturationSlider" change="updateHSV()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="saturationSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0x000000, 0xFFFFFF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateHSV()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
 		<mx:FormItem label="Value" direction="horizontal">
-			<mx:HSlider id="valueSlider" change="updateHSV()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="valueSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0x000000, 0xFFFFFF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateHSV()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
+		
+		<!-- HSL -->
+		
 		<mx:FormHeading label="HSL"/>
 		<mx:FormItem label="Hue" direction="horizontal">
-			<mx:HSlider id="hueSlider2" change="updateHSL()" minimum="0" maximum="360" liveDragging="true"/>
+			<mx:HSlider id="hueSlider2"
+				minimum="0" maximum="360" liveDragging="true"
+				trackColors="{Gradient.getHueColors()}"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateHSL()"/>
 			<mx:Label text="°" />
 		</mx:FormItem>
 		<mx:FormItem label="Saturation" direction="horizontal">
-			<mx:HSlider id="saturationSlider2" change="updateHSL()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="saturationSlider2"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0x000000, 0xFFFFFF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateHSL()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
 		<mx:FormItem label="Lightness" direction="horizontal">
-			<mx:HSlider id="lightnessSlider" change="updateHSL()" minimum="0" maximum="255" liveDragging="true"/>
+			<mx:HSlider id="lightnessSlider"
+				minimum="0" maximum="255" liveDragging="true"
+				trackColors="[0x000000, 0xFFFFFF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateHSL()"/>
 		</mx:FormItem>
+		
+		<!-- CMYK -->
+		
 		<mx:FormHeading label="CMYK"/>
 		<mx:FormItem label="Cyan" direction="horizontal">
-			<mx:HSlider id="cyanSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="cyanSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0xFFFFFF, 0x00FFFF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateCMYK()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
 		<mx:FormItem label="Magenta" direction="horizontal">
-			<mx:HSlider id="magentaSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="magentaSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0xFFFFFF, 0xFF00FF]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateCMYK()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
 		<mx:FormItem label="Yellow" direction="horizontal">
-			<mx:HSlider id="yellowSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="yellowSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0xFFFFFF, 0xFFFF00]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateCMYK()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
 		<mx:FormItem label="Black" direction="horizontal">
-			<mx:HSlider id="blackSlider" change="updateCMYK()" minimum="0" maximum="100" liveDragging="true"/>
+			<mx:HSlider id="blackSlider"
+				minimum="0" maximum="100" liveDragging="true"
+				trackColors="[0xFFFFFF, 0x000000]"
+				trackMargin="5"
+				trackSkin="view.skins.ColorTrackSkin"
+				change="updateCMYK()"/>
 			<mx:Label text="%" />
 		</mx:FormItem>
-		<mx:FormHeading label="LAB"/>
-		<mx:FormItem label="Luminance" direction="horizontal">
-			<mx:HSlider id="luminanceSlider" change="updateLAB()" minimum="0" maximum="100" liveDragging="true"/>
-			<mx:Label text="%" />
+		
+		<!-- Colorpicker -->
+		
+		<mx:FormHeading label="Colorpicker" />
+		<mx:FormItem label="GradientTest" direction="horizontal">
+			
+			<components:ColorPicker id="colorPicker"
+				width="100" height="100"
+				color="{colorValue}"/>
+			
+			<mx:VBox>
+				<mx:Canvas id="prevColor"
+					width="20" height="20"
+					borderStyle="solid" borderColor="#000000"
+					backgroundColor="{colorPicker.previousColor}"/>
+					
+				<mx:Canvas id="currentColor"
+					width="20" height="20"
+					borderStyle="solid" borderColor="#000000"
+					backgroundColor="{colorPicker.selectedColor}"/>
+			</mx:VBox>
 		</mx:FormItem>
-		<mx:FormItem label="red-green">
-			<mx:HSlider id="redGreenSlider" change="updateLAB()" minimum="-128" maximum="127" liveDragging="true"/>
-		</mx:FormItem>
-		<mx:FormItem label="yellow-blue">
-			<mx:HSlider id="yellowBlueSlider" change="updateLAB()" minimum="-128" maximum="127" liveDragging="true"/>
-		</mx:FormItem>
-		<mx:FormItem label="GradientTest">
-			<mx:UIComponent width="400" height="100" id="drawCanvas" />
-		</mx:FormItem>
+		
 	</mx:Form>
 	
 	<mx:RegExpValidator id="hexStringValidator"
