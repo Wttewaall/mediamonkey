@@ -6,8 +6,6 @@ package nl.mediamonkey.color {
 	
 	public class HexColor extends Color {
 		
-		//public static var usePrefix:String;
-		
 		// ---- getters & setters ----
 		
 		private var _prefix			:String;
@@ -43,19 +41,17 @@ package nl.mediamonkey.color {
 		public function HexColor(value:*=0) {
 			var type:String = typeof(value);
 			
-			switch (type) {
-				case "number": {
-					setColorValue(value as Number);
-					_hex = ColorUtil.toHexString(value);
-					break;
-				}
-				case "string": {
-					hex = value as String;
-					break;
-				}
-				default: {
-					throw new TypeError("invalid value type as argument ("+type+"), type must be either Number or String");
-				}
+			if (value is String) {
+				value = parseInt(value);
+				setColorValue(value);
+				_hex = ColorUtil.toHexString(value);
+				
+			} else if (value is Number) {
+				setColorValue(value as Number);
+				_hex = ColorUtil.toHexString(value);
+				
+			} else {
+				throw new TypeError("invalid value type as argument ("+type+"), type must be either Number or String");
 			} 
 		}
 		
@@ -65,10 +61,14 @@ package nl.mediamonkey.color {
 			hex = value;
 		}
 		
-		override public function fromDecimal(value:uint):IColor {
+		public static function fromDecimal(value:uint):HexColor {
+			var color:HexColor = new HexColor();
+			color.fromDecimal(value);
+			return color;
+		}
+		
+		override public function fromDecimal(value:uint):void {
 			setColorValue(value);
-			
-			return new HexColor(value);
 		}
 		
 		override public function toDecimal():uint {

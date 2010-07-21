@@ -4,73 +4,93 @@ package nl.mediamonkey.color {
 	
 	public class LABColor extends Color {
 		
-		private var _L			:Number; // 0 to 100 luminance in percentage, brghtness = l/2
-		private var _A			:Number; // -128 to 127 value between red and green
-		private var _B			:Number; // -128 to 127 value between yellow and blue
+		public static const MIN_L	:Number = 0;
+		public static const MAX_L	:Number = 100;
+		public static const MIN_A	:Number = -128;
+		public static const MAX_A	:Number = 127;
+		public static const MIN_B	:Number = -128;
+		public static const MAX_B	:Number = 127;
 		
-		public function get L():uint {
-			return _L;
+		// ---- getters & setters ----
+		
+		private var _l			:Number; // 0 to 100 luminance in percentage, brightness = l/2
+		private var _a			:Number; // -128 to 127 value between red and green
+		private var _b			:Number; // -128 to 127 value between yellow and blue
+		
+		public function get l():uint {
+			return _l;
 		}
 		
-		public function set L(value:uint):void {
-			if (_L != value) {
-				_L = Math.max(0, Math.min(value, 100));
+		public function set l(value:uint):void {
+			if (_l != value) {
+				setProperties(value, a, b);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get A():uint {
-			return _A;
+		public function get a():uint {
+			return _a;
 		}
 		
-		public function set A(value:uint):void {
-			if (_A != value) {
-				_A = Math.max(-128, Math.min(value, 127));
+		public function set a(value:uint):void {
+			if (_a != value) {
+				setProperties(l, value, b);
 				setColorValue(toDecimal());
 			}
 		}
 		
-		public function get B():uint {
-			return _B;
+		public function get b():uint {
+			return _b;
 		}
 		
-		public function set B(value:uint):void {
-			if (_B != value) {
-				_B = Math.max(-128, Math.min(value, 127));
+		public function set b(value:uint):void {
+			if (_b != value) {
+				setProperties(l, a, value);
 				setColorValue(toDecimal());
 			}
 		}
+		
+		// ---- constructor ----
 		
 		public function LABColor(luminance:uint=0, redGreen:int=0, yellowBlue:int=0) {
-			_L = Math.max(0, Math.min(luminance, 100));
-			_A = Math.max(-128, Math.min(redGreen, 127));
-			_B = Math.max(-128, Math.min(yellowBlue, 127));
+			setProperties(luminance, redGreen, yellowBlue);
 			setColorValue(toDecimal());
+		}
+		
+		// ---- protected methods ----
+		
+		protected function setProperties(l:Number, a:Number, b:Number):void {
+			_l = Math.max(MIN_L, Math.min(l, MAX_L));
+			_a = Math.max(MIN_A, Math.min(a, MAX_A));
+			_b = Math.max(MIN_B, Math.min(b, MAX_B));
 		}
 		
 		// ---- conversion methods ----
 		
-		override public function fromDecimal(value:uint):IColor {
+		public static function fromDecimal(value:uint):LABColor {
+			var color:LABColor = new LABColor();
+			color.fromDecimal(value);
+			return color;
+		}
+		
+		override public function fromDecimal(value:uint):void {
 			setColorValue(value);
 			
-			var rgb:RGBColor = new RGBColor();
-			rgb.fromDecimal(value);
+			var rgb:RGBColor = RGBColor.fromDecimal(value);
 			
-			var lab:LABColor = ColorUtil.RGBToLAB(rgb.R, rgb.G, rgb.B);
-			_L = lab.L;
-			_A = lab.A;
-			_B = lab.B;
-			
-			return lab;
+			var lab:LABColor = ColorUtil.RGBToLAB(rgb.r, rgb.g, rgb.b);
+			_l = lab.l;
+			_a = lab.a;
+			_b = lab.b;
 		}
 		
 		override public function toDecimal():uint {
-			var rgb:RGBColor = ColorUtil.LABToRGB(L, A, B);
+			var rgb:RGBColor = ColorUtil.LABToRGB(l, a, b);
 			return rgb.colorValue;
 		}
 		
 		override public function toString():String {
-			return "[LABColor L:"+L+" A:"+A+" B:"+B+"]";
+			return "[LABColor l:"+l+" a:"+a+" b:"+b+"]";
 		}
 		
 	}

@@ -5,9 +5,11 @@ package nl.mediamonkey.color.utils {
 	 * http://www.easyrgb.com/index.php?X=MATH
 	 */
 	
+	import nl.mediamonkey.color.ARGBColor;
 	import nl.mediamonkey.color.CMYKColor;
 	import nl.mediamonkey.color.HSLColor;
 	import nl.mediamonkey.color.HSVColor;
+	import nl.mediamonkey.color.IColor;
 	import nl.mediamonkey.color.LABColor;
 	import nl.mediamonkey.color.RGBColor;
 	import nl.mediamonkey.color.XYZColor;
@@ -60,8 +62,7 @@ package nl.mediamonkey.color.utils {
 		}
 		
 		public static function getNearestColorValue(value:uint, pool:Array):uint {
-			var currentRGB:RGBColor = new RGBColor();
-			currentRGB.fromDecimal(value);
+			var currentRGB:RGBColor = RGBColor.fromDecimal(value);
 			
 			var dR:Number;
 			var dG:Number;
@@ -76,9 +77,9 @@ package nl.mediamonkey.color.utils {
 				colorValue = pool[i];
 				nextRGB.fromDecimal(colorValue);
 				
-				dR = nextRGB.R - currentRGB.R;
-				dG = nextRGB.G - currentRGB.G;
-				dB = nextRGB.B - currentRGB.B;
+				dR = nextRGB.r - currentRGB.r;
+				dG = nextRGB.g - currentRGB.g;
+				dB = nextRGB.b - currentRGB.b;
 				distance = dR*dR + dG*dG + dB*dB;
 				
 				if (distance == 0) {
@@ -95,6 +96,106 @@ package nl.mediamonkey.color.utils {
 			
 			return minColorValue;
 		}
+		
+		// ---- color methods ----
+		
+		public static function multiply(color1:Object, color2:Object):uint {
+			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1));
+			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2));
+			
+			return (
+				((argb1.a * argb2.a / 255) << 24) |
+				((argb1.r * argb2.r / 255) << 16) |
+				((argb1.g * argb2.g / 255) << 8) |
+				(argb1.b * argb2.b / 255)
+			);
+		}
+		
+		public static function interpolate(color1:Object, color2:Object, ratio:Number=0.5):uint {
+			var argb1:ARGBColor = ARGBColor.fromDecimal(getColorValue(color1));
+			var argb2:ARGBColor = ARGBColor.fromDecimal(getColorValue(color2));
+			
+			var inverseRatio:Number = 1 - ratio;
+			
+			var a:uint = Math.round(ratio * argb2.a + inverseRatio * argb1.a);
+			var r:uint = Math.round(ratio * argb2.r + inverseRatio * argb1.r);
+			var g:uint = Math.round(ratio * argb2.g + inverseRatio * argb1.g);
+			var b:uint = Math.round(ratio * argb2.b + inverseRatio * argb1.b);
+			
+			return a << 24 | r << 16 | g << 8 | b;
+		}
+		
+		/** @param saturation 0 to 1 **/
+		public static function saturate(color:Object, saturation:Number):uint {
+			var hsv:HSVColor = HSVColor.fromDecimal(getColorValue(color));
+			hsv.s = Math.max(0, Math.min(saturation, 1)) * 100;
+			return hsv.colorValue;
+		}
+		
+		/** @param lightness 0 to 1 **/
+		public static function lighten(color:Object, lightness:Number):uint {
+			var hsv:HSVColor = HSVColor.fromDecimal(getColorValue(color));
+			hsv.v = Math.max(0, Math.min(lightness, 1)) * 100;
+			return hsv.colorValue;
+		}
+		
+		public static function brighten(color:Object):uint {
+			var baseScale:Number = 0.7;
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			
+			var i:int = (1.0/(1.0-baseScale));
+			
+			if ( argb.r == 0 && argb.g == 0 && argb.b == 0) {
+				return argb.colorValue;
+			}
+			
+			if ( argb.r > 0 && argb.r < i ) argb.r = i;
+			if ( argb.g > 0 && argb.g < i ) argb.g = i;
+			if ( argb.b > 0 && argb.b < i ) argb.b = i;
+			
+			argb.r = Math.min(255, (argb.r / baseScale));
+			argb.g = Math.min(255, (argb.g / baseScale));
+			argb.b = Math.min(255, (argb.b / baseScale));
+			
+			return argb.colorValue;
+		}
+		
+		public static function darken(color:Object):uint {
+			var baseScale:Number = 0.7;
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			
+			argb.r = Math.max(0, argb.r * baseScale);
+			argb.g = Math.max(0, argb.g * baseScale);
+			argb.b = Math.max(0, argb.b * baseScale);
+			
+			return argb.colorValue;
+		}
+		
+		public static function desaturate(color:Object):uint {
+			var argb:ARGBColor = ARGBColor.fromDecimal(getColorValue(color));
+			
+			argb.r *= 0.2125; // red band weight
+			argb.g *= 0.7154; // green band weight
+			argb.b *= 0.0721; // blue band weight
+			
+			var gray:uint = Math.min((argb.r + argb.g + argb.b), 0xff) & 0xff;
+			return argb.a | (gray << 16) | (gray << 8) | gray;
+		}
+		
+		public static function getColorValue(object:Object):uint {
+			var color:ARGBColor;
+			
+			if (object is IColor) {
+				color = ARGBColor.fromDecimal((object as IColor).colorValue)
+					
+			} else if (object is Number) {
+				color = ARGBColor.fromDecimal(object as uint);
+			}
+			
+			return (color) ? color.colorValue : 0;
+		}
+		
+		// ---- conversion methods ----
 		
 		public static function RGBToHSV(R:uint, G:uint, B:uint):HSVColor {
 			var tR:Number = R / 255; // R from 0 to 255
@@ -198,31 +299,31 @@ package nl.mediamonkey.color.utils {
 			return new HSLColor(H * 360, S * 100, L * 255);
 		}
 		
-		public static function HSLToRGB(H:Number, S:Number, L:Number):RGBColor {
-			H /= 360;
-			S /= 100;
-			L /= 255;
+		public static function HSLToRGB(h:Number, s:Number, l:Number):RGBColor {
+			h /= 360;
+			s /= 100;
+			l /= 255;
 			
-			var R:Number;
-			var G:Number;
-			var B:Number;
+			var r:Number;
+			var g:Number;
+			var b:Number;
 			
-			if ( S == 0 ) {                     //HSL from 0 to 1
-				R = G = B = L;                   //RGB results from 0 to 255
+			if (s == 0) {                     //HSL from 0 to 1
+				r = g = b = l;                //RGB results from 0 to 255
 				
 			} else {
 				var v2:Number;
-				if ( L < 0.5 ) v2 = L * ( 1 + S );
-				else           v2 = ( L + S ) - ( S * L );
+				if ( l < 0.5 ) v2 = l * ( 1 + s );
+				else           v2 = ( l + s ) - ( s * l );
 			
-				var v1:Number = 2 * L - v2
+				var v1:Number = 2 * l - v2
 			
-				R = HueToRGB( v1, v2, H + ( 1 / 3 ) );
-				G = HueToRGB( v1, v2, H );
-				B = HueToRGB( v1, v2, H - ( 1 / 3 ) );
+				r = HueToRGB( v1, v2, h + ( 1 / 3 ) );
+				g = HueToRGB( v1, v2, h );
+				b = HueToRGB( v1, v2, h - ( 1 / 3 ) );
 			}
 			
-			return new RGBColor(R * 255, G * 255, B * 255);
+			return new RGBColor(r * 255, g * 255, b * 255);
 		}
 		
 		public static function HueToRGB(v1:Number, v2:Number, vH:Number):Number {
@@ -234,50 +335,47 @@ package nl.mediamonkey.color.utils {
 			return v1;
 		}
 		
-		public static function RGBToCMYK(R:uint, G:uint, B:uint):CMYKColor {
-			var C:Number = 1 - (R / 255);
-			var M:Number = 1 - (G / 255);
-			var Y:Number = 1 - (B / 255);
-			var K:Number = 1;
+		public static function RGBToCMYK(r:Number, g:Number, b:Number):CMYKColor {
+			var c:Number = 1 - (r / 255);
+			var m:Number = 1 - (g / 255);
+			var y:Number = 1 - (b / 255);
+			var k:Number = 1;
 			
-			if (C < K) K = C;
-			if (M < K) K = M;
-			if (Y < K) K = Y;
+			if (c < k) k = c;
+			if (m < k) k = m;
+			if (y < k) k = y;
 			
-			if (K == 1) { //Black
-				C = 0
-				M = 0
-				Y = 0
+			if (k == 1) { //Black
+				c = 0
+				m = 0
+				y = 0
 				
 			} else {
-				C = (C - K) / (1 - K);
-				M = (M - K) / (1 - K);
-				Y = (Y - K) / (1 - K);
+				c = (c - k) / (1 - k);
+				m = (m - k) / (1 - k);
+				y = (y - k) / (1 - k);
 			}
 			
-			return new CMYKColor(C * 100, M * 100, Y * 100, K * 100);
+			return new CMYKColor(c * 100, m * 100, y * 100, k * 100);
 		}
 		
-		public static function CMYKToRGB(C:Number, M:Number, Y:Number, K:Number):RGBColor {
-			C /= 100;
-			M /= 100;
-			Y /= 100;
-			K /= 100;
+		public static function CMYKToRGB(c:Number, m:Number, y:Number, k:Number):RGBColor {
+			c /= 100;
+			m /= 100;
+			y /= 100;
+			k /= 100;
 			
-			var R:Number = 1 - (C * (1 - K) + K);
-			var G:Number = 1 - (M * (1 - K) + K);
-			var B:Number = 1 - (Y * (1 - K) + K);
+			var r:Number = 1 - (c * (1 - k) + k);
+			var g:Number = 1 - (m * (1 - k) + k);
+			var b:Number = 1 - (y * (1 - k) + k);
 			
-			return new RGBColor(R * 255, G * 255, B * 255);
+			return new RGBColor(r * 255, g * 255, b * 255);
 		}
 		
-		public static function RGBToXYZ(R:uint, G:uint, B:uint):XYZColor {
-			//R from 0 to 255
-			//G from 0 to 255
-			//B from 0 to 255
-			var r:Number = R/255;
-			var g:Number = G/255;
-			var b:Number = B/255;
+		public static function RGBToXYZ(r:Number, g:Number, b:Number):XYZColor {
+			r /= 255;
+			g /= 255;
+			b /= 255;
 			 
 			if (r > 0.04045){ r = Math.pow((r + 0.055) / 1.055, 2.4); }
 			else { r = r / 12.92; }
@@ -291,21 +389,17 @@ package nl.mediamonkey.color.utils {
 			 
 			//Observer. = 2°, Illuminant = D65
 			var xyz:XYZColor = new XYZColor();
-			xyz.X = r * 0.4124 + g * 0.3576 + b * 0.1805;
-			xyz.Y = r * 0.2126 + g * 0.7152 + b * 0.0722;
-			xyz.Z = r * 0.0193 + g * 0.1192 + b * 0.9505;
+			xyz.x = r * 0.4124 + g * 0.3576 + b * 0.1805;
+			xyz.y = r * 0.2126 + g * 0.7152 + b * 0.0722;
+			xyz.z = r * 0.0193 + g * 0.1192 + b * 0.9505;
 			 
 			return xyz;
 		}
 		
-		public static function XYZToLAB(X:Number, Y:Number, Z:Number ):LABColor {
-			const REF_X:Number = 95.047; // Observer= 2°, Illuminant= D65
-			const REF_Y:Number = 100.000;
-			const REF_Z:Number = 108.883;
-			
-			var x:Number = X / REF_X;	
-			var y:Number = Y / REF_Y;  
-			var z:Number = Z / REF_Z;  
+		public static function XYZToLAB(x:Number, y:Number, z:Number ):LABColor {
+			x /= XYZColor.MAX_X;
+			y /= XYZColor.MAX_Y;
+			z /= XYZColor.MAX_Z;
 			 
 			if ( x > 0.008856 ) { x = Math.pow( x , 1/3 ); }
 			else { x = ( 7.787 * x ) + ( 16/116 ); }
@@ -315,18 +409,14 @@ package nl.mediamonkey.color.utils {
 			else { z = ( 7.787 * z ) + ( 16/116 ); }
 			 
 			var lab:LABColor = new LABColor();
-			lab.L = ( 116 * y ) - 16;
-			lab.A = 500 * ( x - y );
-			lab.B = 200 * ( y - z );
+			lab.l = ( 116 * y ) - 16;
+			lab.a = 500 * ( x - y );
+			lab.b = 200 * ( y - z );
 			 
 			return lab;
 		}
 		
-		public static function LABToXYZ( l:Number, a:Number, b:Number ):XYZColor {
-			const REF_X:Number = 95.047; // Observer= 2°, Illuminant= D65
-			const REF_Y:Number = 100.000; 
-			const REF_Z:Number = 108.883;
-			
+		public static function LABToXYZ(l:Number, a:Number, b:Number):XYZColor {
 			var y:Number = (l + 16) / 116;
 			var x:Number = a / 500 + y;
 			var z:Number = y - b / 200;
@@ -338,16 +428,13 @@ package nl.mediamonkey.color.utils {
 			if ( Math.pow( z , 3 ) > 0.008856 ) { z = Math.pow( z , 3 ); }
 			else { z = ( z - 16 / 116 ) / 7.787; }
 			 
-			return new XYZColor(REF_X * x, REF_Y * y, REF_Z * z);
+			return new XYZColor(XYZColor.MAX_X * x, XYZColor.MAX_Y * y, XYZColor.MAX_Z * z);
 		}
 		
-		public static function XYZToRGB(X:Number, Y:Number, Z:Number):RGBColor {
-			//X from 0 to  95.047		(Observer = 2°, Illuminant = D65)
-			//Y from 0 to 100.000
-			//Z from 0 to 108.883
-			var x:Number = X / 100;		  
-			var y:Number = Y / 100;		  
-			var z:Number = Z / 100;		  
+		public static function XYZToRGB(x:Number, y:Number, z:Number):RGBColor {
+			x /= 100;		  
+			y /= 100;		  
+			z /= 100;		  
 			
 			// warning: use longer numbers for more accuracy
 			var r:Number = x * 3.2406 + y * -1.5372 + z * -0.4986;
@@ -364,14 +451,14 @@ package nl.mediamonkey.color.utils {
 			return new RGBColor(uint(r * 255), uint(g * 255), uint(b * 255));
 		}
 		
-		public static function RGBToLAB(R:uint, G:uint, B:uint):LABColor {
-			var xyz:XYZColor = RGBToXYZ(R, G, B);
-			return XYZToLAB(xyz.X, xyz.Y, xyz.Z);
+		public static function RGBToLAB(r:uint, g:uint, b:uint):LABColor {
+			var xyz:XYZColor = RGBToXYZ(r, g, b);
+			return XYZToLAB(xyz.x, xyz.y, xyz.z);
 		}
 		
-		public static function LABToRGB(L:Number, A:Number, B:Number):RGBColor {
-			var xyz:XYZColor = LABToXYZ(L, A, B);
-			return XYZToRGB(xyz.X, xyz.Y, xyz.Z);
+		public static function LABToRGB(l:Number, a:Number, b:Number):RGBColor {
+			var xyz:XYZColor = LABToXYZ(l, a, b);
+			return XYZToRGB(xyz.x, xyz.y, xyz.z);
 		}
 		
 	}
