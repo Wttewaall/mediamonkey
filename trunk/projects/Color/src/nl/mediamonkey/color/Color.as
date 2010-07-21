@@ -1,8 +1,20 @@
 package nl.mediamonkey.color {
 	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+	
+	import mx.events.PropertyChangeEvent;
+	import mx.events.PropertyChangeEventKind;
+	
 	import nl.mediamonkey.color.utils.ColorUtil;
 	
-	public class Color implements IColor {
+	public class Color extends EventDispatcher implements IColor {
+		
+		protected var invalidColorValue:Boolean;
+		
+		private var prevColorValue:uint;
 		
 		// ---- getters & setters ----
 		
@@ -10,39 +22,78 @@ package nl.mediamonkey.color {
 		
 		[Bindable]
 		public function get colorValue():uint {
+			if (invalidColorValue) {
+				invalidColorValue = false;
+				prevColorValue = _colorValue;
+				_colorValue = toDecimal();
+			}
+			
 			return _colorValue;
 		}
 		
 		public function set colorValue(value:uint):void {
 			if (_colorValue != value) {
-				_colorValue = value; // just to be sure not to break the binding
 				fromDecimal(value);
+				
+				dispatchColorValue();
 			}
 		}
 		
 		public function setColorValue(value:uint):void {
-			_colorValue = value;
+			if (_colorValue != value) {
+				prevColorValue = _colorValue;
+				_colorValue = value;
+				invalidColorValue = false;
+				
+				dispatchColorValue();
+			}
 		}
 		
-		// ---- conversion methods ----
+		public function invalidateColorValue():void {
+			if (!invalidColorValue) {
+				invalidColorValue = true;
+				
+				dispatchColorValue();
+			}
+		}
+		
+		protected function dispatchColorValue():void {
+			dispatchEvent(new PropertyChangeEvent(PropertyChangeEvent.PROPERTY_CHANGE, false, false,
+				PropertyChangeEventKind.UPDATE, "colorValue", prevColorValue, colorValue, this));
+		}
+		
+		// ---- constructor ----
+		
+		public function Color() {
+		}
+		
+		// ---- input/output of decimal colorvalue methods ----
 		
 		public function fromDecimal(value:uint):void {
-			throw new Error("Class must override fromDecimal method");
+			setColorValue(value);
 		}
 		
 		public function toDecimal():uint {
-			throw new Error("Class must override toDecimal method");
+			return _colorValue;
 		}
 		
-		// ---- more conversion methods ----
+		// ---- output methods ----
 		
-		public function toString():String {
+		override public function toString():String {
 			return "[Color value:"+colorValue+"]";
 		}
 		
 		public function toHexString(prefix:String="#"):String {
 			return ColorUtil.toHexString(colorValue, 6, prefix);
 		}
+		
+		public function clone():IColor {
+			var color:Color = new getDefinitionByName(getQualifiedClassName(this));
+			color.fromDecimal(this.colorValue);
+			return color;
+		}
+		
+		// ---- conversion methods ----
 		
 		public function toRGBColor():RGBColor {
 			var color:RGBColor = new RGBColor();

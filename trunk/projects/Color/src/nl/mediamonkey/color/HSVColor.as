@@ -17,52 +17,47 @@ package nl.mediamonkey.color {
 		private var _s			:uint; // 0 to 100 saturation in percentage
 		private var _v			:uint; // 0 to 100 lightness/value/tone in percentage
 		
+		[Bindable]
 		public function get h():uint {
 			return _h;
 		}
 		
 		public function set h(value:uint):void {
-			if (_h != value) {
-				setProperties(value, s, v);
-				setColorValue(toDecimal());
-			}
+			if (_h != value) setProperties(value, s, v);
 		}
 		
+		[Bindable]
 		public function get s():uint {
 			return _s;
 		}
 		
 		public function set s(value:uint):void {
-			if (_s != value) {
-				setProperties(h, value, v);
-				setColorValue(toDecimal());
-			}
+			if (_s != value) setProperties(h, value, v);
 		}
 		
+		[Bindable]
 		public function get v():uint {
 			return _v;
 		}
 		
 		public function set v(value:uint):void {
-			if (_v != value) {
-				setProperties(h, s, value);
-				setColorValue(toDecimal());
-			}
+			if (_v != value) setProperties(h, s, value);
 		}
 		
 		// ---- constructor ----
 		
 		public function HSVColor(hue:uint=0, saturation:uint=0, value:uint=0) {
 			setProperties(hue, saturation, value);
-			setColorValue(toDecimal());
 		}
 		
 		// ---- protected methods ----
 		
-		protected function setProperties(h:Number, s:Number, v:Number):void {
+		protected function setProperties(h:Number, s:Number, v:Number, invalidate:Boolean=true):void {
 			_h = Math.max(MIN_H, Math.min(h, MAX_H));
 			_s = Math.max(MIN_S, Math.min(s, MAX_S));
 			_v = Math.max(MIN_V, Math.min(v, MAX_V));
+			
+			if (invalidate) invalidateColorValue();
 		}
 		
 		// ---- conversion methods ----
@@ -79,9 +74,7 @@ package nl.mediamonkey.color {
 			var rgb:RGBColor = RGBColor.fromDecimal(value);
 			
 			var hsv:HSVColor = ColorUtil.RGBToHSV(rgb.r, rgb.g, rgb.b);
-			_h = hsv.h;
-			_s = hsv.s;
-			_v = hsv.v;
+			setProperties(hsv.h, hsv.s, hsv.v, false);
 		}
 		
 		override public function toDecimal():uint {
