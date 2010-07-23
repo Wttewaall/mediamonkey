@@ -87,30 +87,8 @@ package nl.mediamonkey.behaviors {
 			var moveY:Boolean = (direction == Direction.ALL || direction == Direction.VERTICAL);
 			
 			if (bounds != null) {
-				
-				if (grid) {
-					// snapped position to grid must stay intact
-					
-					if (moveX) {
-						if (position.x > bounds.left || position.x < bounds.right) {
-							target.x = Math.max(bounds.left, Math.min(position.x, bounds.right - target.width));
-						} else {
-							target.x = position.x;
-						}
-					}
-					
-					if (moveY) {
-						if (position.y > bounds.top || position.y < bounds.bottom) {
-							target.y = Math.max(bounds.top, Math.min(position.y, bounds.bottom - target.height));
-						} else {
-							target.y = position.y;
-						}
-					}
-					
-				} else {
-					if (moveX) target.x = Math.max(bounds.left, Math.min(position.x, bounds.right - target.width));
-					if (moveY) target.y = Math.max(bounds.top, Math.min(position.y, bounds.bottom - target.height));
-				}
+				if (moveX) target.x = Math.max(bounds.left, Math.min(position.x, bounds.right - target.width));
+				if (moveY) target.y = Math.max(bounds.top, Math.min(position.y, bounds.bottom - target.height));
 				
 			} else {
 				if (moveX) target.x = position.x;
@@ -174,10 +152,16 @@ package nl.mediamonkey.behaviors {
 			
 			var borderLength:Number = 30;
 			
+			g.lineStyle(0, 0, 0);
+			g.beginFill(0xFF0000, 1);
+			g.drawCircle(x, y, 3);
+			g.endFill();
+			
 			// 1. skip GuideLines als result
 			// 2. bepaal op distance of de left of right result wordt getekend
 			
-			if (leftResult.object is GuideLine == false) {
+			/*var test:Boolean = false;
+			if (test == true && leftResult.object is GuideLine == false) {
 				if (Math.abs(leftResult.value - x) <= snapAccuracy) {
 					g.lineStyle(1, 0xFF0000, 1, true);
 					
@@ -186,36 +170,53 @@ package nl.mediamonkey.behaviors {
 					
 					x = (leftResult.side == SnapResult.LEFT) ? p2.left : p2.right;
 					
+					var a1:Point;
+					var a2:Point;
+					
 					if (p1.top < p2.bottom) {
-						DrawUtil.dashTo(g, new Point(x, p1.top - borderLength), new Point(x, p2.bottom + borderLength));
+						
+						a1 = new Point(x, p1.top - borderLength);
+						a2 = new Point(x, p2.bottom + borderLength);
+						
+						DrawUtil.dashTo(g, a1, a2);
 						//g.moveTo(x, p1.top - borderLength);
 						//g.lineTo(x, p2.bottom + borderLength);
 					} else {
-						DrawUtil.dashTo(g, new Point(x, p2.top - borderLength), new Point(x, p1.bottom + borderLength));
+						
+						a1 = new Point(x, p2.top - borderLength);
+						a2 = new Point(x, p1.bottom + borderLength);
+						
+						DrawUtil.dashTo(g, a1, a2);
 						//g.moveTo(x, p2.top - borderLength);
 						//g.lineTo(x, p1.bottom + borderLength);
 					}
 					
 				}
-			}
-			
-			/*if (Math.abs(rightResult.value - x) <= snapAccuracy) {
-			g.lineStyle(1, 0x00FF00, 1, true);
-			g.moveTo(rightResult.value+1, 0);
-			g.lineTo(rightResult.value+1, 1000);
 			}*/
 			
-			/*if (Math.abs(topResult.value - y) <= snapAccuracy) {
+			if (Math.abs(leftResult.value - x) <= snapAccuracy) {
+				g.lineStyle(1, 0xFF0000, 1, true);
+				g.moveTo(leftResult.value, 0);
+				g.lineTo(leftResult.value, 1000);
+			}
+			
+			if (Math.abs(rightResult.value - x - target.width) <= snapAccuracy) {
+				g.lineStyle(1, 0x00FF00, 1, true);
+				g.moveTo(rightResult.value+1, 0);
+				g.lineTo(rightResult.value+1, 1000);
+			}
+			
+			if (Math.abs(topResult.value - y) <= snapAccuracy) {
 				g.lineStyle(1, 0x0000FF, 1, true);
 				g.moveTo(0, topResult.value);
 				g.lineTo(1000, topResult.value);
-			}*/
+			}
 			
-			/*if (Math.abs(bottomResult.value - y) <= snapAccuracy) {
-			g.lineStyle(1, 0xFF00FF, 1, true);
-			g.moveTo(0, bottomResult.value+1);
-			g.lineTo(1000, bottomResult.value+1);
-			}*/
+			if (Math.abs(bottomResult.value - y - target.height) <= snapAccuracy) {
+				g.lineStyle(1, 0xFF00FF, 1, true);
+				g.moveTo(0, bottomResult.value+1);
+				g.lineTo(1000, bottomResult.value+1);
+			}
 		}
 		
 		public var leftResult		:SnapResult = new SnapResult();
@@ -235,14 +236,7 @@ package nl.mediamonkey.behaviors {
 			var nearestTop			:Number = NaN;
 			var nearestBottom		:Number = NaN;
 			
-			// targetRect = (useGlobalSpace) ? CoordsUtil.getGlobalBounds(target) : CoordsUtil.getBounds(target);
-			targetRect = CoordsUtil.getBounds(target);
-			
-			if (useGlobalSpace) {
-				offset = CoordsUtil.localToGlobal(target, new Point(targetRect.x, targetRect.y));
-				targetRect.x = offset.x;
-				targetRect.y = offset.y;
-			}
+			targetRect = (useGlobalSpace) ? CoordsUtil.getGlobalBounds(target) : CoordsUtil.getBounds(target);
 			
 			for each (object in snapObjects) {
 				

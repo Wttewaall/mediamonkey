@@ -7,6 +7,7 @@ package nl.mediamonkey.behaviors {
 	import mx.events.SandboxMouseEvent;
 	
 	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.utils.CoordsUtil;
 	
 	/**
 	 * The ScrubBehavior makes a DisplayObject Scrubable.
@@ -23,24 +24,37 @@ package nl.mediamonkey.behaviors {
 			super(target, dispatchFromTarget);
 		}
 		
+		override protected function addListeners(target:InteractiveObject):void {
+			trace(">>addListeners", target.name);
+			super.addListeners(target);
+		}
+		
+		override protected function removeListeners(target:InteractiveObject):void {
+			super.removeListeners(target);
+		}
+		
 		// ---- event handlers ----
 		
 		override protected function mouseDownHandler(event:MouseEvent):void {
+			trace("mouseDownHandler");
 			super.mouseDownHandler(event);
 			dispatchClickEvent();
 		}
 		
 		override protected function mouseMoveHandler(event:MouseEvent):void {
+			trace("mouseMoveHandler");
 			super.mouseMoveHandler(event);
 			if (dragging) dispatchClickEvent();
 		}
 		
 		override protected function mouseUpHandler(event:MouseEvent):void {
+			trace("mouseUpHandler");
 			super.mouseUpHandler(event);
 			dispatchClickEvent();
 		}
 		
 		override protected function mouseUpSomewhereHandler(event:SandboxMouseEvent):void {
+			trace("mouseUpSomewhereHandler");
 			super.mouseUpSomewhereHandler(event);
 			dispatchClickEvent();
 		}
@@ -49,7 +63,7 @@ package nl.mediamonkey.behaviors {
 		
 		protected function dispatchClickEvent():void {
 			position = new Point(target.mouseX, target.mouseY);
-			if (useGlobalSpace) position = target.parent.localToGlobal(position);
+			if (useGlobalSpace) position = CoordsUtil.localToGlobal(target, position);
 			
 			target.dispatchEvent(new MouseEvent(MouseEvent.CLICK, true, false, position.x, position.y));
 		}

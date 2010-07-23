@@ -33,39 +33,34 @@ package nl.mediamonkey.utils {
 		 * @param array A collection of DisplayObjects.
 		 * @param horizontal A String value to align horizontally. Tha value can be "left", "center" or "right".
 		 * @param horizontal A String value to align vertically. Tha value can be "top", "middle" or "bottom".
-		 * @param alignTo A DisplayObject of which to include the bounds in the algorithm.
+		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function align(array:Array, horizontal:String, vertical:String, alignTo:DisplayObject=null):void {
+		public static function align(array:Array, horizontal:String, vertical:String, stage:DisplayObject=null):void {
 			DebugUtil.expect(horizontal, LEFT, CENTER, RIGHT, NONE);
 			DebugUtil.expect(vertical, TOP, MIDDLE, BOTTOM, NONE);
 			
-			// add alignTo object to a NEW array by concatinating, the object will be skipped when setting position
-			if (alignTo) array = array.concat(alignTo);
-			
-			// get the union of all bounds. if alignTo is the container, its bounds will likely be the result
-			var rect:Rectangle = combineRectangles(array, true);
+			// calulcate bounds with optional stage
+			if (stage) var tempArray:Array = array.concat(stage);
+			var bounds:Rectangle = combineRectangles(tempArray || array);
 			
 			var object:DisplayObject;
 			var point:Point = new Point();
 			
 			for each (object in array) {
 				
-				// filter out the alignTo object
-				if (alignTo && object == alignTo) continue;
-				
 				// we need the global point since we'll set the x, y or both back to local later
 				point = CoordsUtil.globalPosition(object);
 				
 				switch (horizontal) {
-					case LEFT:		point.x = rect.left; break;
-					case CENTER:	point.x = rect.left + (rect.width - object.width)/2; break;
-					case RIGHT:		point.x = rect.right - object.width; break;
+					case LEFT:		point.x = bounds.left; break;
+					case CENTER:	point.x = bounds.left + (bounds.width - object.width)/2; break;
+					case RIGHT:		point.x = bounds.right - object.width; break;
 				}
 				
 				switch (vertical) {
-					case TOP:		point.y = rect.top; break;
-					case MIDDLE:	point.y = rect.top + (rect.height - object.height)/2; break;
-					case BOTTOM:	point.y = rect.bottom - object.height; break;
+					case TOP:		point.y = bounds.top; break;
+					case MIDDLE:	point.y = bounds.top + (bounds.height - object.height)/2; break;
+					case BOTTOM:	point.y = bounds.bottom - object.height; break;
 				}
 				
 				point = CoordsUtil.globalToLocal(object, point);
@@ -78,23 +73,28 @@ package nl.mediamonkey.utils {
 		 * @param array A collection of DisplayObjects.
 		 * @param horizontal A String value to distribute horizontally. Tha value can be "left", "center" or "right".
 		 * @param horizontal A String value to distribute vertically. Tha value can be "top", "middle" or "bottom".
-		 * @param alignTo A DisplayObject of which to include the bounds in the algorithm.
+		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function distribute(array:Array, horizontal:String, vertical:String, alignTo:DisplayObject=null):void {
+		public static function distribute(array:Array, horizontal:String, vertical:String, stage:DisplayObject=null):void {
 			DebugUtil.expect(horizontal, LEFT, CENTER, RIGHT, NONE);
 			DebugUtil.expect(vertical, TOP, MIDDLE, BOTTOM, NONE);
 			DebugUtil.assert(!(horizontal == NONE && vertical == NONE),
 				"horizontal and vertical arguments can't both be 'none'");
 			
-			var rect:Rectangle = combineRectangles(array);
-			array = array.sortOn(["x", "y"], Array.NUMERIC);
+			// calulcate bounds with optional stage
+			if (stage) var tempArray:Array = array.concat(stage);
+			var bounds:Rectangle = combineRectangles(tempArray || array);
 			
-			var topLeft:Rectangle = measureMinMax(array, "tl");
-			var centerMiddle:Rectangle = measureMinMax(array, "cm");
-			var bottomRight:Rectangle = measureMinMax(array, "br");
+			var topLeft:Rectangle = measureMinMax(tempArray || array, "tl");
+			var centerMiddle:Rectangle = measureMinMax(tempArray || array, "cm");
+			var bottomRight:Rectangle = measureMinMax(tempArray || array, "br");
 			
+			var point:Point = new Point();
 			var widthSpacing:Number;
 			var heightSpacing:Number;
+			
+			// TODO: sort on GLOBAL coords
+			//array = array.sortOn(["x", "y"], Array.NUMERIC);
 			
 			var object:DisplayObject;
 			for (var i:uint=0; i<array.length; i++) {
@@ -103,17 +103,17 @@ package nl.mediamonkey.utils {
 				switch (horizontal) {
 					case LEFT: {
 						widthSpacing = topLeft.width / (array.length - 1);
-						object.x = topLeft.x + (widthSpacing * i);
+						point.x = topLeft.x + (widthSpacing * i);
 						break;
 					}
 					case CENTER: {
 						widthSpacing = centerMiddle.width / (array.length - 1);
-						object.x = centerMiddle.x - (object.width/2) + (widthSpacing * i);
+						point.x = centerMiddle.x - (object.width/2) + (widthSpacing * i);
 						break;
 					}
 					case RIGHT: {
 						widthSpacing = bottomRight.width / (array.length - 1);
-						object.x = bottomRight.x - object.width + (widthSpacing * i);
+						point.x = bottomRight.x - object.width + (widthSpacing * i);
 						break;
 					}
 				}
@@ -121,21 +121,24 @@ package nl.mediamonkey.utils {
 				switch (vertical) {
 					case TOP: {
 						heightSpacing = topLeft.height / (array.length - 1);
-						object.y = topLeft.y + (heightSpacing * i);
+						point.y = topLeft.y + (heightSpacing * i);
 						break;
 					}
 					case MIDDLE: {
 						heightSpacing = centerMiddle.height / (array.length - 1);
-						object.y = centerMiddle.y - (object.height/2) + (heightSpacing * i);
+						point.y = centerMiddle.y - (object.height/2) + (heightSpacing * i);
 						break;
 					}
 					case BOTTOM: {
 						heightSpacing = bottomRight.height / (array.length - 1);
-						object.y = bottomRight.y - object.height + (heightSpacing * i);
+						point.y = bottomRight.y - object.height + (heightSpacing * i);
 						break;
 					}
 				}
 				
+				point = CoordsUtil.globalToLocal(object, point);
+				if (horizontal != NONE) object.x = point.x;
+				if (vertical != NONE) object.y = point.y;
 			}
 		}
 		
@@ -143,18 +146,20 @@ package nl.mediamonkey.utils {
 		 * @param array A collection of DisplayObjects.
 		 * @param width Boolean value to match size over width.
 		 * @param height Boolean value to match size over height.
-		 * @param alignTo A DisplayObject of which to include the bounds in the algorithm.
+		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function matchSize(array:Array, width:Boolean, height:Boolean, alignTo:DisplayObject=null):void {
+		public static function matchSize(array:Array, width:Boolean, height:Boolean, stage:DisplayObject=null):void {
 			if (!width && !height) return;
 			
-			var rect:Rectangle = getBiggestRect(array);
+			// calulcate bounds with optional stage
+			if (stage) var tempArray:Array = array.concat(stage);
+			var bounds:Rectangle = getBiggestRect(tempArray || array);
 			
 			var object:DisplayObject;
 			for each (object in array) {
 				
-				if (width) object.width = rect.width;
-				if (height) object.height = rect.height;
+				if (width) object.width = bounds.width;
+				if (height) object.height = bounds.height;
 			}
 		}
 		
@@ -162,47 +167,65 @@ package nl.mediamonkey.utils {
 		 * @param array A collection of DisplayObjects.
 		 * @param direction This string value can be either "horizontal" or "vertical".
 		 */
-		public static function space(array:Array, direction:String):void {
+		public static function space(array:Array, direction:String, stage:DisplayObject=null):void {
 			DebugUtil.expect(direction, HORIZONTAL, VERTICAL);
 			
-			var rect:Rectangle = combineRectangles(array);
-			array = array.sortOn(["x", "y"], Array.NUMERIC);
-			
-			var topLeft:Rectangle = measureMinMax(array, "tl");
-			var bottomRight:Rectangle = measureMinMax(array, "br");
+			// calulcate bounds with optional stage
+			if (stage) var tempArray:Array = array.concat(stage);
+			var bounds:Rectangle = combineRectangles(tempArray || array);
 			
 			// measure combined width and height
-			var measuredWidth:Number = 0;
-			var measuredHeight:Number = 0;
+			var measuredRect:Rectangle = measureWidthAndHeight(array);
+			
+			// difference divided by num elements - 1
+			var dw:Number = (bounds.width - measuredRect.width) / (array.length-1);
+			var dh:Number = (bounds.height - measuredRect.height) / (array.length-1);
 			
 			var object:DisplayObject;
-			for each (object in array) {
-				rect = CoordsUtil.getBounds(object);
-				measuredWidth += rect.width;
-				measuredHeight += rect.height;
-			}
+			var point:Point = new Point();
+			var offsetX:Number = 0;
+			var offsetY:Number = 0;
 			
-			var widthSpacing:Number = (bottomRight.right - topLeft.left - measuredWidth) / (array.length - 1);
-			var heightSpacing:Number = (bottomRight.bottom - topLeft.top - measuredHeight) / (array.length - 1);
-			trace("widthSpacing:", widthSpacing, "heightSpacing:", heightSpacing);
+			// TODO: sort on GLOBAL coords
+			//array = array.sortOn(["x", "y"], Array.NUMERIC);
 			
+			// layout
 			for (var i:uint=0; i<array.length; i++) {
 				object = array[i] as DisplayObject;
 				
 				if (direction == HORIZONTAL) {
-					object.x = rect.left + (widthSpacing * i);
+					point.x = bounds.left + offsetX;
+					offsetX += object.width + dw;
 					
 				} else if (direction == VERTICAL) {
-					object.y = rect.top + (heightSpacing * i);
+					point.y = bounds.top + offsetY;
+					offsetY += object.height + dh;
 				}
 				
+				point = CoordsUtil.globalToLocal(object, point);
+				if (direction == HORIZONTAL) object.x = point.x;
+				else if (direction == VERTICAL) object.y = point.y;
 			}
 		}
 		
-		// ---- protected static methods ----
+		// ---- calculation methods ----
 		
-		protected static function measureMinMax(array:Array, direction:String):Rectangle {
-			var rect:Rectangle;
+		public static function combineRectangles(array:Array):Rectangle {
+			var result:Rectangle;
+			var bounds:Rectangle;
+			
+			var object:DisplayObject;
+			for each (object in array) {
+				
+				bounds = CoordsUtil.getGlobalBounds(object);
+				result = (!result) ? bounds : result.union(bounds);
+			}
+			
+			return result;
+		}
+		
+		public static function measureMinMax(array:Array, direction:String):Rectangle {
+			var bounds:Rectangle;
 			
 			var minX:Number = Infinity;
 			var minY:Number = Infinity;
@@ -212,58 +235,59 @@ package nl.mediamonkey.utils {
 			var object:DisplayObject;
 			for each (object in array) {
 				
-				rect = CoordsUtil.getBounds(object);
+				bounds = CoordsUtil.getGlobalBounds(object);
 				
 				if (direction == "tl") {
-					minX = Math.min(rect.left, minX);
-					minY = Math.min(rect.top, minY);
-					maxX = Math.max(rect.left, maxX);
-					maxY = Math.max(rect.top, maxY);
+					minX = Math.min(bounds.left, minX);
+					minY = Math.min(bounds.top, minY);
+					maxX = Math.max(bounds.left, maxX);
+					maxY = Math.max(bounds.top, maxY);
 				
 				} else if (direction == "cm") {
-					minX = Math.min(rect.left + rect.width/2, minX);
-					minY = Math.min(rect.top + rect.height/2, minY);
-					maxX = Math.max(rect.left + rect.width/2, maxX);
-					maxY = Math.max(rect.top + rect.height/2, maxY);
+					minX = Math.min(bounds.left + bounds.width/2, minX);
+					minY = Math.min(bounds.top + bounds.height/2, minY);
+					maxX = Math.max(bounds.left + bounds.width/2, maxX);
+					maxY = Math.max(bounds.top + bounds.height/2, maxY);
 					
 				} else if (direction == "br") {
-					minX = Math.min(rect.right, minX);
-					minY = Math.min(rect.bottom, minY);
-					maxX = Math.max(rect.right, maxX);
-					maxY = Math.max(rect.bottom, maxY);
+					minX = Math.min(bounds.right, minX);
+					minY = Math.min(bounds.bottom, minY);
+					maxX = Math.max(bounds.right, maxX);
+					maxY = Math.max(bounds.bottom, maxY);
 				}
 			}
 			
 			return new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		}
 		
-		protected static function combineRectangles(array:Array, useGlobalSpace:Boolean=true):Rectangle {
-			var result:Rectangle;
+		// measure combined width and height
+		public static function measureWidthAndHeight(array:Array):Rectangle {
+			var measuredWidth:Number = 0;
+			var measuredHeight:Number = 0;
 			var rect:Rectangle;
-			var boundsFunction:Function = (useGlobalSpace) ? CoordsUtil.getGlobalBounds : CoordsUtil.getBounds;
 			
 			var object:DisplayObject;
 			for each (object in array) {
 				
-				rect = boundsFunction.apply(null, [object]);
-				//rect = (useGlobalSpace) ? CoordsUtil.getGlobalBounds(object) : CoordsUtil.getBounds(object);
-				result = (!result) ? rect : result.union(rect);
+				rect = CoordsUtil.getGlobalBounds(object);
+				measuredWidth += rect.width;
+				measuredHeight += rect.height;
 			}
 			
-			return result;
+			return new Rectangle(0, 0, measuredWidth, measuredHeight);
 		}
 		
-		protected static function getBiggestRect(array:Array):Rectangle {
+		public static function getBiggestRect(array:Array):Rectangle {
 			var biggest:Rectangle;
-			var rect:Rectangle;
+			var bounds:Rectangle;
 			
 			var object:DisplayObject;
 			for each (object in array) {
-				rect = CoordsUtil.getBounds(object);
+				bounds = CoordsUtil.getGlobalBounds(object);
 				
-				if (!biggest) biggest = rect;
-				if (rect.width > biggest.width) biggest.width = rect.width;
-				if (rect.height > biggest.height) biggest.height = rect.height;
+				if (!biggest) biggest = bounds;
+				if (bounds.width > biggest.width) biggest.width = bounds.width;
+				if (bounds.height > biggest.height) biggest.height = bounds.height;
 			}
 			
 			return biggest;

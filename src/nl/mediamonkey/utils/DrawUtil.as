@@ -1,5 +1,7 @@
 package nl.mediamonkey.utils {
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -22,7 +24,13 @@ package nl.mediamonkey.utils {
 			</code>
 		**/
 		
-		public static function dashTo(graphics:Graphics, from:Point, to:Point, offset:Number=0, lines:Array=null, thickness:Number=1, color:uint=0x000000, alpha:Number=1):Number {
+		public static function dashTo(target:*, from:Point, to:Point, offset:Number=0, lines:Array=null, thickness:Number=1, color:uint=0x000000, alpha:Number=1):Number {
+			
+			var graphics:Graphics = (target.hasProperty("graphics")) ? target["graphics"] as Graphics : null;
+			var bitmapData:BitmapData = (target is BitmapData) ? target as BitmapData : (target is Bitmap) ? (target as Bitmap).bitmapData : null;
+			
+			DebugUtil.assert((graphics != null || bitmapData != null),
+				"target must have a graphics property or needs to be a Bitmap or BitmapData instance");
 			
 			if (lines == null) lines = [3, 3];
 			
@@ -48,7 +56,10 @@ package nl.mediamonkey.utils {
 			var dx:Number = to.x - from.x;
 			var dy:Number = to.y - from.y;
 			var totalDistance:Number = Math.sqrt(dx*dx + dy*dy);
+			
 			var angle:Number = Math.atan2(dx, dy);
+			var sinAngle:Number = Math.sin(angle);
+			var cosAngle:Number = Math.cos(angle);
 			var isStraight:Boolean = (angle * (180 / Math.PI) % 90 == 0);
 			
 			// normalize offset to a positive value within a segment length
@@ -68,10 +79,8 @@ package nl.mediamonkey.utils {
 			
 			// get distance to start drawing
 			var startDistance:Number = lines[cursor] - (offset - totals[cursor]);
-			var useStartDistance:Boolean = true;
-			
-			var drawnDistance:Number = 0;
 			var currentDistance:Number = startDistance;
+			var drawnDistance:Number = 0;
 			
 			// style
 			graphics.lineStyle(thickness, color, alpha, isStraight);
@@ -88,15 +97,16 @@ package nl.mediamonkey.utils {
 			data.push(x);
 			data.push(y);
 			
+			var firstLine:Boolean = true;
 			while (drawnDistance < totalDistance) {
 				
-				if (useStartDistance) {
-					currentDistance = startDistance;
-					useStartDistance = false;
+				if (firstLine) {
+					firstLine = false;
+					//currentDistance = startDistance;
 					
 				} else {
 					// get next distance (rotate cursor through the lines array)
-					cursor += 1;
+					++cursor;
 					cursor %= lines.length;
 					currentDistance = lines[cursor];
 				}
@@ -107,8 +117,8 @@ package nl.mediamonkey.utils {
 					offset = totals[cursor] + currentDistance;
 				}
 				
-				x += Math.sin(angle) * currentDistance;
-				y += Math.cos(angle) * currentDistance;
+				x += sinAngle * currentDistance;
+				y += cosAngle * currentDistance;
 				
 				commands.push((cursor % 2 == 0) ? 2 : 1);
 				data.push(x);
@@ -117,9 +127,60 @@ package nl.mediamonkey.utils {
 				drawnDistance += currentDistance;
 			}
 			
-			graphics.drawPath(commands, data);
+			if (graphics) graphics.drawPath(commands, data);
+			
+			if (bitmapData) {
+				bitmapData.lock();
+				graphics.drawPath(bitmapData, commands, data, thickness, color, alpha);
+				bitmapData.unlock();
+				if (target is Bitmap) (target as Bitmap).bitmapData = bitmapData;
+			}
 			
 			return offset;
+		}
+		
+		protected static function drawBitmapPath(target:BitmapData, commands:Vector.<int>, data:Vector.<int>, thickness:Number=1, color:uint=0x000000, alpha:Number=1):void {
+			var numCommands:uint = commands.length;
+			if (data.length != numCommands * 2) throw new Error("incorrect data");
+			
+			var i:uint;
+			var from:Point = new Point();
+			var to:Point = new Point();
+			
+			color = alpha >> 24 & 0xFF | color; // argb color
+			
+			for (var i:uint = 0; i < numCommands; i++) {
+				
+				switch (numCommands[i]) {
+					case 1: { // moveTo
+						from.x = data[i*2];
+						from.y = data[i*2 + 1];
+						break;
+					}
+					case 2: { // lineTo
+						to.x = data[i*2];
+						to.y = data[i*2 + 1];
+						drawBitmapLine(target, from, to, color);
+						break;
+					}
+					default: {
+						throw new Error("what?");
+					}
+				}
+			}
+		}
+		
+		protected static function drawBitmapLine(target:BitmapData, from:Point, to:Point, color:uint=0xFF000000):void {
+			var dx:Number = to.x - from.x;
+			var dy:Number = to.y - from.y;
+			var x:uint;
+			var y:uint;
+			
+			for (x = 0; x < from.x + dx; x++) {
+				for (y = 0; y < from.y + dy; y++) {
+					target.setPixel32(from.x + x, from.y + y, color);
+				}
+			}
 		}
 		
 		/**
@@ -157,10 +218,10 @@ package nl.mediamonkey.utils {
 			var p4:Point = new Point(rect.left, rect.bottom);
 			
 			var rest:Number;
-			rest = DrawUtil.dashTo(g, p1, p4, offset, lines, thickness, color, alpha);
-			rest = DrawUtil.dashTo(g, p4, p3, rest, lines, thickness, color, alpha);
 			rest = DrawUtil.dashTo(g, p1, p2, offset, lines, thickness, color, alpha);
 			rest = DrawUtil.dashTo(g, p2, p3, rest, lines, thickness, color, alpha);
+			rest = DrawUtil.dashTo(g, p1, p4, offset, lines, thickness, color, alpha);
+			rest = DrawUtil.dashTo(g, p4, p3, rest, lines, thickness, color, alpha);
 			
 			return rest;
 		}
@@ -171,6 +232,8 @@ package nl.mediamonkey.utils {
 			var dy:Number = to.y - from.y;
 			var dist:Number = Math.sqrt(dx*dx + dy*dy);
 			var angle:Number = Math.atan2(dx, dy);
+			var sinAngle:Number = Math.sin(angle);
+			var cosAngle:Number = Math.cos(angle);
 			
 			var segment:Number = dash + space;
 			offset %= segment; // normalize
@@ -212,8 +275,8 @@ package nl.mediamonkey.utils {
 					value = lastLength;
 				}
 				
-				x += Math.sin(angle) * value;
-				y += Math.cos(angle) * value;
+				x += sinAngle * value;
+				y += cosAngle * value;
 				graphics.lineTo(x, y);
 			}
 			
