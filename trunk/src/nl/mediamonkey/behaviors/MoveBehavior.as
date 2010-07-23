@@ -10,8 +10,9 @@ package nl.mediamonkey.behaviors {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import nl.mediamonkey.behaviors.events.MoveEvent;
 	import nl.mediamonkey.behaviors.enum.Direction;
+	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.utils.CoordsUtil;
 	
 	/** Fires on the element for the movable behavior when the user first starts a drag operation.
 	 * @eventType mx.events.DragEvent.DRAG_START */
@@ -68,7 +69,7 @@ package nl.mediamonkey.behaviors {
 			var oldPosition:Point = new Point(target.x, target.y);
 			
 			var position:Point = new Point(target.parent.mouseX, target.parent.mouseY);
-			if (useGlobalSpace) position = target.parent.localToGlobal(position);
+			if (useGlobalSpace) position = CoordsUtil.localToGlobal(target, position);
 			
 			var dx:Number = position.x - downPoint.x;
 			var dy:Number = position.y - downPoint.y;
@@ -85,7 +86,7 @@ package nl.mediamonkey.behaviors {
 			var oldPosition:Point = new Point(target.x, target.y);
 			
 			var position:Point = new Point(x, y);
-			if (useGlobalSpace) position = target.parent.globalToLocal(position);
+			if (useGlobalSpace) position = CoordsUtil.globalToLocal(target, position);
 			
 			var moveX:Boolean = (direction == Direction.ALL || direction == Direction.HORIZONTAL);
 			var moveY:Boolean = (direction == Direction.ALL || direction == Direction.VERTICAL);

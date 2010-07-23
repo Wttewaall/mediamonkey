@@ -11,6 +11,7 @@ package nl.mediamonkey.behaviors {
 	import mx.events.SandboxMouseEvent;
 	
 	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.utils.CoordsUtil;
 	
 	/* TODO: add cursor logic for mouseOver? */
 	
@@ -125,10 +126,10 @@ package nl.mediamonkey.behaviors {
 			
 			if (enabled) {
 				origin = new Point(target.x, target.y);
-				if (useGlobalSpace) origin = target.parent.localToGlobal(origin);
+				if (useGlobalSpace) origin = CoordsUtil.localToGlobal(target, origin);
 				
 				downPoint = new Point(target.parent.mouseX, target.parent.mouseY);
-				if (useGlobalSpace) downPoint = target.parent.localToGlobal(downPoint);
+				if (useGlobalSpace) downPoint = CoordsUtil.localToGlobal(target, downPoint);
 				
 				if (!dragging) startDragging();
 			}
@@ -138,7 +139,7 @@ package nl.mediamonkey.behaviors {
 			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.MOVE));
 			
 			/*var current:Point = new Point(target.parent.mouseX, target.parent.mouseY);
-			if (useGlobalSpace) current = target.parent.localToGlobal(current);
+			if (useGlobalSpace) current = CoordsUtil.localToGlobal(target, current);
 			trace("mouse:", current);*/
 		}
 		
