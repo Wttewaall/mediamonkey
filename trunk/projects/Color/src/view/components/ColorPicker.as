@@ -6,6 +6,7 @@ package view.components {
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.filters.BlurFilter;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -27,6 +28,8 @@ package view.components {
 		protected var bitmap			:Bitmap;
 		protected var colorData			:BitmapData;
 		protected var shadowData		:BitmapData;
+		
+		protected var mirror			:Bitmap;
 		
 		protected var colorSprite		:Sprite;
 		protected var shadowSprite		:Sprite;
@@ -86,6 +89,10 @@ package view.components {
 			bitmap = new Bitmap(colorData);
 			addChild(bitmap);
 			
+			mirror = new Bitmap();
+			mirror.filters = [new BlurFilter(5, 1, 2)];
+			addChild(mirror);
+			
 			// border on top
 			borderSprite = new Sprite();
 			addChild(borderSprite);
@@ -109,8 +116,8 @@ package view.components {
 				hueChangedFlag = false;
 				
 				// draw in sprites
-				drawHue(unscaledWidth, unscaledHeight, hsvColor.colorValue);
-				drawShadow(unscaledWidth, unscaledHeight);
+				drawHue(colorSprite, unscaledWidth, unscaledHeight, hsvColor.colorValue);
+				drawShadow(shadowSprite, unscaledWidth, unscaledHeight);
 				
 				// fill bitmapData
 				
@@ -126,6 +133,25 @@ package view.components {
 				colorData.copyPixels(shadowData, new Rectangle(0, 0, shadowData.width, shadowData.height), new Point());
 				bitmap.bitmapData = colorData;
 				
+				var flippedCopy:BitmapData = new BitmapData(colorData.width, colorData.height, true, 0x00FFFFFF);
+				var matrix:Matrix = new Matrix();
+				matrix.scale(1, -1);
+				matrix.translate(0, flippedCopy.height);
+				flippedCopy.draw(colorData, matrix);
+				
+				var h:Number = 50;
+				var alphaSprite:Sprite = new Sprite();
+				drawAlpha(alphaSprite, unscaledWidth, h);
+				
+				var alphaData:BitmapData = new BitmapData(unscaledWidth, h, true, 0x00FFFFFF);
+				alphaData.draw(alphaSprite);
+				
+				var bd:BitmapData = new BitmapData(flippedCopy.width, h, true, 0x00FFFFFF);
+				bd.copyPixels(flippedCopy, new Rectangle(0, 0, flippedCopy.width, h), new Point(), alphaData, new Point(), true);
+				
+				mirror.bitmapData = bd;
+				mirror.y = unscaledHeight;
+				
 				// draw border
 				borderSprite.graphics.clear();
 				borderSprite.graphics.lineStyle(1);
@@ -133,14 +159,14 @@ package view.components {
 			}
 		}
 		
-		protected function drawHue(w:uint, h:uint, color:uint):void {
+		protected function drawHue(target:Sprite, w:uint, h:uint, color:uint):void {
 			
-			var gradient:Gradient = Gradient.createColorAlphaRange(0xFFFFFF, color);
+			var gradient:Gradient = Gradient.createColorAlphaRange(0xFFFFFF, color, 1, 1, 2);
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(w, h, 0 * (Math.PI/180), 0, 0);
 			
-			colorSprite.graphics.clear();
-			colorSprite.graphics.beginGradientFill(
+			target.graphics.clear();
+			target.graphics.beginGradientFill(
 				GradientType.LINEAR,
 				gradient.colors,
 				gradient.alphas,
@@ -148,17 +174,17 @@ package view.components {
 				matrix
 			);
 			
-			colorSprite.graphics.drawRect(0, 0, w, h);
+			target.graphics.drawRect(0, 0, w, h);
 		}
 		
-		protected function drawShadow(w:uint, h:uint):void {
+		protected function drawShadow(target:Sprite, w:uint, h:uint):void {
 			
-			var gradient:Gradient = Gradient.createColorAlphaRange(0x000000, 0x000000, 0, 1);
+			var gradient:Gradient = Gradient.createColorAlphaRange(0x000000, 0x000000, 0, 1, 2);
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(w, h, 90 * (Math.PI/180), 0, 0);
 			
-			shadowSprite.graphics.clear();
-			shadowSprite.graphics.beginGradientFill(
+			target.graphics.clear();
+			target.graphics.beginGradientFill(
 				GradientType.LINEAR,
 				gradient.colors,
 				gradient.alphas,
@@ -166,7 +192,25 @@ package view.components {
 				matrix
 			);
 			
-			shadowSprite.graphics.drawRect(0, 0, w, h);
+			target.graphics.drawRect(0, 0, w, h);
+		}
+		
+		protected function drawAlpha(target:Sprite, w:uint, h:uint, color:uint=0xFFFFFF):void {
+			
+			var gradient:Gradient = Gradient.createColorAlphaRange(color, color, 0.5, 0);
+			var matrix:Matrix = new Matrix();
+			matrix.createGradientBox(w, h, 90 * (Math.PI/180), 0, 0);
+			
+			target.graphics.clear();
+			target.graphics.beginGradientFill(
+				GradientType.LINEAR,
+				gradient.colors,
+				gradient.alphas,
+				gradient.ratios,
+				matrix
+			);
+			
+			target.graphics.drawRect(0, 0, w, h);
 		}
 		
 		protected function getColorAtDownPoint():uint {

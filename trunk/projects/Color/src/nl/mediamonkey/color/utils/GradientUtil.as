@@ -13,7 +13,7 @@ package nl.mediamonkey.color.utils {
 		
 		public static function createSquare(w:uint, h:uint, color:uint):Sprite {
 			
-			var gradient:Gradient = Gradient.createColorAlphaRange(0xFFFFFF, color);
+			var gradient:Gradient = Gradient.createColorAlphaRange(0xFFFFFF, color, 1, 1, 2);
 			var matrix:Matrix = new Matrix();
 			matrix.createGradientBox(w, h, 0 * (Math.PI/180), 0, 0);
 			
@@ -27,7 +27,7 @@ package nl.mediamonkey.color.utils {
 			);
 			colorShape.graphics.drawRect(0, 0, w, h);
 			
-			gradient = Gradient.createColorAlphaRange(0x000000, 0x000000, 0, 1);
+			gradient = Gradient.createColorAlphaRange(0x000000, 0x000000, 0, 1, 2);
 			matrix.createGradientBox(w, h, 90 * (Math.PI/180), 0, 0);
 			
 			var shadowShape:Shape = new Shape();

@@ -23,10 +23,11 @@
 			import nl.mediamonkey.utils.EnumUtil;
 			
 			[Bindable] public var colorValue	:uint;
+			[Bindable] public var hue			:Number;
+			[Bindable] public var rgbColor		:RGBColor = new RGBColor();
 			
 			public var hexColor		:HexColor = new HexColor();
-			[Bindable] public var rgbColor		:RGBColor = new RGBColor();
-			[Bindable] public var hsvColor		:HSVColor = new HSVColor();
+			public var hsvColor		:HSVColor = new HSVColor();
 			public var hslColor		:HSLColor = new HSLColor();
 			public var cmykColor	:CMYKColor = new CMYKColor();
 			
@@ -94,28 +95,33 @@
 			protected function getNearestWebColor():void {
 				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(Web));
 				colorValue = result;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("Web");
 			}
 			
 			protected function getNearestPantomeColor():void {
 				var result:uint = ColorUtil.getNearestColorValue(colorValue, EnumUtil.getConstValues(PMS));
 				colorValue = result;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("Pantome");
 			}
 			
 			protected function updateWebColor(event:Event):void {
 				colorValue = webColorsComboBox.selectedItem.data;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("Web");
 			}
 			
 			protected function updatePantomeColor(event:Event):void {
 				colorValue = pantomeColorsComboBox.selectedItem.data;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("Pantome");
 			}
 			
 			protected function updateHex():void {
 				hexColor.fromString(hexInput.text);
 				colorValue = hexColor.colorValue;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("Hex");
 			}
 			
@@ -129,6 +135,7 @@
 				rgbColor.g = greenSlider.value;
 				rgbColor.b = blueSlider.value;
 				colorValue = rgbColor.colorValue;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("RGB");
 				
 				updateRGBSliderTracks();
@@ -161,6 +168,7 @@
 				hsvColor.s = saturationSlider.value;
 				hsvColor.v = valueSlider.value;
 				colorValue = hsvColor.colorValue;
+				hue = hueSlider.value;
 				updateAll("HSV");
 				
 				updateHSVSliderTracks();
@@ -189,6 +197,7 @@
 				hslColor.s = saturationSlider2.value;
 				hslColor.l = lightnessSlider.value;
 				colorValue = hslColor.colorValue;
+				hue = hueSlider2.value;
 				updateAll("HSL");
 				
 				updateHSLSliderTracks();
@@ -216,6 +225,7 @@
 				cmykColor.y = yellowSlider.value;
 				cmykColor.k = blackSlider.value;
 				colorValue = cmykColor.colorValue;
+				hue = HSVColor.fromDecimal(colorValue).h;
 				updateAll("CMYK");
 			}
 			
@@ -315,6 +325,7 @@
 				trackColors="{Gradient.getHueColors()}"
 				trackMargin="5"
 				trackSkin="view.skins.ColorTrackSkin"
+				value="{hue}"
 				change="updateHSV()"/>
 			<mx:Label text="°" />
 		</mx:FormItem>
@@ -346,6 +357,7 @@
 				trackColors="{Gradient.getHueColors()}"
 				trackMargin="5"
 				trackSkin="view.skins.ColorTrackSkin"
+				value="{hue}"
 				change="updateHSL()"/>
 			<mx:Label text="°" />
 		</mx:FormItem>
@@ -414,6 +426,7 @@
 			
 			<components:ColorPicker id="colorPicker"
 				width="100" height="100"
+				hue="{hue}"
 				color="{colorValue}"/>
 			
 			<mx:VBox>
