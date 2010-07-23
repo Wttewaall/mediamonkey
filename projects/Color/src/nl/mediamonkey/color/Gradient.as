@@ -20,14 +20,15 @@ package nl.mediamonkey.color {
 			return "[Gradient colors:"+colors+", alphas:"+alphas+", ratios:"+ratios+"]";
 		}
 		
-		public static function createColorAlphaRange(value1:uint, value2:uint, alpha1:uint=1, alpha2:uint=1, interval:uint=2):Gradient {
+		public static function createColorAlphaRange(value1:uint, value2:uint, alpha1:Number=1, alpha2:Number=1, stops:uint=1):Gradient {
 			var gradient:Gradient = new Gradient();
-			var diffAlpha:Number = alpha2 - alpha1;
+			var a:Number = (alpha2 - alpha1) / stops;
+			var r:Number = 0xFF / stops;
 			
-			for (var i:uint=0; i<=interval; i++) {
-				gradient.colors.push(ColorUtil.interpolate(value1, value2, i/interval));
-				gradient.alphas.push(alpha1 + (diffAlpha/interval) * i);
-				gradient.ratios.push((0xFF/interval) * i);
+			for (var i:uint=0; i<=stops; i++) {
+				gradient.colors.push(ColorUtil.interpolate(value1, value2, i/stops));
+				gradient.alphas.push(alpha1 + a * i);
+				gradient.ratios.push(r * i);
 			}
 			
 			return gradient;
@@ -69,13 +70,13 @@ package nl.mediamonkey.color {
 			return gradient;
 		}
 		
-		// max interval is 15
-		public static function getHueColors(interval:uint = 12):Array {
+		// max stops is 15
+		public static function getHueColors(stops:uint = 12):Array {
 			var colors:Array = []; 
 			
 			var hsv:HSLColor = new HSLColor(0, 100, 127);
-			for (var i:uint=0; i<=interval; i++) {
-				hsv.h = (360/interval) * i;
+			for (var i:uint=0; i<=stops; i++) {
+				hsv.h = (360/stops) * i;
 				colors.push(hsv.colorValue);
 			}
 			return colors;
