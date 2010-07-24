@@ -2,18 +2,17 @@ package {
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.GradientType;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.filters.BlurFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import mx.containers.Box;
-	import mx.core.Container;
 	import mx.core.UIComponent;
 	import mx.events.ChildExistenceChangedEvent;
 	import mx.events.FlexEvent;
@@ -29,14 +28,20 @@ package {
 		public var mirrorAlpha			:Number = 0.5;
 		public var mirrorOffsetX		:Number = 0;
 		public var mirrorOffsetY		:Number = 0;
+		public var mirrorBlurX			:Number = 0;
+		public var mirrorBlurY			:Number = 0;
 		
 		protected var children			:Array;
 		protected var mirror			:Bitmap;
 		protected var mirrorData		:BitmapData;
-		protected var childChanged		:Boolean;
+		protected var blur				:BlurFilter;
+		protected var lastWidth			:Number = 0;
+		protected var lastHeight		:Number = 0;
+		protected var colorTransform	:ColorTransform;
 		
 		protected var cache				:BitmapDataCache;
-		protected var USE_CACHE			:Boolean = false; // TO FIX
+		public var cacheSize			:uint = 20;
+		public var useCache				:Boolean = false; // FIX
 		
 		// ---- getters & setters ----
 		
@@ -45,12 +50,12 @@ package {
 		public function MirrorBox() {
 			super();
 			
-			children = new Array();
-			cache = new BitmapDataCache(20);
-			
 			addEventListener(ChildExistenceChangedEvent.CHILD_ADD, childAddHandler);
 			addEventListener(ChildExistenceChangedEvent.CHILD_REMOVE, childRemoveHandler);
 			addEventListener(IndexChangedEvent.CHILD_INDEX_CHANGE, childIndexChangeHandler);
+			
+			children = new Array();
+			cache = new BitmapDataCache(cacheSize);
 		}
 		
 		override protected function createChildren():void {
@@ -58,6 +63,9 @@ package {
 			
 			mirror = new Bitmap();
 			rawChildren.addChild(mirror);
+			
+			blur = new BlurFilter(mirrorBlurX, mirrorBlurY, 1);
+			mirror.filters = [blur];
 		}
 		
 		protected function childAddHandler(event:ChildExistenceChangedEvent):void {
@@ -67,12 +75,12 @@ package {
 			child.addEventListener(Event.ADDED_TO_STAGE, childAddedToStage);
 			
 			if (child is UIComponent) {
-				UIComponent(child).removeEventListener(FlexEvent.UPDATE_COMPLETE, childRenderHandler);
-				UIComponent(child).addEventListener(FlexEvent.UPDATE_COMPLETE, childRenderHandler);
+				UIComponent(child).removeEventListener(FlexEvent.UPDATE_COMPLETE, childUpdateHandler);
+				UIComponent(child).addEventListener(FlexEvent.UPDATE_COMPLETE, childUpdateHandler);
 				
 			} else {
-				child.removeEventListener(Event.RENDER, childRenderHandler);
-				child.addEventListener(Event.RENDER, childRenderHandler);
+				child.removeEventListener(Event.RENDER, childUpdateHandler);
+				child.addEventListener(Event.RENDER, childUpdateHandler);
 			}
 			children.push(child);
 		}
@@ -81,14 +89,13 @@ package {
 			var child:DisplayObject = event.relatedObject;
 			
 			if (child is UIComponent)
-				UIComponent(child).removeEventListener(FlexEvent.UPDATE_COMPLETE, childRenderHandler);
+				UIComponent(child).removeEventListener(FlexEvent.UPDATE_COMPLETE, childUpdateHandler);
 			
-			child.removeEventListener(Event.RENDER, childRenderHandler);
+			child.removeEventListener(Event.RENDER, childUpdateHandler);
 			
 			var index:int = children.indexOf(child);
 			if (index > -1) children.splice(index, 1);
 			
-			childChanged = true;
 			invalidateDisplayList();
 		}
 		
@@ -99,56 +106,57 @@ package {
 		
 		protected function childAddedToStage(event:Event):void {
 			event.currentTarget.removeEventListener(Event.ADDED_TO_STAGE, childAddedToStage);
-			childChanged = true;
+			
 			invalidateDisplayList();
 		}
 		
-		protected function childRenderHandler(event:Event):void {
-			if (stage) updateMirror();
+		protected function childUpdateHandler(event:Event):void {
+			// do it immediately, don't wait a frame or it will look choppy
+			updateMirror();
+			invalidateDisplayListFlag = false;
+		}
+		
+		// use our own flag, not UIComponent#mx_internal::invalidateDisplayListFlag
+		protected var invalidateDisplayListFlag:Boolean;
+		
+		override public function validateDisplayList():void {
+			super.validateDisplayList();
+			invalidateDisplayListFlag = true;
 		}
 		
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 			super.updateDisplayList(unscaledWidth, unscaledHeight);
 			
-			if (stage && childChanged) {
-				childChanged = false;
+			if (stage && invalidateDisplayListFlag) {
 				updateMirror();
+				invalidateDisplayListFlag = false;
 			}
 		}
 		
 		protected function updateMirror():void {
 			// without a stage we can't calculate the bounds of children
-			if (!stage) return;
-			
-			// without children we can't calculate the bounds of those children
-			if (numChildren == 0) return;
+			// and without children there's no use to continue
+			if (!stage || numChildren == 0) return;
 			
 			// get bounds, resize mirror bitmap accordingly
-			var bounds:Rectangle = combineRectangles(children);
-			var br:Rectangle = measureMinMax(children, "br");
-			bounds.y = br.top;
-			bounds.height = br.height + mirrorHeight;
+			var bounds:Rectangle = measureMinMax(children, "width", "bottom");
+			bounds.height += mirrorHeight;
 			
-			if (bounds.height > 2048) { // TO FIX
-				trace("Fatal error averted", bounds.height);
-				return;
-			}
-			
-			if (USE_CACHE) {
-				mirrorData = cache.getBitmapData(bounds.width, bounds.height);
+			/*
+			// create new bitmapdata only of the dimensions have changed
+			if (bounds.width > lastWidth || bounds.height > lastHeight) {
+				mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x11FF00FF);
 				
-				if (!mirrorData) {
-					mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
-					cache.addCache(bounds.width, bounds.height, mirrorData, true);
-					
-				} else {
-					mirrorData.fillRect(new Rectangle(0, 0, mirrorData.width, mirrorData.height), 0x00FFFFFF);
-				}
-			
+				lastWidth = bounds.width;
+				lastHeight = bounds.height;
+				
 			} else {
-				// simple: create new bitmapdata every time
-				mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
+				// clear
+				mirrorData.fillRect(new Rectangle(0, 0, mirrorData.width, mirrorData.height), 0x11FF00FF);
 			}
+			*/
+			
+			mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x11FF00FF);
 			
 			// draw all child reflections
 			for (var i:uint=0; i<numChildren; i++) {
@@ -161,59 +169,6 @@ package {
 			
 			mirror.bitmapData = mirrorData;
 			rawChildren.setChildIndex(mirror, 0);
-		}
-		
-		protected function combineRectangles(array:Array):Rectangle {
-			var result:Rectangle;
-			var bounds:Rectangle;
-			
-			var object:DisplayObject;
-			for each (object in array) {
-				
-				bounds = object.getBounds(object.parent);
-				result = (!result) ? bounds : result.union(bounds);
-			}
-			
-			return result;
-		}
-		
-		public function measureMinMax(array:Array, direction:String):Rectangle {
-			var bounds:Rectangle;
-			
-			var minX:Number = Infinity;
-			var minY:Number = Infinity;
-			var maxX:Number = 0;
-			var maxY:Number = 0;
-			
-			var object:DisplayObject;
-			for each (object in array) {
-				
-				bounds = object.getBounds(object.parent);
-				
-				if (direction == "tl") {
-					minX = Math.min(bounds.left, minX);
-					minY = Math.min(bounds.top, minY);
-					maxX = Math.max(bounds.left, maxX);
-					maxY = Math.max(bounds.top, maxY);
-					
-				} else if (direction == "cm") {
-					minX = Math.min(bounds.left + bounds.width/2, minX);
-					minY = Math.min(bounds.top + bounds.height/2, minY);
-					maxX = Math.max(bounds.left + bounds.width/2, maxX);
-					maxY = Math.max(bounds.top + bounds.height/2, maxY);
-					
-				} else if (direction == "br") {
-					minX = Math.min(bounds.right, minX);
-					minY = Math.min(bounds.bottom, minY);
-					maxX = Math.max(bounds.right, maxX);
-					maxY = Math.max(bounds.bottom, maxY);
-				}
-			}
-			
-			if (minX == Infinity) minX = 0;
-			if (minY == Infinity) minY = 0;
-			
-			return new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		}
 		
 		protected function drawReflection(object:DisplayObject, offsetX:Number, offsetY:Number):void {
@@ -229,17 +184,7 @@ package {
 			matrix.scale(1, -1);
 			matrix.translate(0, bounds.height);
 			
-			// use mirrorColorStrength as a multiplier
-			var s:Number = Math.max(0, Math.min(mirrorColorStrength, 1));
-			var i:Number = (1-s);
-			
-			// calculate color offsets on mirrorColor
-			var r:Number = Math.round(s * (mirrorColor >> 16 & 0xFF));
-			var g:Number = Math.round(s * (mirrorColor >> 8 & 0xFF));
-			var b:Number = Math.round(s * (mirrorColor & 0xFF));
-			
-			// set up the colorTransform
-			var colorTransform:ColorTransform = new ColorTransform(i, i, i, 1, r, g, b, 0);
+			colorTransform = (mirrorColorStrength > 0)  ? createColorTransform(mirrorColor, mirrorColorStrength) : null;
 			
 			// copy bitmapdata with flipped matrix and colortransform
 			var copy:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
@@ -250,12 +195,40 @@ package {
 			
 			// draw a portion into mirrorData with an alpha BitmapData
 			var abd:BitmapData = createAlphaBitmapData(bounds.width, mirrorHeight, mirrorAlpha);
-			mirrorData.copyPixels(copy, sourceRect, bottom, abd, null, true);
+			
+			/**
+			 * HERE'S THE ERROR: ADDING THE ALPHAMAP THROWS AN ERROR, sometimes.. ಠ_ಠ
+			 * FIX: bounds/displayList problem?
+			 * adb's getters sometime throw an exception, not correctly returned from cache?
+			 * mirrorData.copyPixels(copy, sourceRect, bottom); works correctly 
+			 */
+			
+			try {
+				mirrorData.copyPixels(copy, sourceRect, bottom, abd);
+				
+			} catch (e:Error) {
+				trace(e.message);
+				trace("mirrorData dimensions:", mirrorData.width, mirrorData.height);
+				trace("alphamap dimensions:", abd.width, abd.height);
+			}
+		}
+		
+		// create a colorTransform that tints to a color
+		protected function createColorTransform(color:uint, strength:Number):ColorTransform {
+			var s:Number = Math.max(0, Math.min(strength, 1));
+			var i:Number = (1-s);
+			
+			// calculate color offsets
+			var r:Number = Math.round(s * (color >> 16 & 0xFF));
+			var g:Number = Math.round(s * (color >> 8 & 0xFF));
+			var b:Number = Math.round(s * (color & 0xFF));
+			
+			return new ColorTransform(i, i, i, 1, r, g, b, 0);
 		}
 		
 		protected function createAlphaBitmapData(w:Number, h:Number, a:Number):BitmapData {
 			
-			if (USE_CACHE) {
+			if (useCache) {
 				// if a gradient with equal width and height is already in cache, use that one 
 				var bd:BitmapData = cache.getBitmapData(w, h);
 				if (bd) return bd;
@@ -275,9 +248,84 @@ package {
 			abd.draw(shape);
 			
 			// add to cache
-			if (USE_CACHE) cache.addCache(w, h, abd);
+			if (useCache) cache.addCache(w, h, abd);
 			
 			return abd;
+		}
+		
+		// ---- utils ----
+		
+		protected function measureMinMax(array:Array, horizontal:String, vertical:String):Rectangle {
+			var bounds:Rectangle;
+			
+			var minX:Number = Infinity;
+			var maxX:Number = 0;
+			var minY:Number = Infinity;
+			var maxY:Number = 0;
+			
+			var object:DisplayObject;
+			for each (object in array) {
+				
+				bounds = object.getBounds(object.parent);
+				
+				switch (horizontal) {
+					case "left": {
+						minX = Math.min(bounds.left, minX);
+						maxX = Math.max(bounds.left, maxX);
+						break;
+					}
+					case "center": {
+						minX = Math.min(bounds.left + bounds.width/2, minX);
+						maxX = Math.max(bounds.left + bounds.width/2, maxX);
+						break;
+					}
+					case "right": {
+						minX = Math.min(bounds.right, minX);
+						maxX = Math.max(bounds.right, maxX);
+						break;
+					}
+					case "width": {
+						minX = Math.min(bounds.left, minX);
+						maxX = Math.max(bounds.right, maxX);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+				
+				switch (vertical) {
+					case "top": {
+						minY = Math.min(bounds.top, minY);
+						maxY = Math.max(bounds.top, maxY);
+						break;
+					}
+					case "middle": {
+						minY = Math.min(bounds.top + bounds.height/2, minY);
+						maxY = Math.max(bounds.top + bounds.height/2, maxY);
+						break;
+					}
+					case "bottom": {
+						minY = Math.min(bounds.bottom, minY);
+						maxY = Math.max(bounds.bottom, maxY);
+						break;
+					}
+					case "height": {
+						minY = Math.min(bounds.top, minY);
+						maxY = Math.max(bounds.bottom, maxY);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+				
+			}
+			
+			if (minX == Infinity) minX = 0;
+			if (minY == Infinity) minY = 0;
+			
+			return new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		}
 		
 	}
