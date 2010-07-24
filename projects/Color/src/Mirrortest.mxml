@@ -3,7 +3,8 @@
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:local="*"
-	minWidth="955" minHeight="600">
+	minWidth="955" minHeight="600"
+	frameRate="2">
 	
 	<mx:Parallel id="growEffect" duration="200">
 		<mx:Resize widthBy="10" heightBy="10" />
@@ -52,6 +53,7 @@
 		mirrorOffsetX="0"
 		mirrorOffsetY="0">
 		
+		<!--
 		<mx:ComboBox
 			rollOverEffect="{growEffect}"
 			rollOutEffect="{shrinkEffect}">
@@ -87,6 +89,7 @@
 		</mx:Panel>
 		
 		<mx:Label text="Dit is een heel belangrijke tekst!"/>
+		-->
 		
 	</local:MirrorBox>
 	

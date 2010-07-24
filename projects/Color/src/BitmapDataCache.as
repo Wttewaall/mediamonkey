@@ -27,15 +27,14 @@ package {
 		public function addCache(width:Number, height:Number, data:BitmapData, keep:Boolean = false):void {
 			var item:CacheData = getCache(width, height);
 			
-			if (item) { // item already exists, overwrite data
-				item.data = data;
+			if (item) { // item already exists
+				return;
 				
 			} else { // create item and store
 				item = new CacheData(width, height, data, keep);
 				cache.push(item);
+				totalUsage++;
 			}
-			
-			totalUsage++;
 		}
 		
 		public function getBitmapData(width:Number, height:Number):BitmapData {
@@ -66,9 +65,14 @@ package {
 			var minUsage:Number = average * dropoff;
 			
 			var item:CacheData;
-			for each (item in cache) {
+			for (var i:uint=0; i<cache.length; i++) {
+				item = cache[i] as CacheData;
 				
+				// items with a usage lower then minUsage get removed until the cache is at maxItems length
+				// older items get removed first (fifo)
 				if (item.usage < minUsage && cache.length > maxItems) {
+					
+					// unless the keep flag is true
 					if (!item.keep) removeCache(item);
 				}
 			}
@@ -101,8 +105,8 @@ internal class CacheData {
 		this.width = width;
 		this.height = height;
 		this.data = data;
-		usage = 1;
 		this.keep = keep;
+		usage = 1;
 	}
 	
 }
