@@ -83,11 +83,10 @@ package nl.mediamonkey.utils {
 			
 			// calulcate bounds with optional stage
 			if (stage) var tempArray:Array = array.concat(stage);
-			var bounds:Rectangle = combineRectangles(tempArray || array);
 			
-			var topLeft:Rectangle = measureMinMax(tempArray || array, "tl");
-			var centerMiddle:Rectangle = measureMinMax(tempArray || array, "cm");
-			var bottomRight:Rectangle = measureMinMax(tempArray || array, "br");
+			var topLeft:Rectangle = measureMinMax(tempArray || array, "top", "left");
+			var middleCenter:Rectangle = measureMinMax(tempArray || array, "middle", "center");
+			var bottomRight:Rectangle = measureMinMax(tempArray || array, "bottom", "right");
 			
 			var point:Point = new Point();
 			var widthSpacing:Number;
@@ -107,8 +106,8 @@ package nl.mediamonkey.utils {
 						break;
 					}
 					case CENTER: {
-						widthSpacing = centerMiddle.width / (array.length - 1);
-						point.x = centerMiddle.x - (object.width/2) + (widthSpacing * i);
+						widthSpacing = middleCenter.width / (array.length - 1);
+						point.x = middleCenter.x - (object.width/2) + (widthSpacing * i);
 						break;
 					}
 					case RIGHT: {
@@ -125,8 +124,8 @@ package nl.mediamonkey.utils {
 						break;
 					}
 					case MIDDLE: {
-						heightSpacing = centerMiddle.height / (array.length - 1);
-						point.y = centerMiddle.y - (object.height/2) + (heightSpacing * i);
+						heightSpacing = middleCenter.height / (array.length - 1);
+						point.y = middleCenter.y - (object.height/2) + (heightSpacing * i);
 						break;
 					}
 					case BOTTOM: {
@@ -224,12 +223,12 @@ package nl.mediamonkey.utils {
 			return result;
 		}
 		
-		public static function measureMinMax(array:Array, direction:String):Rectangle {
+		public function measureMinMax(array:Array, vertical:String, horizontal:String):Rectangle {
 			var bounds:Rectangle;
 			
 			var minX:Number = Infinity;
-			var minY:Number = Infinity;
 			var maxX:Number = 0;
+			var minY:Number = Infinity;
 			var maxY:Number = 0;
 			
 			var object:DisplayObject;
@@ -237,25 +236,56 @@ package nl.mediamonkey.utils {
 				
 				bounds = CoordsUtil.getGlobalBounds(object);
 				
-				if (direction == "tl") {
-					minX = Math.min(bounds.left, minX);
-					minY = Math.min(bounds.top, minY);
-					maxX = Math.max(bounds.left, maxX);
-					maxY = Math.max(bounds.top, maxY);
-				
-				} else if (direction == "cm") {
-					minX = Math.min(bounds.left + bounds.width/2, minX);
-					minY = Math.min(bounds.top + bounds.height/2, minY);
-					maxX = Math.max(bounds.left + bounds.width/2, maxX);
-					maxY = Math.max(bounds.top + bounds.height/2, maxY);
-					
-				} else if (direction == "br") {
-					minX = Math.min(bounds.right, minX);
-					minY = Math.min(bounds.bottom, minY);
-					maxX = Math.max(bounds.right, maxX);
-					maxY = Math.max(bounds.bottom, maxY);
+				switch (vertical) {
+					case "top": {
+						minY = Math.min(bounds.top, minY);
+						maxY = Math.max(bounds.top, maxY);
+						break;
+					}
+					case "middle": {
+						minY = Math.min(bounds.top + bounds.height/2, minY);
+						maxY = Math.max(bounds.top + bounds.height/2, maxY);
+						break;
+					}
+					case "bottom": {
+						minY = Math.min(bounds.bottom, minY);
+						maxY = Math.max(bounds.bottom, maxY);
+						break;
+					}
+					case "height": {
+						minY = Math.min(bounds.top, minY);
+						maxY = Math.max(bounds.bottom, maxY);
+						break;
+					}
 				}
+				
+				switch (horizontal) {
+					case "left": {
+						minX = Math.min(bounds.left, minX);
+						maxX = Math.max(bounds.left, maxX);
+						break;
+					}
+					case "center": {
+						minX = Math.min(bounds.left + bounds.width/2, minX);
+						maxX = Math.max(bounds.left + bounds.width/2, maxX);
+						break;
+					}
+					case "right": {
+						minX = Math.min(bounds.right, minX);
+						maxX = Math.max(bounds.right, maxX);
+						break;
+					}
+					case "width": {
+						minX = Math.min(bounds.left, minX);
+						maxX = Math.max(bounds.right, maxX);
+						break;
+					}
+				}
+				
 			}
+			
+			if (minX == Infinity) minX = 0;
+			if (minY == Infinity) minY = 0;
 			
 			return new Rectangle(minX, minY, maxX - minX, maxY - minY);
 		}
