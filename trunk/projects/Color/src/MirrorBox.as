@@ -6,6 +6,7 @@ package {
 	import flash.display.GradientType;
 	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.BlurFilter;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
@@ -53,6 +54,9 @@ package {
 			addEventListener(ChildExistenceChangedEvent.CHILD_ADD, childAddHandler);
 			addEventListener(ChildExistenceChangedEvent.CHILD_REMOVE, childRemoveHandler);
 			addEventListener(IndexChangedEvent.CHILD_INDEX_CHANGE, childIndexChangeHandler);
+			
+			// when used as an itemrenderer listen for updateComplete event
+			addEventListener(FlexEvent.UPDATE_COMPLETE, updateHandler);
 			
 			children = new Array();
 			cache = new BitmapDataCache(cacheSize);
@@ -116,6 +120,19 @@ package {
 			invalidateDisplayListFlag = false;
 		}
 		
+		protected var timesUpdated:uint;
+		
+		// for when this component is used as an itemrenderer:
+		// first update is when it is added to its parent container
+		// second when children are added and it is measured, maybe..
+		// third when the parent gets scrollbars
+		protected function updateHandler(event:Event):void {
+			timesUpdated++;
+			if (timesUpdated >= 3) removeEventListener(FlexEvent.UPDATE_COMPLETE, updateHandler);
+			updateMirror();
+			invalidateDisplayListFlag = false;
+		}
+		
 		// use our own flag, not UIComponent#mx_internal::invalidateDisplayListFlag
 		protected var invalidateDisplayListFlag:Boolean;
 		
@@ -145,18 +162,18 @@ package {
 			/*
 			// create new bitmapdata only of the dimensions have changed
 			if (bounds.width > lastWidth || bounds.height > lastHeight) {
-				mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x11FF00FF);
+				mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
 				
 				lastWidth = bounds.width;
 				lastHeight = bounds.height;
 				
 			} else {
 				// clear
-				mirrorData.fillRect(new Rectangle(0, 0, mirrorData.width, mirrorData.height), 0x11FF00FF);
+				mirrorData.fillRect(new Rectangle(0, 0, mirrorData.width, mirrorData.height), 0x00FFFFFF);
 			}
 			*/
 			
-			mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x11FF00FF);
+			mirrorData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
 			
 			// draw all child reflections
 			for (var i:uint=0; i<numChildren; i++) {
