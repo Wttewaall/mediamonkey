@@ -17,8 +17,9 @@ package nl.mediamonkey.utils {
 			
 			var invalid:Boolean = false;
 			
+			// returns true if something goes wrong
 			invalid ||= (value is Object && value == null);
-			invalid ||= (value is Number && (value as Number) <= 0);
+			invalid ||= (value is Number && isNaN(value));
 			invalid ||= (value is Boolean && (value as Boolean) == false);
 			invalid ||= (value is String && (value as String).length == 0);
 			invalid ||= (value is Array && (value as Array).length == 0);
