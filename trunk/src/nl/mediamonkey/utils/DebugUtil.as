@@ -12,12 +12,13 @@ package nl.mediamonkey.utils {
 			}
 		}
 		
-		public static function assert(value:Object, message:String=""):void {
+		public static function assert(value:*, message:String=""):void {
 			if (!enabled || value is Function || value is Class) return;
 			
 			var invalid:Boolean = false;
 			
 			// returns true if something goes wrong
+			invalid ||= (value == undefined);
 			invalid ||= (value is Object && value == null);
 			invalid ||= (value is Number && isNaN(value));
 			invalid ||= (value is Boolean && (value as Boolean) == false);
