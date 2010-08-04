@@ -139,10 +139,19 @@ package nl.mediamonkey.helpers {
 		
 		public function gotoScreen(name:String):void {
 			var child:DisplayObject = viewstack.getChildByName(name);
+			if (child) viewstack.selectedIndex = viewstack.getChildIndex(child);
 			
-			if (child != null) {
-				viewstack.selectedIndex = viewstack.getChildIndex(child);
+			if (child == null) {
+				
+				for (var i:uint=0; i<viewstack.numChildren; i++) {
+					if (Container(viewstack.getChildAt(i)).label == name) {
+						viewstack.selectedIndex = i;
+						return;
+					}
+				}
 			}
+			
+			trace("Could find no child with name:", name);
 		}
 		
 		public function getPageIndex(page:Container):int {
