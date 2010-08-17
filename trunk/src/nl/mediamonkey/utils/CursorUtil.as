@@ -82,6 +82,8 @@ package nl.mediamonkey.utils {
 				if (cursorIcon != null) {
 					_currentCursor = cursorIcon;
 					_currentCursorID = CursorManager.setCursor(cursorIcon, priority, offsetX, offsetY);
+					
+					getCursorHolder().blendMode = vo.blendMode;
 				}
 			}
 			return currentCursorID;
