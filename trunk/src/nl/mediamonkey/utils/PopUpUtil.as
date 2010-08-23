@@ -65,7 +65,6 @@ package nl.mediamonkey.utils {
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
-	import mx.core.FlexGlobals;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
 	import mx.effects.*;
@@ -76,10 +75,8 @@ package nl.mediamonkey.utils {
 	import mx.managers.PopUpManager;
 	import mx.managers.PopUpManagerChildList;
 	
-	import nl.mediamonkey.utils.events.PopUpEvent;
 	import nl.mediamonkey.utils.data.PopUpSettings;
-	
-	//import view.components.DraggableTitleWindow;
+	import nl.mediamonkey.utils.events.PopUpEvent;
 	
 	public class PopUpUtil {
 		
@@ -152,7 +149,7 @@ package nl.mediamonkey.utils {
 			
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
-				target = FlexGlobals.topLevelApplication as DisplayObject;// was Application.application
+				target = Application.application as DisplayObject;
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION
 			}
 			
