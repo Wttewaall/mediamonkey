@@ -7,11 +7,10 @@ package nl.mediamonkey.behaviors {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import mx.core.FlexGlobals;
+	import mx.core.Application;
 	import mx.events.SandboxMouseEvent;
 	
 	import nl.mediamonkey.behaviors.events.MoveEvent;
-	import nl.mediamonkey.utils.CoordsUtil;
 	
 	/* TODO: add cursor logic for mouseOver? */
 	
@@ -62,7 +61,7 @@ package nl.mediamonkey.behaviors {
 			this.target = target;
 			this.dispatchFromTarget = dispatchFromTarget;
 			
-			sandboxRoot = FlexGlobals.topLevelApplication.systemManager.getSandboxRoot();
+			sandboxRoot = Application.application.systemManager.getSandboxRoot();
 		}
 		
 		// ---- protected methods ----
@@ -126,10 +125,10 @@ package nl.mediamonkey.behaviors {
 			
 			if (enabled) {
 				origin = new Point(target.x, target.y);
-				if (useGlobalSpace) origin = CoordsUtil.localToGlobal(target, origin);
+				if (useGlobalSpace) origin = target.parent.localToGlobal(origin);
 				
 				downPoint = new Point(target.parent.mouseX, target.parent.mouseY);
-				if (useGlobalSpace) downPoint = CoordsUtil.localToGlobal(target, downPoint);
+				if (useGlobalSpace) downPoint = target.parent.localToGlobal(downPoint);
 				
 				if (!dragging) startDragging();
 			}
@@ -139,7 +138,7 @@ package nl.mediamonkey.behaviors {
 			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.MOVE));
 			
 			/*var current:Point = new Point(target.parent.mouseX, target.parent.mouseY);
-			if (useGlobalSpace) current = CoordsUtil.localToGlobal(target, current);
+			if (useGlobalSpace) current = target.parent.localToGlobal(current);
 			trace("mouse:", current);*/
 		}
 		

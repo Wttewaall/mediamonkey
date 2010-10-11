@@ -5,7 +5,7 @@ package nl.mediamonkey.utils {
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
-	import mx.core.FlexGlobals;
+	import mx.core.Application;
 	import mx.managers.CursorManager;
 	import mx.managers.ISystemManager;
 	
@@ -82,8 +82,6 @@ package nl.mediamonkey.utils {
 				if (cursorIcon != null) {
 					_currentCursor = cursorIcon;
 					_currentCursorID = CursorManager.setCursor(cursorIcon, priority, offsetX, offsetY);
-					
-					getCursorHolder().blendMode = vo.blendMode;
 				}
 			}
 			return currentCursorID;
@@ -99,6 +97,8 @@ package nl.mediamonkey.utils {
 					_currentCursor = vo.cursorIcon;
 					_currentCursorID = CursorManager.setCursor(vo.cursorIcon, vo.priority, vo.offsetX, vo.offsetY);
 				}
+				
+				getCursorHolder().blendMode = vo.blendMode;
 			}
 			return currentCursorID;
 		}
@@ -128,7 +128,8 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function getCursorHolder():Sprite {
-			var systemManager:ISystemManager = FlexGlobals.topLevelApplication.systemManager;
+			//var systemManager:ISystemManager = FlexGlobals.topLevelApplication.systemManager;
+			var systemManager:ISystemManager = Application.application.systemManager;
 			return systemManager.cursorChildren.getChildAt(systemManager.cursorChildren.numChildren-1) as Sprite;
 		}
 		

@@ -4,14 +4,19 @@ package nl.mediamonkey.utils {
 	
 	public class StringUtil {
 		
+		public static const REGEXP_TRIM					:RegExp = /^\s+|\s+$/g;
+		public static const REGEXP_URL_ENCODING_SAFE	:RegExp = /(["<>\\\^\[\]'\+\$,])+/gi;
+		public static const REGEXP_LEADING_ZEROES		:RegExp = /^0+/g;
+		public static const REGEXP_DOUBLE_SPACES		:RegExp = /[ \t]+/g;
+		public static const REGEXP_VARNAME_SEGMENTS		:RegExp = /[A-Z]?[a-z]*/g;
+		public static const REGEXP_NUMBER				:RegExp = /[0-9]+(?:\.[0-9]*)?/g;
+		
 		public static function trim(input:String):String {
-			var pattern:RegExp = /^\s+|\s+$/g;
-			return input.replace(pattern, "");
+			return input.replace(REGEXP_TRIM, "");
 		}
 		
 		private function isURLEncodingSafe(input:String):Boolean {
-			var pattern:RegExp = /(["<>\\\^\[\]'\+\$,])+/gi;
-			return pattern.test(input);
+			return REGEXP_URL_ENCODING_SAFE.test(input);
 		}
 		
 		public static function splitAtLength(value:String, length:uint):String {
@@ -24,13 +29,26 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function removeZeroesAtBegin(input:String):String {
-			var pattern:RegExp = /^0+/g;
-			return input.replace(pattern, "");
+			return input.replace(REGEXP_LEADING_ZEROES, "");
 		}
 		
 		public static function removeDoubleSpaces(input:String):String {
-			var pattern:RegExp = /[ \t]+/g; // ignore newline, so don't use \s
-			return input.replace(pattern, " ");
+			return input.replace(REGEXP_DOUBLE_SPACES, " ");
+		}
+		
+		/**
+		 * camelCaseName string to UPPER_CASE_NAME
+		 */
+		public static function camelToUpper(name:String):String {
+			var output:String = "";
+			
+			var segments:Array = name.match(REGEXP_VARNAME_SEGMENTS);
+			for (var i:uint=0; i<segments.length; i++) {
+				output += String(segments[i]).toUpperCase();
+				output += (i < segments.length-1) ? "_" : "";
+			}
+			
+			return output;
 		}
 		
 		public static function getCurrencySymbol(value:String):String {

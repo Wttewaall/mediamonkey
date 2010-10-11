@@ -65,6 +65,7 @@ package nl.mediamonkey.utils {
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
+	import mx.core.IContainer;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
 	import mx.effects.*;
@@ -96,10 +97,10 @@ package nl.mediamonkey.utils {
 		
 		public static function createPopUpFrom(className:Class, settings:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (className == null) throw new ArgumentError("className cannot be null");
-			return addPopUp(new className() as UIComponent, settings, target, childList);
+			return addPopUp(new className() as Container, settings, target, childList);
 		}
 		
-		public static function addPopUp(content:UIComponent, settings:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
+		public static function addPopUp(content:Container, settings:Object=null, target:DisplayObject=null, childList:String=null):IFlexDisplayObject {
 			if (content == null) throw new ArgumentError("content cannot be null");
 			
 			var contentWidth:Number = content.width;
@@ -108,16 +109,14 @@ package nl.mediamonkey.utils {
 			content.name = CONTENT_NAME;
 			content.percentWidth = 100;
 			content.percentHeight = 100;
-			content.addEventListener(Event.RESIZE, contentResizeHandler, false, 0, true);
+			//content.addEventListener(Event.RESIZE, contentResizeHandler, false, 0, true);
 			
 			// delegate data from settings
 			if (settings === null) settings = new PopUpSettings();
-			if (settings.data) (content as Container).data = settings.data;
+			if (settings.data) content.data = settings.data;
 			
 			// create new TitleWindow
 			var window:TitleWindow = new TitleWindow();
-			//var window:DraggableTitleWindow = new DraggableTitleWindow();
-			
 			window.addEventListener(CloseEvent.CLOSE, windowCloseHandler)
 			window.addEventListener(PopUpEvent.CANCEL, eventHandler);
 			window.addEventListener(PopUpEvent.CLOSE, eventHandler);
@@ -131,10 +130,10 @@ package nl.mediamonkey.utils {
 				window.title = settings.title;
 				window.titleIcon = settings.titleIcon;
 				window.showCloseButton = settings.showCloseButton;
-				window.minWidth = settings.minWidth;
-				window.maxWidth = settings.maxWidth;
-				window.minHeight = settings.minHeight;
-				window.maxHeight = settings.maxHeight;
+				if (!isNaN(settings.minWidth)) window.minWidth = settings.minWidth;
+				if (!isNaN(settings.maxWidth)) window.maxWidth = settings.maxWidth;
+				if (!isNaN(settings.minHeight)) window.minHeight = settings.minHeight;
+				if (!isNaN(settings.maxHeight)) window.maxHeight = settings.maxHeight;
 				window.data = {center:settings.center}; // used to center on resize
 			}
 			
@@ -150,7 +149,7 @@ package nl.mediamonkey.utils {
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
 				target = Application.application as DisplayObject;
-				if (childList == null) childList = PopUpManagerChildList.APPLICATION
+				if (childList == null) childList = PopUpManagerChildList.APPLICATION;
 			}
 			
 			var modal:Boolean = (settings) ? settings.modal : false;
@@ -320,7 +319,7 @@ package nl.mediamonkey.utils {
 			var w:Number = 0;
 			w += window.getStyle("borderThicknessLeft") || 0;
 			w += window.getStyle("paddingLeft") || 0;
-			w += content.width;
+			w += content.getExplicitOrMeasuredWidth();
 			w += window.getStyle("paddingRight") || 0;
 			w += window.getStyle("borderThicknessRight") || 0;
 			
@@ -328,12 +327,16 @@ package nl.mediamonkey.utils {
 			h += window.getStyle("headerHeight") || 0;
 			h += window.getStyle("borderThicknessTop") || 0;
 			h += window.getStyle("paddingTop") || 0;
-			h += content.height;
+			h += content.getExplicitOrMeasuredHeight();
 			h += window.getStyle("paddingBottom") || 0;
 			h += window.getStyle("borderThicknessBottom") || 0;
 			
 			window.width = w;
 			window.height = h;
+			
+			trace(window.getStyle("headerHeight"), window.getStyle("borderThicknessTop"), window.getStyle("paddingTop"), content.height, window.getStyle("paddingBottom"), window.getStyle("borderThicknessBottom"));
+			trace("contentResizeHandler:", w, h);
+			
 		}
 		
 	}
