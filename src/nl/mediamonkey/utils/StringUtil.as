@@ -10,6 +10,8 @@ package nl.mediamonkey.utils {
 		public static const REGEXP_DOUBLE_SPACES		:RegExp = /[ \t]+/g;
 		public static const REGEXP_VARNAME_SEGMENTS		:RegExp = /[A-Z]?[a-z]*/g;
 		public static const REGEXP_NUMBER				:RegExp = /[0-9]+(?:\.[0-9]*)?/g;
+		public static const REGEXP_DATE_TIME			:RegExp = /\d{1,2}\W\d{1,2}\W\d{4}\s*\d{1,2}\W\d{2}(\W\d{2})?\s*(?:am|AM|pm|PM)?/g; //"MM-DD-YYYY HH:NN:SS"
+		public static const REGEXP_DATE_TIME_EXT		:RegExp = /(?P<day>\d{1,2})\W(?P<month>\d{1,2})\W(?P<year>\d{4})\s*(?P<hours>\d{1,2})\W(?P<minutes>\d{2})(\W(?P<seconds>\d{2}))?\s*(?P<period>(?:am|AM|pm|PM)?)/g;
 		
 		public static function trim(input:String):String {
 			return input.replace(REGEXP_TRIM, "");
