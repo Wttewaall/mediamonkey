@@ -2,8 +2,8 @@ package nl.mediamonkey.utils {
 	
 	import flash.display.DisplayObject;
 	
-	import nl.mediamonkey.enum.ResizeType;
-	import nl.mediamonkey.enum.ZoomType;
+	import nl.mediamonkey.utils.enum.ResizeMode;
+	import nl.mediamonkey.utils.enum.ZoomMode;
 	
 	public class ScaleUtil {
 		
@@ -21,23 +21,23 @@ package nl.mediamonkey.utils {
 			var sx:Number = width / target.width;
 			var sy:Number = height / target.height;
 			
-			if (resizeMode == (ResizeType.REDUCE | ResizeType.ENLARGE)) {
+			if (resizeMode == (ResizeMode.REDUCE | ResizeMode.ENLARGE)) {
 				// sx = sx; sy = sy;
 				
-			} else if (resizeMode & ResizeType.REDUCE) {
+			} else if (resizeMode & ResizeMode.REDUCE) {
 				sx = Math.min(sx, 1);
 				sy = Math.min(sy, 1);
 				
-			} else if (resizeMode & ResizeType.ENLARGE) {
+			} else if (resizeMode & ResizeMode.ENLARGE) {
 				sx = Math.max(sx, 1);
 				sy = Math.max(sy, 1);
 			}
 			
 			switch (zoomMode) {
-				case ZoomType.ACTUAL_SIZE:	return 1;
-				case ZoomType.FIT_WIDTH:	return sx;
-				case ZoomType.FIT_HEIGHT:	return sy;
-				case ZoomType.FIT_IMAGE:	return Math.min(sx, sy);
+				case ZoomMode.ACTUAL_SIZE:	return 1;
+				case ZoomMode.FIT_WIDTH:	return sx;
+				case ZoomMode.FIT_HEIGHT:	return sy;
+				case ZoomMode.FIT_IMAGE:	return Math.min(sx, sy);
 				default:					return 1;
 			}
 		}
