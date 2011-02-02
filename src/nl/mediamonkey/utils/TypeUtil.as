@@ -2,9 +2,12 @@
 	
 	import flash.utils.getDefinitionByName;
 	
+	import mx.collections.ArrayCollection;
+	
 	public final class TypeUtil {
 		
-		protected static const hexPattern:RegExp = /(\#|0x|0X)([0-9a-fA-F]{1,6})/;
+		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]{1,6})/;
+		public static const valuePattern	:RegExp = /(".*?")|(?:'.*?')|[#\w-\.]+/g;
 		
 		/**
 	     * Converts a variable from a String to the best suited type for the variable.
@@ -12,7 +15,7 @@
 	     * @param value the value to convert
 	     * @return the converted value, or the input string if a conversion was not possible.
 	     */
-		public static function fromString(value:String):* {
+		public static function stringToValue(value:String):* {
 			
 			// Boolean
 			if (value.toLowerCase() == "true") return true;
@@ -48,6 +51,24 @@
 			
 			// String
 			return value;
+		}
+		
+		public static function stringToValueArray(value:String):Array {
+			var valueArray:Array = [];
+			
+			// retrieve string values
+			var stringValues:Array = value.match(valuePattern);
+			
+			// convert every string to the correct type
+			for (var i:int=0; i<stringValues.length; i++) {
+				valueArray.push( stringToValue(stringValues[i] as String) );
+			}
+			
+			return valueArray;
+		}
+		
+		public static function stringToValueArrayCollection(value:String):ArrayCollection {
+			return new ArrayCollection( stringToValueArray(value) );
 		}
 	}
 }
