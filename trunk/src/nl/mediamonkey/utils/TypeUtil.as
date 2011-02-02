@@ -7,7 +7,7 @@
 	public final class TypeUtil {
 		
 		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]{1,6})/;
-		public static const valuePattern	:RegExp = /(".*?")|(?:'.*?')|[#\w-\.]+/g;
+		public static const valuePattern	:RegExp = /(".*?")|(?:'.*?')|[#\w-\.\+]+/g;
 		
 		/**
 	     * Converts a variable from a String to the best suited type for the variable.
