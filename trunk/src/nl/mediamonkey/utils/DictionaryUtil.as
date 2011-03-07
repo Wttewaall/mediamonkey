@@ -20,22 +20,39 @@ package nl.mediamonkey.utils {
 			return getKeys(dict).length;
 		}
 		
-		public static function contains(dict:Dictionary, value:Object):Boolean {
-			for (var key:Object in dict) {
-				if (dict[key] == value) return true;
+		public static function containsValue(dict:Dictionary, value:Object):Boolean {
+			for (var key:* in dict) {
+				if (dict[key] === value) return true;
 			}
 			return false;
 		}
 		
-		public static function keyFromValue(dict:Dictionary, value:Object):Object {
-			for (var key:Object in dict) {
-				if (dict[key] == value) return key;
+		public static function containsKey(dict:Dictionary, key:Object):Boolean {
+			for (var k:* in dict) {
+				if (k == key) return true;
+			}
+			return false;
+		}
+		
+		public static function keyFromValue(dict:Dictionary, value:*):* {
+			for (var key:* in dict) {
+				if (dict[key] === value) return key;
 			}
 			return null;
 		}
 		
-		public static function valueFromKey(dict:Dictionary, key:Object):Object {
+		public static function valueFromKey(dict:Dictionary, key:*):* {
 			return dict[key];
+		}
+		
+		public static function difference(d1:Dictionary, d2:Dictionary):Dictionary {
+			var result:Dictionary = new Dictionary;
+			var prop:String;
+			
+			for (prop in d1) if (!containsValue(d2, d1[prop])) result[prop] = d1[prop];
+			for (prop in d2) if (!containsValue(d1, d2[prop])) result[prop] = d2[prop];
+			
+			return result;
 		}
 		
 	}
