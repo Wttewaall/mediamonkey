@@ -5,8 +5,8 @@ package nl.mediamonkey.utils {
 	
 	public class Matrix2 extends Matrix {
 		
-		public static const RAD_TO_DEG:Number = Math.PI / 180;
-		public static const DEG_TO_RAD:Number = 180 / Math.PI;
+		public static const RAD_TO_DEG:Number = 180/Math.PI;
+		public static const DEG_TO_RAD:Number = Math.PI/180;
 		
 		// ---- constructor ----
 		
