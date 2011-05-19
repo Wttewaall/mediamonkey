@@ -5,8 +5,8 @@
 	
 	public class MatrixTransformer {
 		
-		public static const RAD_TO_DEG:Number = Math.PI / 180;
-		public static const DEG_TO_RAD:Number = 180 / Math.PI;
+		public static const RAD_TO_DEG:Number = 180/Math.PI;
+		public static const DEG_TO_RAD:Number = Math.PI/180;
 		
 		public static function getScaleX(m:Matrix):Number {
 			return Math.sqrt(m.a * m.a + m.b * m.b);

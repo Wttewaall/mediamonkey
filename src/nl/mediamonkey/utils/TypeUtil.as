@@ -15,7 +15,9 @@
 	     * @param value the value to convert
 	     * @return the converted value, or the input string if a conversion was not possible.
 	     */
-		public static function stringToValue(value:String):* {
+		public static function stringToValue(input:*):* {
+			if (input == null || input == undefined) return null;
+			var value:String = String(input);
 			
 			// Boolean
 			if (value.toLowerCase() == "true") return true;
