@@ -84,40 +84,40 @@ package nl.mediamonkey.utils {
 			skewYRadians = value * DEG_TO_RAD;
 		}
 		
-		public function get rotationRadians():Number {
+		public function get angle():Number {
 			return skewYRadians;
 		}
 		
-		public function set rotationRadians(value:Number):void {
-			var oldRotation:Number = rotationRadians;
+		public function set angle(value:Number):void {
+			var oldAngle:Number = angle;
 			var oldSkewX:Number = skewXRadians;
-			skewXRadians = oldSkewX + value - oldRotation;
+			skewXRadians = oldSkewX + value - oldAngle;
 			skewYRadians = value;
 		}
 		
 		public function get rotation():Number {
-			return rotationRadians * RAD_TO_DEG;
+			return angle * RAD_TO_DEG;
 		}
 		
 		public function set rotation(value:Number):void {
-			rotationRadians = value * DEG_TO_RAD;
+			angle = value * DEG_TO_RAD;
 		}
 		
 		// ---- public methods ----
 		
-		public function rotateAroundInternalPoint(point:Point, angleDegrees:Number):void {
+		public function rotateAroundInternalPoint(point:Point, rotation:Number):void {
 			point = transformPoint(point);
 			tx -= point.x;
 			ty -= point.y;
-			rotate(angleDegrees * DEG_TO_RAD);
+			rotate(rotation * DEG_TO_RAD);
 			tx += point.x;
 			ty += point.y;
 		}
 		
-		public function rotateAroundExternalPoint(point:Point, angleDegrees:Number):void {
+		public function rotateAroundExternalPoint(point:Point, rotation:Number):void {
 			tx -= point.x;
 			ty -= point.y;
-			rotate(angleDegrees * DEG_TO_RAD);
+			rotate(rotation * DEG_TO_RAD);
 			tx += point.x;
 			ty += point.y;
 		}
