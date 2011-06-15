@@ -14,8 +14,16 @@ package nl.mediamonkey.utils {
 			return object.parent.globalToLocal(point);
 		}
 		
+		public static function localToLocal(point:Point, from:DisplayObject, to:DisplayObject):Point {
+			return to.parent.globalToLocal(from.parent.localToGlobal(point));
+		}
+		
 		public static function globalPosition(object:DisplayObject):Point {
 			return localToGlobal(object, new Point(object.x, object.y));
+		}
+		
+		public static function localPosition(object:DisplayObject, to:DisplayObject):Point {
+			return localToLocal(new Point(object.x, object.y), object, to);
 		}
 		
 		public static function localPoint(object:DisplayObject, point:Point):Point {

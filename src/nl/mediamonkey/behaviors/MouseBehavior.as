@@ -10,7 +10,14 @@ package nl.mediamonkey.behaviors {
 	import mx.core.Application;
 	import mx.events.SandboxMouseEvent;
 	
-	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.behaviors.events.MouseBehaviorEvent;
+	
+	[Event(name="mouseDown", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
+	[Event(name="mouseUp", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
+	[Event(name="mouseMove", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
+	[Event(name="dragStart", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
+	[Event(name="dragMove", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
+	[Event(name="dragEnd", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
 	
 	/* TODO: add cursor logic for mouseOver? */
 	
@@ -89,7 +96,7 @@ package nl.mediamonkey.behaviors {
 				sandboxRoot.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler, true);
 				sandboxRoot.addEventListener(SandboxMouseEvent.MOUSE_UP_SOMEWHERE, mouseUpSomewhereHandler);
 				
-				dispatcher.dispatchEvent(new MoveEvent(MoveEvent.DRAG_START));
+				dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.DRAG_START, this, false, false, downPoint.x, downPoint.y));
 			}
 		}
 		
@@ -101,7 +108,7 @@ package nl.mediamonkey.behaviors {
 				sandboxRoot.removeEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler, true);
 				sandboxRoot.removeEventListener(SandboxMouseEvent.MOUSE_UP_SOMEWHERE, mouseUpSomewhereHandler);
 				
-				dispatcher.dispatchEvent(new MoveEvent(MoveEvent.DRAG_END));
+				dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.DRAG_END, this, false, false, downPoint.x, downPoint.y));
 			}
 		}
 		
@@ -135,7 +142,8 @@ package nl.mediamonkey.behaviors {
 		}
 		
 		protected function mouseMoveHandler(event:MouseEvent):void {
-			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.MOVE));
+			dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.MOUSE_MOVE, this, false, false, downPoint.x, downPoint.y));
+			dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.DRAG_MOVE, this, false, false, downPoint.x, downPoint.y));
 			
 			/*var current:Point = new Point(target.parent.mouseX, target.parent.mouseY);
 			if (useGlobalSpace) current = target.parent.localToGlobal(current);

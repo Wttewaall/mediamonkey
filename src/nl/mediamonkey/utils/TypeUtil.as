@@ -6,18 +6,28 @@
 	
 	public final class TypeUtil {
 		
-		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]{1,6})/;
+		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]{6})/;
 		public static const valuePattern	:RegExp = /(".*?")|(?:'.*?')|[#\w-\.\+]+/g;
 		
 		/**
 	     * Converts a variable from a String to the best suited type for the variable.
 	     *
+		 * "flash.events.Event" -> Event object
+		 * "flash.events::Event" -> Event object
+		 * "flash.events.Event.COMPLETE" -> "complete" string
+		 * "flash.events::Event.COMPLETE" -> "complete" string
+		 * 
 	     * @param value the value to convert
 	     * @return the converted value, or the input string if a conversion was not possible.
 	     */
-		public static function stringToValue(input:*):* {
-			if (input == null || input == undefined) return null;
-			var value:String = String(input);
+		public static function stringToValue(value:String, forceType:Class=null):* {
+			
+			if (forceType != null) {
+				if (forceType == Number) return forceType(parseFloat(value));
+				if (forceType == int || forceType == uint) return forceType(parseInt(value));
+				if (forceType == Boolean) return (value.toLowerCase() == "true");
+				if (forceType == String) return forceType(value);
+			}
 			
 			// Boolean
 			if (value.toLowerCase() == "true") return true;

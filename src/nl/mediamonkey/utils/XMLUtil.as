@@ -1,14 +1,17 @@
 package nl.mediamonkey.utils {
 	
+	import flash.xml.XMLNode;
+	import flash.xml.XMLNodeType;
+	
 	public class XMLUtil {
 		
+		public static const ELEMENT					:String = "element";
 		public static const TEXT					:String = "text";
 		public static const COMMENT					:String = "comment";
-		public static const PROCESSING_INSTRUCTION	:String = "processing-instruction";
 		public static const ATTRIBUTE				:String = "attribute";
-		public static const ELEMENT					:String = "element";
+		public static const PROCESSING_INSTRUCTION	:String = "processing-instruction";
 		
-		public static function isValidXML(data:String):Boolean {
+		public static function isValidXML(data:*):Boolean {
 			var xml:XML;
 			
 			try {
@@ -18,7 +21,7 @@ package nl.mediamonkey.utils {
 				return false;
 			}
 			
-			return (xml.nodeKind() == XMLUtil.ELEMENT);
+			return (xml != null && xml.nodeKind() == XMLUtil.ELEMENT);
 		}
 		
 		/**
@@ -54,6 +57,82 @@ package nl.mediamonkey.utils {
 			}
 			
 			return out;			
+		}
+		
+		/**
+		 * Creates a CDATA section for the given data string.
+		 * Use this method if you need to create a CDATA section with a binding
+		 * expression in a literal XML declaration
+		 *
+		 * @param data the data string to create a CDATA section from.
+		 * @return a CDATA section for the data
+		 */
+		public static function cdata(data:String):XML {
+			var result:XML = new XML("<![CDATA[" + data + "]]>");
+			return result;
+		}
+		
+		/**
+		 * Returns if the given xml node is an element node.
+		 */
+		public static function isElementNode(xml:XML):Boolean {
+			if (xml == null) throw new Error("The xml must not be null");
+			return (xml.nodeKind() == ELEMENT);
+		}
+		
+		/**
+		 * Returns if the given xml node is a text node.
+		 */
+		public static function isTextNode(xml:XML):Boolean {
+			if (xml == null) throw new Error("The xml must not be null");
+			return (xml.nodeKind() == TEXT);
+		}
+		
+		/**
+		 * Returns if the given xml node is a comment node.
+		 */
+		public static function isCommentNode(xml:XML):Boolean {
+			if (xml == null) throw new Error("The xml must not be null");
+			return (xml.nodeKind() == COMMENT);
+		}
+		
+		/**
+		 * Returns if the given xml node is a processing instruction node.
+		 */
+		public static function isProcessingInstructionNode(xml:XML):Boolean {
+			if (xml == null) throw new Error("The xml must not be null");
+			return (xml.nodeKind() == PROCESSING_INSTRUCTION);
+		}
+		
+		/**
+		 * Returns if the given xml node is an attribute node.
+		 */
+		public static function isAttributeNode(xml:XML):Boolean {
+			if (xml == null) throw new Error("The xml must not be null");
+			return (xml.nodeKind() == ATTRIBUTE);
+		}
+		
+		/**
+		 * Converts an attribute to a node.
+		 *
+		 * @param xml the xml node that contains the attribute
+		 * @param attribute the name of the attribute that will be converted to a node
+		 * @return the passed in xml node with the specified attribute converted to a node
+		 */
+		public static function convertAttributeToNode(xml:XML, attribute:String):XML {
+			var attributes:XMLList = xml.attribute(attribute);
+			
+			if (attributes) {
+				if (attributes[0] != undefined) {
+					var node:XMLNode = new XMLNode(XMLNodeType.ELEMENT_NODE, attribute);
+					var value:XMLNode = new XMLNode(XMLNodeType.TEXT_NODE, attributes[0].toString());
+					node.appendChild(value);
+					var newNode:XML = new XML(node.toString());
+					xml.appendChild(newNode);
+					delete attributes[0];
+				}
+			}
+			return xml;
 		}
 		
 	}

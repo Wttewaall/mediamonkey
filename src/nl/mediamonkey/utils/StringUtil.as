@@ -12,6 +12,8 @@ package nl.mediamonkey.utils {
 		public static const REGEXP_NUMBER				:RegExp = /[0-9]+(?:\.[0-9]*)?/g;
 		public static const REGEXP_DATE_TIME			:RegExp = /\d{1,2}\W\d{1,2}\W\d{4}\s*\d{1,2}\W\d{2}(\W\d{2})?\s*(am|AM|pm|PM)?/g; //"MM-DD-YYYY HH:NN:SS"
 		public static const REGEXP_DATE_TIME_EXT		:RegExp = /(?P<day>\d{1,2})\W(?P<month>\d{1,2})\W(?P<year>\d{4})\s*(?P<hours>\d{1,2})\W(?P<minutes>\d{2})(\W(?P<seconds>\d{2}))?\s*(?P<period>(?:am|AM|pm|PM)?)/g;
+		public static const REGEXP_DATE_TIME2			:RegExp = /\d{4}\W\d{1,2}\W\d{1,2}\s*\d{1,2}\W\d{2}(\W\d{2})?\s*(am|AM|pm|PM)?/g; //"YYYY-MM-DD HH:NN:SS"
+		public static const REGEXP_DATE_TIME2_EXT		:RegExp = /(?P<year>\d{4})\W(?P<month>\d{1,2})\W(?P<day>\d{1,2})\s*(?P<hours>\d{1,2})\W(?P<minutes>\d{2})(\W(?P<seconds>\d{2}))?\s*(?P<period>(?:am|AM|pm|PM)?)/g;
 		
 		public static function trim(input:String):String {
 			return input.replace(REGEXP_TRIM, "");
@@ -89,7 +91,12 @@ package nl.mediamonkey.utils {
 		
 		public static function stringToDate(value:String):Date {
 			var match:* = StringUtil.REGEXP_DATE_TIME_EXT.exec(value);
-			return new Date(match.year, match.month, match.day, match.hours, match.minutes, match.seconds);
+			return new Date(match.year, match.month-1, match.day, match.hours, match.minutes, match.seconds);
+		}
+		
+		public static function stringToDate2(value:String):Date {
+			var match:* = StringUtil.REGEXP_DATE_TIME2_EXT.exec(value);
+			return new Date(match.year, match.month-1, match.day, match.hours, match.minutes, match.seconds);
 		}
 		
 		public static function getURLParams():Object {
@@ -143,6 +150,12 @@ package nl.mediamonkey.utils {
 			}
 			
 			return normalizedSize + " " + unit;
+		}
+		
+		protected function tabs(amount:int):String {
+			var str:String = "";
+			for (var i:int=0; i<amount; i++) str += "\t";
+			return str;
 		}
 		
 	}
