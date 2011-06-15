@@ -3,6 +3,8 @@ package nl.mediamonkey.utils {
 	import flash.display.InteractiveObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 	import flash.utils.Dictionary;
 	
 	import mx.core.Application;
@@ -12,9 +14,6 @@ package nl.mediamonkey.utils {
 	import nl.mediamonkey.utils.data.Cursor;
 	
 	public class CursorUtil {
-		
-		public static const ROLL_OVER:String = "rollOver";
-		public static const ROLL_OUT:String = "rollOut";
 		
 		private static var dictionary:Dictionary = new Dictionary(true);
 		
@@ -37,8 +36,10 @@ package nl.mediamonkey.utils {
 			if (!dictionary[object]) {
 				var eventName:String;
 				
+				object.addEventListener(MouseEvent.MOUSE_MOVE, cursorMoveHandler);
+				
 				if (!overEvents) {
-					object.addEventListener(ROLL_OVER, cursorOverHandler);
+					object.addEventListener(MouseEvent.ROLL_OVER, cursorOverHandler);
 					
 				} else {
 					for each (eventName in overEvents)
@@ -46,7 +47,7 @@ package nl.mediamonkey.utils {
 				}
 				
 				if (!outEvents) {
-					object.addEventListener(ROLL_OUT, cursorOutHandler);
+					object.addEventListener(MouseEvent.ROLL_OUT, cursorOutHandler);
 					
 				} else {
 					for each (eventName in outEvents)
@@ -99,6 +100,7 @@ package nl.mediamonkey.utils {
 				}
 				
 				getCursorHolder().blendMode = vo.blendMode;
+				if (!vo.hideMouse) Mouse.show();
 			}
 			return currentCursorID;
 		}
@@ -135,19 +137,26 @@ package nl.mediamonkey.utils {
 		
 		// ---- event handlers ----
 		
-		protected static function cursorOverHandler(event:Event):void {
+		protected static function cursorOverHandler(event:MouseEvent):void {
 			var value:CursorValue = dictionary[event.currentTarget] as CursorValue;
 			if (value) setCursorByVO(value.cursor);
 		}
 		
-		protected static function cursorOutHandler(event:Event):void {
+		protected static function cursorOutHandler(event:MouseEvent):void {
 			removeCurrentCursor();
+		}
+		
+		protected static function cursorMoveHandler(event:MouseEvent):void {
+			var value:CursorValue = dictionary[event.currentTarget] as CursorValue;
+			if (value.cursor.hideMouse == false) Mouse.show();
 		}
 		
 	}
 }
 
 // ---- CursorValue ----
+
+import flash.events.MouseEvent;
 
 import nl.mediamonkey.utils.CursorUtil;
 import nl.mediamonkey.utils.data.Cursor;
@@ -160,8 +169,8 @@ class CursorValue {
 	
 	public function CursorValue(cursor:Cursor, overEvents:Array=null, outEvents:Array=null) {
 		this.cursor = cursor;
-		this.overEvents = (overEvents) ? overEvents : [CursorUtil.ROLL_OVER];
-		this.outEvents = (outEvents) ? outEvents : [CursorUtil.ROLL_OUT];
+		this.overEvents = (overEvents) ? overEvents : [MouseEvent.ROLL_OVER];
+		this.outEvents = (outEvents) ? outEvents : [MouseEvent.ROLL_OUT];
 	}
 	
 }

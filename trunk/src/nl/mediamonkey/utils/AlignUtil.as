@@ -5,8 +5,6 @@ package nl.mediamonkey.utils {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import mx.core.FlexGlobals;
-	
 	public class AlignUtil {
 		
 		// ---- public static constants ----
@@ -35,7 +33,7 @@ package nl.mediamonkey.utils {
 		 * @param horizontal A String value to align vertically. Tha value can be "top", "middle" or "bottom".
 		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function align(array:Array, horizontal:String, vertical:String, stage:DisplayObject=null):void {
+		public static function align(array:Array, horizontal:String, vertical:String, stage:Object=null):void {
 			DebugUtil.expect(horizontal, LEFT, CENTER, RIGHT, NONE);
 			DebugUtil.expect(vertical, TOP, MIDDLE, BOTTOM, NONE);
 			
@@ -75,7 +73,7 @@ package nl.mediamonkey.utils {
 		 * @param horizontal A String value to distribute vertically. Tha value can be "top", "middle" or "bottom".
 		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function distribute(array:Array, horizontal:String, vertical:String, stage:DisplayObject=null):void {
+		public static function distribute(array:Array, horizontal:String, vertical:String, stage:Object=null):void {
 			DebugUtil.expect(horizontal, LEFT, CENTER, RIGHT, NONE);
 			DebugUtil.expect(vertical, TOP, MIDDLE, BOTTOM, NONE);
 			DebugUtil.assert(!(horizontal == NONE && vertical == NONE),
@@ -147,7 +145,7 @@ package nl.mediamonkey.utils {
 		 * @param height Boolean value to match size over height.
 		 * @param stage A DisplayObject of which to include the bounds in the algorithm.
 		 */
-		public static function matchSize(array:Array, width:Boolean, height:Boolean, stage:DisplayObject=null):void {
+		public static function matchSize(array:Array, width:Boolean, height:Boolean, stage:Object=null):void {
 			if (!width && !height) return;
 			
 			// calulcate bounds with optional stage
@@ -166,7 +164,7 @@ package nl.mediamonkey.utils {
 		 * @param array A collection of DisplayObjects.
 		 * @param direction This string value can be either "horizontal" or "vertical".
 		 */
-		public static function space(array:Array, direction:String, stage:DisplayObject=null):void {
+		public static function space(array:Array, direction:String, stage:Object=null):void {
 			DebugUtil.expect(direction, HORIZONTAL, VERTICAL);
 			
 			// calulcate bounds with optional stage
@@ -214,16 +212,29 @@ package nl.mediamonkey.utils {
 			var bounds:Rectangle;
 			
 			var object:DisplayObject;
-			for each (object in array) {
+			var rect:Rectangle;
+			
+			for (var i:int=0; i<array.length; i++) {
 				
-				bounds = CoordsUtil.getGlobalBounds(object);
-				result = (!result) ? bounds : result.union(bounds);
+				if (array[i] is DisplayObject) {
+					object = array[i] as DisplayObject;
+					bounds = CoordsUtil.getGlobalBounds(object);
+					result = (!result) ? bounds : result.union(bounds);
+					
+				} else if (array[i] is Rectangle) {
+					rect = array[i] as Rectangle;
+					result = (!result) ? rect : result.union(rect);
+					
+				} else {
+					throw new Error("element is not of type DisplayObject nor Rectangle");
+				}
+				
 			}
 			
 			return result;
 		}
 		
-		public function measureMinMax(array:Array, vertical:String, horizontal:String):Rectangle {
+		public static function measureMinMax(array:Array, vertical:String, horizontal:String):Rectangle {
 			var bounds:Rectangle;
 			
 			var minX:Number = Infinity;
@@ -231,10 +242,17 @@ package nl.mediamonkey.utils {
 			var minY:Number = Infinity;
 			var maxY:Number = 0;
 			
-			var object:DisplayObject;
-			for each (object in array) {
+			for (var i:int=0; i<array.length; i++) {
 				
-				bounds = CoordsUtil.getGlobalBounds(object);
+				if (array[i] is DisplayObject) {
+					bounds = CoordsUtil.getGlobalBounds(array[i] as DisplayObject);
+					
+				} else if (array[i] is Rectangle) {
+					bounds = array[i] as Rectangle;
+					
+				} else {
+					throw new Error("element is not of type DisplayObject nor Rectangle");
+				}
 				
 				switch (vertical) {
 					case "top": {
@@ -296,10 +314,18 @@ package nl.mediamonkey.utils {
 			var measuredHeight:Number = 0;
 			var rect:Rectangle;
 			
-			var object:DisplayObject;
-			for each (object in array) {
+			for (var i:int=0; i<array.length; i++) {
 				
-				rect = CoordsUtil.getGlobalBounds(object);
+				if (array[i] is DisplayObject) {
+					rect = CoordsUtil.getGlobalBounds(array[i] as DisplayObject);
+					
+				} else if (array[i] is Rectangle) {
+					rect = array[i] as Rectangle;
+					
+				} else {
+					throw new Error("element is not of type DisplayObject nor Rectangle");
+				}
+				
 				measuredWidth += rect.width;
 				measuredHeight += rect.height;
 			}
@@ -311,9 +337,17 @@ package nl.mediamonkey.utils {
 			var biggest:Rectangle;
 			var bounds:Rectangle;
 			
-			var object:DisplayObject;
-			for each (object in array) {
-				bounds = CoordsUtil.getGlobalBounds(object);
+			for (var i:int=0; i<array.length; i++) {
+				
+				if (array[i] is DisplayObject) {
+					bounds = CoordsUtil.getGlobalBounds(array[i] as DisplayObject);
+					
+				} else if (array[i] is Rectangle) {
+					bounds = array[i] as Rectangle;
+					
+				} else {
+					throw new Error("element is not of type DisplayObject nor Rectangle");
+				}
 				
 				if (!biggest) biggest = bounds;
 				if (bounds.width > biggest.width) biggest.width = bounds.width;

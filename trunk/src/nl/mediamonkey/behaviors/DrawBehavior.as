@@ -6,11 +6,11 @@ package nl.mediamonkey.behaviors {
 	
 	import mx.events.SandboxMouseEvent;
 	
-	import nl.mediamonkey.behaviors.events.DrawEvent;
+	import nl.mediamonkey.behaviors.events.DrawBehaviorEvent;
 	
-	[Event(name="penDown",	type="nl.mediamonkey.behaviors.events.DrawEvent")]
-	[Event(name="penUp",	type="nl.mediamonkey.behaviors.events.DrawEvent")]
-	[Event(name="draw",		type="nl.mediamonkey.behaviors.events.DrawEvent")]
+	[Event(name="penDown",	type="nl.mediamonkey.behaviors.events.DrawBehaviorEvent")]
+	[Event(name="penUp",	type="nl.mediamonkey.behaviors.events.DrawBehaviorEvent")]
+	[Event(name="draw",		type="nl.mediamonkey.behaviors.events.DrawBehaviorEvent")]
 	
 	/**
 	 * The ScrubBehavior makes a DisplayObject Scrubable.
@@ -33,7 +33,7 @@ package nl.mediamonkey.behaviors {
 			super.mouseDownHandler(event);
 			
 			position = getPosition();
-			dispatcher.dispatchEvent(new DrawEvent(DrawEvent.PEN_DOWN, position.x, position.y));
+			dispatcher.dispatchEvent(new DrawBehaviorEvent(DrawBehaviorEvent.PEN_DOWN, position.x, position.y));
 		}
 		
 		override protected function mouseMoveHandler(event:MouseEvent):void {
@@ -41,7 +41,7 @@ package nl.mediamonkey.behaviors {
 			
 			if (dragging) {
 				position = getPosition();
-				dispatcher.dispatchEvent(new DrawEvent(DrawEvent.DRAW, position.x, position.y));
+				dispatcher.dispatchEvent(new DrawBehaviorEvent(DrawBehaviorEvent.DRAW, position.x, position.y));
 			}
 		}
 		
@@ -49,14 +49,14 @@ package nl.mediamonkey.behaviors {
 			super.mouseUpHandler(event);
 			
 			position = getPosition();
-			dispatcher.dispatchEvent(new DrawEvent(DrawEvent.PEN_UP, position.x, position.y));
+			dispatcher.dispatchEvent(new DrawBehaviorEvent(DrawBehaviorEvent.PEN_UP, position.x, position.y));
 		}
 		
 		override protected function mouseUpSomewhereHandler(event:SandboxMouseEvent):void {
 			super.mouseUpSomewhereHandler(event);
 			
 			position = getPosition();
-			dispatcher.dispatchEvent(new DrawEvent(DrawEvent.PEN_UP, position.x, position.y));
+			dispatcher.dispatchEvent(new DrawBehaviorEvent(DrawBehaviorEvent.PEN_UP, position.x, position.y));
 		}
 		
 		// ---- protected methods ----

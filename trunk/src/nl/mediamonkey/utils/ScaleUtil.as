@@ -6,27 +6,31 @@ package nl.mediamonkey.utils {
 	import nl.mediamonkey.utils.enum.ResizeMode;
 	import nl.mediamonkey.utils.enum.ZoomMode;
 	
+	/**
+	 * In all scaling methods we presume maintainRatio = true.
+	 * If you need to scale not in parallel, just call the methods once for width and once for height to aquire two scale values.
+	 */
+	
 	public class ScaleUtil {
 		
-		/** maintainRatio = true */
-		public static function scaleToContainer(target:DisplayObject, container:DisplayObjectContainer, zoomMode:String="fit", resizeMode:uint=1):void {
+		public static function scaleToContainer(target:DisplayObject, container:DisplayObjectContainer, zoomMode:String="fit", resizeMode:uint=3):void {
 			var scale:Number = getScale(target.width, target.height, container.width, container.height, zoomMode, resizeMode);
-			target.scaleX = target.scaleY = scale;
+			target.scaleX *= scale;
+			target.scaleY *= scale;
 		}
 		
-		/** maintainRatio = true */
-		public static function scaleToSize(target:DisplayObject, width:uint, height:uint, zoomMode:String="fit", resizeMode:uint=1):void {
+		public static function scaleToSize(target:DisplayObject, width:uint, height:uint, zoomMode:String="fit", resizeMode:uint=3):void {
 			var scale:Number = getScale(target.width, target.height, width, height, zoomMode, resizeMode);
-			target.scaleX = target.scaleY = scale;
+			target.scaleX *= scale;
+			target.scaleY *= scale;
 		}
 		
-		/** maintainRatio = true */
 		public static function centerAndFit(target:DisplayObject, container:DisplayObjectContainer, padding:Number=0, flipH:Boolean=false, flipV:Boolean=false):void {
 			if (!target) return;
 			
 			var scale:Number = ScaleUtil.getScale(target.width, target.height, container.width - padding, container.height - padding, ZoomMode.FIT, ResizeMode.ENLARGE | ResizeMode.REDUCE);
 			
-			// attention: multiply by scale difference, don't assign!
+			// attention: multiply by scale difference, don't just assign the scale value!
 			target.scaleX *= (flipH) ? -scale : scale;
 			target.scaleY *= (flipV) ? -scale : scale;
 			
@@ -34,8 +38,7 @@ package nl.mediamonkey.utils {
 			target.y = (container.height - target.height)/2 + (flipV ? target.height : 0);
 		}
 		
-		/** maintainRatio = true */
-		public static function getScale(targetWidth:Number, targetHeight:Number, width:uint, height:uint, zoomMode:String="fit", resizeMode:uint=1):Number {
+		public static function getScale(targetWidth:Number, targetHeight:Number, width:uint, height:uint, zoomMode:String="fit", resizeMode:uint=3):Number {
 			var sx:Number = width / targetWidth;
 			var sy:Number = height / targetHeight;
 			
@@ -63,9 +66,21 @@ package nl.mediamonkey.utils {
 		
 		// ---- zoom functionality ----
 		
-		public static var zoomSpeed			:Number = 1.25;
+		public static var zoomSpeed:Number = 1.25;
 		
-		public static function zoom(zoomMode:String, target:DisplayObject, container:DisplayObject, horizontalPadding:Number=0, verticalPadding:Number=0, setScale:Boolean=false):Number {
+		public static function zoomToContainer(target:DisplayObject, container:DisplayObject, zoomMode:String, horizontalPadding:Number=0, verticalPadding:Number=0):void {
+			var scale:Number = getZoom(target, container.width, container.height, zoomMode, horizontalPadding, verticalPadding);
+			target.scaleX *= scale;
+			target.scaleY *= scale;
+		}
+		
+		public static function zoomToSize(target:DisplayObject, width:uint, height:uint, zoomMode:String, horizontalPadding:Number=0, verticalPadding:Number=0):void {
+			var scale:Number = getZoom(target, width, height, zoomMode, horizontalPadding, verticalPadding);
+			target.scaleX *= scale;
+			target.scaleY *= scale;
+		}
+		
+		public static function getZoom(target:DisplayObject, width:uint, height:uint, zoomMode:String, horizontalPadding:Number=0, verticalPadding:Number=0):Number {
 			var value:Number;
 			
 			switch (zoomMode) {
@@ -83,8 +98,15 @@ package nl.mediamonkey.utils {
 				}
 				case ZoomMode.ZOOM_FIT: {
 					value = Math.min(
-						(container.width - horizontalPadding) / (target.width / target.scaleX),
-						(container.height - verticalPadding) / (target.height / target.scaleY)
+						(width - horizontalPadding) / (target.width / target.scaleX),
+						(height - verticalPadding) / (target.height / target.scaleY)
+					);
+					break;
+				}
+				case ZoomMode.ZOOM_FILL: {
+					value = Math.max(
+						(width - horizontalPadding) / (target.width / target.scaleX),
+						(height - verticalPadding) / (target.height / target.scaleY)
 					);
 					break;
 				}
@@ -94,7 +116,6 @@ package nl.mediamonkey.utils {
 				}
 			}
 			
-			if (setScale) target.scaleX = target.scaleY = value;
 			return value;
 		}
 		

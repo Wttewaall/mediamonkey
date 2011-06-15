@@ -11,20 +11,20 @@ package nl.mediamonkey.behaviors {
 	import flash.geom.Rectangle;
 	
 	import nl.mediamonkey.behaviors.enum.Direction;
-	import nl.mediamonkey.behaviors.events.MoveEvent;
+	import nl.mediamonkey.behaviors.events.MouseBehaviorEvent;
 	import nl.mediamonkey.utils.CoordsUtil;
 	
 	/** Fires on the element for the movable behavior when the user first starts a drag operation.
 	 * @eventType mx.events.DragEvent.DRAG_START */
-	[Event(name="dragStart", type="nl.mediamonkey.behaviors.events.MoveEvent")]
+	[Event(name="dragStart", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
 	
 	/** Fires for the movable behavior when the user continuously drags an element.
 	 * @eventType mx.events.MoveEvent.MOVE */
-	[Event(name="dragMove", type="nl.mediamonkey.behaviors.events.MoveEvent")]
+	[Event(name="dragMove", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
 	
 	/** Fires on the element for the movable behavior when the user ends a drag operation.
 	 * @eventType mx.events.DragEvent.DRAG_COMPLETE */
-	[Event(name="dragEnd", type="nl.mediamonkey.behaviors.events.MoveEvent")]
+	[Event(name="dragEnd", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
 	
 	/**
 	 * A behavior that injects move logic into an InteractiveObject as a target.
@@ -76,7 +76,7 @@ package nl.mediamonkey.behaviors {
 			
 			moveTo(origin.x + dx, origin.y + dy);
 			
-			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.DRAG_MOVE, false, false, oldPosition.x, oldPosition.y));
+			dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.DRAG_MOVE, this, false, false, oldPosition.x, oldPosition.y));
 		}
 		
 		// ---- public methods ----
@@ -100,7 +100,7 @@ package nl.mediamonkey.behaviors {
 				if (moveY) target.y = position.y;
 			}
 			
-			dispatcher.dispatchEvent(new MoveEvent(MoveEvent.MOVE, false, false, oldPosition.x, oldPosition.y));
+			dispatcher.dispatchEvent(new MouseBehaviorEvent(MouseBehaviorEvent.DRAG_MOVE, this, false, false, oldPosition.x, oldPosition.y));
 		}
 		
 		// ---- event handlers ----

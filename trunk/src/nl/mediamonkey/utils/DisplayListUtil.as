@@ -92,11 +92,11 @@ package nl.mediamonkey.utils {
 		
 		// returns an inverse matrix with which you can position/skew/scale a target displayobject to the visual relative transform when placed in the container
 		public static function concatenateMatrixToContainer(target:DisplayObject, container:DisplayObjectContainer):Matrix {
-			var m:Matrix = target.transform.matrix.clone();
-			if (target == container) return m;
+			var matrix:Matrix = target.transform.matrix.clone();
+			if (target == container) return matrix;
 			
 			do {
-				m.concat(target.parent.transform.matrix);
+				matrix.concat(target.parent.transform.matrix);
 				target = target.parent;
 				
 				// if there is no parent, the target is not on the displaylist
@@ -107,30 +107,42 @@ package nl.mediamonkey.utils {
 				
 			} while (target != target.root && target != container);
 			
-			return m;
+			return matrix;
 		}
 		
 		/**
 		 * Creates a red sprite, masked by the shape of the target object and added to the container.
 		 * The container must be a parent of the target, and can be the top level (or root container) of the entire application.
+		 * If the texture must be loaded, a contentHolder sprite will be returned.
 		 *
 		 * @param target			The target displayobject from which we build a mask.
 		 * @param container			The container where the masked texture should be added. Must be a grandparent of the target.
 		 * @param textureSource		The texture source used to draw bitmapdata with. If null, the shape will be drawn in red with an alpha of 0.5.
 		 * @param borderThickness	The stroke thickness of the target, if any.
-		 * @param fit				Should the texture fit within the shape?
+		 * @param zoomMode			Resize the texture within the target boundaries
+		 * @param resizeMode		Resize up, down or whatever.
 		 * @param repeat			Should the texture repeat within the shape? If fit is true, this parameter won't have any visible effect.
+		 * @param padding			Extra spacing around the drawn shape; not sure if it is needed anymore (and isn't tested much).
 		 */
 		public static function createMaskedTexture(target:DisplayObject, container:DisplayObjectContainer, textureSource:*,
-												   borderThickness:Number=0, zoomMode:String="fit", resizeMode:uint=1, repeat:Boolean=true):Sprite {
+			borderThickness:Number=0, zoomMode:String="fit", resizeMode:uint=3, repeat:Boolean=true, padding:int=0):Sprite {
 			
+			// if we need to load a texture, return a placeholder sprite where the texture will be drawn in 
 			if (textureSource is String || textureSource is URLRequest) {
-				loadTexture(textureSource, createMaskedTexture, target, container, textureSource, borderThickness, zoomMode, resizeMode, repeat);
-				return null; // TODO: return placeholder
+				
+				// the contentHolder's transform is irrelevant as the texture will be drawn correctly
+				var contentHolder:Sprite = new Sprite();
+				
+				// place the contentHolder on top
+				if (container != target.parent) container.addChild(contentHolder);
+				else container.addChildAt(contentHolder, container.getChildIndex(target)+1);
+				
+				// now load the texture and call back this method with the parameters
+				loadTexture(textureSource, createMaskedTexture, target, contentHolder,
+					textureSource, borderThickness, zoomMode, resizeMode, repeat, padding);
+				
+				return contentHolder;
 			}
-			
-			//@param padding Extra spacing around the drawn shape, not sure if it is needed anymore.
-			var padding:Number = 0;
 			
 			// get global pixel bounds plus added padding
 			var bounds:Rectangle = target.transform.pixelBounds;
@@ -141,55 +153,36 @@ package nl.mediamonkey.utils {
 			
 			// get concatenated matrix (= global space)
 			var matrix:Matrix = target.transform.concatenatedMatrix;
-			
-			// solved offset: remove bounds from matrix position
-			matrix.tx += borderThickness - bounds.x;
-			matrix.ty += borderThickness - bounds.y;
+			matrix.tx += -bounds.x + borderThickness;
+			matrix.ty += -bounds.y + borderThickness;
 			
 			// build and draw bitmapdata, then later re-use the matrix in local space
 			var maskBD:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
 			maskBD.draw(target, matrix);
 			
 			// invert container matrix scale to correctly size our mask when placing it in the container
+			var transformMatrix:Matrix = new Matrix();
 			var cm:Matrix = container.transform.concatenatedMatrix;
-			matrix.a = 1/cm.a;
-			matrix.d = 1/cm.d;
+			transformMatrix.a = 1/cm.a;
+			transformMatrix.d = 1/cm.d;
 			
 			// set container's local position
 			var local:Point = container.globalToLocal(new Point(bounds.x, bounds.y));
-			matrix.tx = local.x;
-			matrix.ty = local.y;
+			transformMatrix.tx = local.x;
+			transformMatrix.ty = local.y;
 			
 			// add bitmap mask to the container
 			var maskBitmap:Bitmap = new Bitmap(maskBD);
-			maskBitmap.blendMode = BlendMode.ALPHA; // use the alpha channel to mask out the shape
 			maskBitmap.cacheAsBitmap = true; // must cache to be able to use it as a mask
-			maskBitmap.transform.matrix = matrix;
+			maskBitmap.blendMode = BlendMode.ALPHA; // use the alpha channel to mask out the shape
+			maskBitmap.transform.matrix = transformMatrix;
 			
 			// get bitmapData from textureSource
-			var bitmapData:BitmapData;
-			
-			if (textureSource is Class) {
-				var cls:Class = textureSource as Class;
-				textureSource = new cls();
-			}
-			
-			if (textureSource is BitmapData) {
-				bitmapData = BitmapData(textureSource);
-				
-			} else if (textureSource is Bitmap) {
-				bitmapData = Bitmap(textureSource).bitmapData;
-				
-			} else if (textureSource is DisplayObject) {
-				var display:DisplayObject = DisplayObject(textureSource);
-				bitmapData = ImageSnapshot.captureBitmapData(display);
-			}
+			var bitmapData:BitmapData = getBitmapData(textureSource);
 			
 			var drawMatrix:Matrix = new Matrix();
 			
 			if (bitmapData) {
-				//if (fitWidth) drawMatrix.a = bounds.width / bitmapData.width;
-				//if (fitHeight) drawMatrix.d = bounds.height / bitmapData.height;
 				
 				// get scale (maintainRatio = true)
 				var scale:Number = ScaleUtil.getScale(bitmapData.width, bitmapData.height, bounds.width, bounds.height, zoomMode, resizeMode);
@@ -205,8 +198,9 @@ package nl.mediamonkey.utils {
 			// create sprite and draw the texture, or with a red color
 			var drawSprite:Sprite = new Sprite();
 			drawSprite.cacheAsBitmap = true; // must cache to be able to use the mask
-			drawSprite.transform.matrix = matrix;
+			drawSprite.transform.matrix = transformMatrix;
 			
+			// draw bitmapdata or a solid half transparent red shape
 			if (bitmapData) drawSprite.graphics.beginBitmapFill(bitmapData, drawMatrix, repeat);
 			else drawSprite.graphics.beginFill(0xFF0000, 0.5);
 			drawSprite.graphics.drawRect(0, 0, bounds.width, bounds.height);
@@ -223,10 +217,36 @@ package nl.mediamonkey.utils {
 			return drawSprite;
 		}
 		
+		public static function getBitmapData(source:*):BitmapData {
+			var bitmapData:BitmapData;
+			
+			if (source is Class) {
+				var cls:Class = source as Class;
+				source = new cls();
+			}
+			
+			if (source is BitmapData) {
+				bitmapData = BitmapData(source);
+				
+			} else if (source is Bitmap) {
+				bitmapData = Bitmap(source).bitmapData;
+				
+			} else if (source is DisplayObject) {
+				var display:DisplayObject = DisplayObject(source);
+				bitmapData = ImageSnapshot.captureBitmapData(display);
+			}
+			
+			return bitmapData;
+		}
+		
+		// ---- private methods ----
+		
 		private static function loadTexture(source:*, callback:Function, ...params):void {
 			var request:URLRequest;
+			
 			if (source is URLRequest) request = URLRequest(source);
 			else if (source is String) request = new URLRequest(source as String);
+			else throw new TypeError("source must be of type String or URLRequest");
 			
 			// check if the source is also a parameter
 			var resultArgumentIndex:int = params.indexOf(source);
@@ -239,31 +259,18 @@ package nl.mediamonkey.utils {
 					
 					// load the binairy texture in a loader
 					var loader:Loader = new Loader();
+					loader.loadBytes(urlLoader.data);
 					
 					loader.contentLoaderInfo.addEventListener(Event.COMPLETE,
 						function(event:Event):void {
 							
 							// get the bitmapdata from the loader and set as parameter
-							if (resultArgumentIndex > -1) params[resultArgumentIndex] = ImageSnapshot.captureBitmapData(loader);
+							if (resultArgumentIndex > -1)
+								params[resultArgumentIndex] = ImageSnapshot.captureBitmapData(loader);
 							
-							switch (params.length) {
-								case 0: callback.call(null); break;
-								case 1: callback.call(null, params[0]); break;
-								case 2: callback.call(null, params[0], params[1]); break;
-								case 3: callback.call(null, params[0], params[1], params[2]); break;
-								case 4: callback.call(null, params[0], params[1], params[2], params[3]); break;
-								case 5: callback.call(null, params[0], params[1], params[2], params[3], params[4]); break;
-								case 6: callback.call(null, params[0], params[1], params[2], params[3], params[4], params[5]); break;
-								case 7: callback.call(null, params[0], params[1], params[2], params[3], params[4], params[5], params[6]); break;
-								case 8: callback.call(null, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7]); break;
-								case 9: callback.call(null, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8]); break;
-								case 10: callback.call(null, params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], params[8], params[9]); break;
-							}
-							
+							callback.apply(null, params);
 						}
 					); // end of loader.contentLoaderInfo.addEventListener
-						
-					loader.loadBytes(urlLoader.data);
 				}
 			); // end of urlLoader.addEventListener
 		}

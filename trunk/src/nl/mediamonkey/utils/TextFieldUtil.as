@@ -29,10 +29,28 @@ package nl.mediamonkey.utils {
 			return textField;
 		}
 		
+		public static function getTextLineWidth(text:String, format:TextFormat=null):Number {
+			var textField:TextField = createTextField(TextFieldAutoSize.LEFT, true, false, format);
+			textField.text = text;
+			
+			if (!format) format = textField.getTextFormat();
+			textField.setTextFormat(format);
+			
+			var leftMargin:Number = (format.leftMargin) ? Number(format.leftMargin) : 0;
+			var rightMargin:Number = (format.rightMargin) ? Number(format.rightMargin) : 0;
+			var lineMetrics:TextLineMetrics = textField.getLineMetrics(0);
+			
+			var lineWidth:Number = GUTTER*2 + MARGIN*2 + leftMargin + textField.textWidth + rightMargin;
+			return lineWidth;
+		}
+		
 		public static function getTextHeight(width:Number, text:String, format:TextFormat=null):Number {
 			var textField:TextField = createTextField(TextFieldAutoSize.LEFT, true, true, format);
 			textField.width = width;
 			textField.text = text;
+			
+			if (!format) format = textField.getTextFormat();
+			textField.setTextFormat(format);
 			
 			var lineMetrics:TextLineMetrics = textField.getLineMetrics(0);
 			var lineHeight:Number = lineMetrics.ascent + lineMetrics.descent + lineMetrics.leading;
