@@ -4,63 +4,81 @@ package nl.mediamonkey.utils {
 	
 	public class EnumUtil {
 		
-		public static function hasConst(classType:Class, value:*):Boolean {
+		public static const ACCESSOR:String = "accessor";
+		public static const CONSTANT:String = "constant";
+		
+		public static function hasName(classType:Class, name:String, nodeType:String="accessor"):Boolean {
+			if (nodeType != ACCESSOR && nodeType != CONSTANT) return false;
+			
 			var description:XML = describeType(classType);
-			if (description.constant == undefined) return false;
+			var nodeList:XMLList = description.child(nodeType);
+			if (!nodeList || nodeList.length() == 0) return false;
 			
-			var constants:XMLList = description.constant as XMLList;
-			var node:XML;
+			for each (var node:XML in nodeList) {
+				if (node.@name == name) return true;
+			}
 			
-			for each (node in constants) {
+			return false;
+		}
+		
+		public static function hasValue(classType:Class, value:*, nodeType:String="accessor"):Boolean {
+			if (nodeType != ACCESSOR && nodeType != CONSTANT) return false;
+			
+			var description:XML = describeType(classType);
+			var nodeList:XMLList = description.child(nodeType);
+			if (!nodeList || nodeList.length() == 0) return false;
+			
+			for each (var node:XML in nodeList) {
 				if (classType[node.@name] == value) return true;
 			}
 			
 			return false;
 		}
 		
-		public static function getConstNames(classType:Class):Array {
+		public static function getNames(classType:Class, nodeType:String="accessor"):Array {
 			var collection:Array = [];
 			
+			if (nodeType != ACCESSOR && nodeType != CONSTANT) return collection;
+			
 			var description:XML = describeType(classType);
-			if (description.constant == undefined) return [];
+			var nodeList:XMLList = description.child(nodeType);
+			if (!nodeList || nodeList.length() == 0) return collection;
 			
-			var constants:XMLList = description.constant as XMLList;
-			var node:XML;
-			
-			for each (node in constants) {
+			for each (var node:XML in nodeList) {
 				collection.push(node.@name);
 			}
 			
 			return collection;
 		}
 		
-		public static function getConstValues(classType:Class):Array {
+		public static function getValues(classType:Class, nodeType:String="accessor"):Array {
 			var collection:Array = [];
 			
+			if (nodeType != ACCESSOR && nodeType != CONSTANT) return collection;
+			
 			var description:XML = describeType(classType);
-			if (description.constant == undefined) return [];
+			var nodeList:XMLList = description.child(nodeType);
+			if (!nodeList || nodeList.length() == 0) return collection;
 			
-			var constants:XMLList = description.constant as XMLList;
-			var node:XML;
-			
-			for each (node in constants) {
+			for each (var node:XML in nodeList) {
 				collection.push(classType[node.@name]);
 			}
 			
 			return collection;
 		}
 		
-		public static function getConstArray(classType:Class):Array {
+		public static function getNameValueArray(classType:Class, nodeType:String="accessor"):Array {
 			var collection:Array = [];
 			
+			if (nodeType != ACCESSOR && nodeType != CONSTANT) return collection;
+			
 			var description:XML = describeType(classType);
-			if (description.constant == undefined) return [];
+			var nodeList:XMLList = description.child(nodeType);
+			if (!nodeList || nodeList.length() == 0) return collection;
 			
-			var constants:XMLList = description.constant as XMLList;
-			var node:XML;
-			
-			for each (node in constants) {
-				collection[node.@name] = classType[node.@name];
+			for each (var node:XML in nodeList) {
+				if (node.@access == "readwrite")
+					collection[node.@name] = classType[node.@name];
 			}
 			
 			return collection;
