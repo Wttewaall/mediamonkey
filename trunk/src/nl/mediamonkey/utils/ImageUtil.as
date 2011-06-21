@@ -1,20 +1,19 @@
 ﻿package nl.mediamonkey.utils {
 	
+	//import com.adobe.images.JPGEncoder;
+	//import com.adobe.images.PNGEncoder;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.IBitmapDrawable;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
+	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
-	//import mx.graphics.codec.IImageEncoder;
-	//import mx.graphics.codec.JPEGEncoder;
-	//import mx.graphics.codec.PNGEncoder;
-	
-	// use these instead of mx package
-	import temple.data.encoding.image.JPGEncoder;
-	import temple.data.encoding.image.PNGEncoder;
+	import mx.graphics.codec.JPEGEncoder;
+	import mx.graphics.codec.PNGEncoder;
 	
 	public class ImageUtil {
 		
@@ -76,13 +75,14 @@
 			
 			switch (encoderType) {
 				case JPG_ENCODER: {
-					var jpgEncoder:JPGEncoder = new JPGEncoder(jpgQuality);
+					var jpgEncoder:JPEGEncoder = new JPEGEncoder(jpgQuality);
 					byteArray = jpgEncoder.encode(bitmapData);
 					break;
 				}
 				default:
 				case PNG_ENCODER: {
-					byteArray = PNGEncoder.encode(bitmapData);
+					var pngEncoder:PNGEncoder = new PNGEncoder();
+					byteArray = pngEncoder.encode(bitmapData);
 					break;
 				}
 			}
@@ -90,24 +90,36 @@
 			return byteArray;
 		}
 		
-		/* Flash 10
-		private static function saveAs(image:Object, fileName:String=null, encoderType:String="image/png", jpgQuality:int=85):Boolean {
+		/**
+		 * Get the bounds of non-transparent pixels of a (possibly masked) displayobject.
+		 * @param display The displayobject you wish to crop to the smallest size without cropping any non-transparent pixels
+		 * @return A rectangle of the translate and size of the measured boundary
+		 */
+		public static function getCropBounds(display:DisplayObject):Rectangle {
+			var bmd:BitmapData = new BitmapData(display.width / display.scaleX, display.height / display.scaleY, true, 0x00000000);
+			bmd.draw(display);
+			var bounds:Rectangle = bmd.getColorBoundsRect(0xFF000000, 0x00000000, false);
+			bmd.dispose();
+			return bounds;
+		}
+		
+		public static function saveAs(image:Object, fileName:String=null, encoderType:String="image/png", jpgQuality:int=85):Boolean {
 			if (image is Bitmap) {
 				image = (image as Bitmap).bitmapData;
 			}
 			
 			if (image is BitmapData) {
-				image = getEncodedByteArray(image as BitmapData, encoderType, jpgQuality);
+				image = encodeBitmapData(image as BitmapData, encoderType, jpgQuality);
 			}
 			
 			if (image is ByteArray) {
 				var fileReference:FileReference = new FileReference();
-            	fileReference.save(byteArray, fileName);
-            	byteArray.clear();
+            	fileReference.save(image as ByteArray, fileName);
+				(image as ByteArray).clear();
             	return true;
             }
             return false;
-		}*/
+		}
 		
 	}
 	
