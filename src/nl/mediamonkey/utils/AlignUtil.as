@@ -38,8 +38,12 @@ package nl.mediamonkey.utils {
 			DebugUtil.expect(vertical, TOP, MIDDLE, BOTTOM, NONE);
 			
 			// calulcate bounds with optional stage
-			if (stage) var tempArray:Array = array.concat(stage);
-			var bounds:Rectangle = combineRectangles(tempArray || array);
+			//if (stage) var tempArray:Array = array.concat(stage);
+			//var bounds:Rectangle = combineRectangles(tempArray || array);
+			
+			var bounds:Rectangle;
+			if (stage) bounds = combineRectangles([stage]);
+			else bounds = combineRectangles(array);
 			
 			var object:DisplayObject;
 			var point:Point = new Point();
@@ -80,7 +84,8 @@ package nl.mediamonkey.utils {
 				"horizontal and vertical arguments can't both be 'none'");
 			
 			// calulcate bounds with optional stage
-			if (stage) var tempArray:Array = array.concat(stage);
+			//if (stage) var tempArray:Array = array.concat(stage);
+			if (stage) var tempArray:Array = [stage];
 			
 			var topLeft:Rectangle = measureMinMax(tempArray || array, "top", "left");
 			var middleCenter:Rectangle = measureMinMax(tempArray || array, "middle", "center");
