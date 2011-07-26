@@ -9,6 +9,7 @@
 	import flash.events.EventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.utils.ByteArray;
+	import nl.mediamonkey.io.data.Key;
 	
 	[Event(name="keyDown",		type="flash.events.KeyboardEvent")]
 	[Event(name="keyUp",		type="flash.events.KeyboardEvent")]
@@ -40,11 +41,23 @@
 		
 		// ---- public methods ----
 		
-		public function isDown(keyCode:uint):Boolean {
+		public function isDown(key:*):Boolean {
+			var keyCode:uint;
+			
+			if (key is uint) keyCode = key as uint;
+			else if (key is Key) keyCode = (key as Key).code;
+			else if (key is String) keyCode = Key.getKeyByCharacter(key as String).code;
+			
 			return (states[keyCode >>> 3] & (1 << (keyCode & 7))) != 0;
 		}
 		
-		public function isUp(keyCode:uint):Boolean {
+		public function isUp(key:*):Boolean {
+			var keyCode:uint;
+			
+			if (key is uint) keyCode = key as uint;
+			else if (key is Key) keyCode = (key as Key).code;
+			else if (key is String) keyCode = Key.getKeyByCharacter(key as String).code;
+			
 			return (states[keyCode >>> 3] & (1 << (keyCode & 7))) == 0;
 		}
 		
