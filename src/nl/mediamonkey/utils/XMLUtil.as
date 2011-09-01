@@ -135,5 +135,19 @@ package nl.mediamonkey.utils {
 			return xml;
 		}
 		
+		public static function cleanXML(xmlData:XML):XML {
+			var output:String = xmlData.toXMLString();
+			
+			// replace escaped characters (hexadecimal representation)
+			output = output.replace(/&#xD;/g, "");	// return
+			output = output.replace(/&#xA;/g, "");	// newline
+			output = output.replace(/&#x9;/g, "");	// tab
+			output = output.replace(/&amp;/, "&");		// &
+			output = output.replace(/&lt;/, "<");		// <
+			output = output.replace(/&gt;/, ">");		// >
+			output = output.replace(/&#x20;/g, " ");	// space
+			
+			return XML(output);
+		}
 	}
 }

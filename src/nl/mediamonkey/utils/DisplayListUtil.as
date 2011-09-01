@@ -1,4 +1,4 @@
-﻿package nl.mediamonkey.utils {
+package nl.mediamonkey.utils {
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -14,26 +14,64 @@
 	import flash.net.URLLoader;
 	import flash.net.URLLoaderDataFormat;
 	import flash.net.URLRequest;
+	import flash.utils.getQualifiedClassName;
+	
+	import mx.controls.Button;
+	import mx.graphics.ImageSnapshot;
+	import mx.utils.DisplayUtil;
+	import mx.utils.GraphicsUtil;
+	import mx.utils.LoaderUtil;
+	
+	import nl.elthigrav.model.Model;
+	import nl.mediamonkey.utils.enum.ZoomMode;
 	
 	public class DisplayListUtil {
 		
+		/*public static const NODES	:int = 0;
+		public static const LEAFS	:int = 0;
+		public static const ALL		:int = 0;*/
+		
 		// recursive algorithm that returns all children in the displaylist as a flat array
-		public static function getFlattenedDisplayList(target:DisplayObjectContainer):Array {
+		public static function getFlattenedDisplayList(target:DisplayObjectContainer, leafsOnly:Boolean=false):Array {
 			var children:Array = new Array();
 			var child:DisplayObject;
 			
 			for (var i:int=0; i<target.numChildren; i++) {
 				child = target.getChildAt(i);
+				if (!leafsOnly) children.push(child);
 				
 				if (child.hasOwnProperty("numChildren") && (child as DisplayObjectContainer).numChildren > 0) {
 					children = children.concat( getFlattenedDisplayList(child as DisplayObjectContainer) );
 					
-				} else {
+				} else if (leafsOnly) {
 					children.push(child);
 				}
 			}
 			
 			return children;
+		}
+		
+		// breadth-first
+		public static function traceDisplayListTree(target:DisplayObjectContainer, tabs:int=0):void {
+			var child:DisplayObject;
+			
+			for (var i:int=0; i<target.numChildren; i++) {
+				child = target.getChildAt(i);
+				
+				var tabString:String = "";
+				for (var t:int=0; t<tabs; t++) {
+					tabString += (t < tabs-1) ? "  " : "+ ";
+				}
+				//tabString = tabString.split("  + ").join("|-+ ");
+				
+				var type:String = getQualifiedClassName(child);
+				if (type.indexOf("::") > -1) type = type.split("::")[1];
+				trace(tabString + child.name + "("+type+")");
+				
+				if (child.hasOwnProperty("numChildren") && (child as DisplayObjectContainer).numChildren > 0) {
+					traceDisplayListTree(child as DisplayObjectContainer, tabs + 1);
+				}
+			}
 		}
 		
 		// from: http://www.kirupa.com/forum/showpost.php?p=1939827&postcount=172
