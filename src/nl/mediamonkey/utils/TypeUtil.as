@@ -21,6 +21,7 @@
 	     * @return the converted value, or the input string if a conversion was not possible.
 	     */
 		public static function stringToValue(value:String, forceType:Class=null):* {
+			if (value == null) return null;
 			
 			if (forceType != null) {
 				if (forceType == Number) return forceType(parseFloat(value));
