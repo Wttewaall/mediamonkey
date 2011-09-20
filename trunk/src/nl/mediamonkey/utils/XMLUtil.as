@@ -136,18 +136,23 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function cleanXML(xmlData:XML):XML {
+			return XML(cleanXMLString(xmlData));
+		}
+		
+		public static function cleanXMLString(xmlData:XML):String {
 			var output:String = xmlData.toXMLString();
 			
 			// replace escaped characters (hexadecimal representation)
-			output = output.replace(/&#xD;/g, "");	// return
-			output = output.replace(/&#xA;/g, "");	// newline
-			output = output.replace(/&#x9;/g, "");	// tab
+			output = output.replace(/&#xD;&#xA;(&#x9;)*/, "");
+			output = output.replace(/&#xD;/g, "");		// return
+			output = output.replace(/&#xA;/g, "");		// newline
+			output = output.replace(/&#x9;/g, "");		// tab
 			output = output.replace(/&amp;/, "&");		// &
 			output = output.replace(/&lt;/, "<");		// <
 			output = output.replace(/&gt;/, ">");		// >
 			output = output.replace(/&#x20;/g, " ");	// space
 			
-			return XML(output);
+			return output;
 		}
 	}
 }
