@@ -1,7 +1,6 @@
 package nl.mediamonkey.helpers {
 	
 	import flash.display.DisplayObject;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
@@ -18,6 +17,11 @@ package nl.mediamonkey.helpers {
 	[Event(name="selectedPageChange",					type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
 	[Event(name="hasNextPageChange",					type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
 	[Event(name="hasPreviousPageChange",				type="nl.mediamonkey.helpers.events.ViewStackHelperEvent")]
+	
+	/**
+	 * TODO:
+	 * selectedPage="{myThirdPage}" doesn't work yet
+	 */
 	
 	public class ViewStackHelper extends EventDispatcher implements IMXMLObject {
 		
@@ -36,7 +40,6 @@ package nl.mediamonkey.helpers {
 			return _viewstack;
 		}
 		
-		
 		[Bindable("viewstackChange")]
 		public function set viewstack(value:ViewStack):void {
 			if (_viewstack != value) {
@@ -46,8 +49,10 @@ package nl.mediamonkey.helpers {
 				_viewstack = value;
 				if (_viewstack != null)  addListeners(_viewstack);
 				
-				update(true);
-				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.VIEWSTACK_CHANGE));
+				var fromViewStack:Boolean = (selectedPageIndex == -1 && selectedPageIndex != viewstack.selectedIndex);
+				update(fromViewStack);
+				
+				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.VIEWSTACK_CHANGE, viewstack, selectedPageIndex, selectedPage));
 			}
 		}
 		
@@ -61,14 +66,16 @@ package nl.mediamonkey.helpers {
 		public function set selectedPageIndex(value:int):void {
 			if (_selectedPageIndex != value) {
 				_selectedPageIndex = value;
+				
 				update();
 				
-				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.SELECTED_PAGE_INDEX_CHANGE));
-				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.SELECTED_PAGE_CHANGE));
+				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.SELECTED_PAGE_INDEX_CHANGE, viewstack, _selectedPageIndex, selectedPage));
+				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.SELECTED_PAGE_CHANGE, viewstack, _selectedPageIndex, selectedPage));
 			}
 		}
 		
 		public function get selectedPage():Container {
+			if (!viewstack) return null;
 			return viewstack.getChildAt(selectedPageIndex) as Container;
 		}
 		
@@ -90,7 +97,7 @@ package nl.mediamonkey.helpers {
 		public function set hasNextPage(value:Boolean):void {
 			if (_hasNextPage != value) {
 				_hasNextPage = value;
-				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.HAS_NEXT_PAGE_CHANGE));
+				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.HAS_NEXT_PAGE_CHANGE, viewstack, selectedPageIndex, selectedPage));
 			}
 		}
 		
@@ -102,7 +109,7 @@ package nl.mediamonkey.helpers {
 		public function set hasPreviousPage(value:Boolean):void {
 			if (_hasPreviousPage != value) {
 				_hasPreviousPage = value;
-				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.HAS_PREVIOUS_PAGE_CHANGE));
+				dispatchEvent(new ViewStackHelperEvent(ViewStackHelperEvent.HAS_PREVIOUS_PAGE_CHANGE, viewstack, selectedPageIndex, selectedPage));
 			}
 		}
 		
@@ -139,19 +146,20 @@ package nl.mediamonkey.helpers {
 		
 		public function gotoScreen(name:String):void {
 			var child:DisplayObject = viewstack.getChildByName(name);
-			if (child) viewstack.selectedIndex = viewstack.getChildIndex(child);
-			
-			if (child == null) {
+			if (child) {
+				selectedPageIndex = viewstack.getChildIndex(child);
+				return;
 				
+			} else {
 				for (var i:uint=0; i<viewstack.numChildren; i++) {
 					if (Container(viewstack.getChildAt(i)).label == name) {
-						viewstack.selectedIndex = i;
+						selectedPageIndex = i;
 						return;
 					}
 				}
+				
+				trace("Could find no child with name:", name);
 			}
-			
-			trace("Could find no child with name:", name);
 		}
 		
 		public function getPageIndex(page:Container):int {
@@ -161,33 +169,46 @@ package nl.mediamonkey.helpers {
 		// ---- protected methods ----
 		
 		protected function addListeners(dispatcher:IEventDispatcher):void {
-			dispatcher.addEventListener(FlexEvent.INITIALIZE, viewstackInitHandler);
-			dispatcher.addEventListener(IndexChangedEvent.CHANGE, viewstackChangeHandler);
+			dispatcher.addEventListener(FlexEvent.INITIALIZE, viewstackInitializeHandler);
+			dispatcher.addEventListener(FlexEvent.VALUE_COMMIT, viewstackValueCommitHandler);
+			dispatcher.addEventListener(IndexChangedEvent.CHANGE, viewstackIndexChangedHandler);
 		}
 		
 		protected function removeListeners(dispatcher:IEventDispatcher):void {
-			dispatcher.removeEventListener(FlexEvent.INITIALIZE, viewstackInitHandler);
-			dispatcher.removeEventListener(IndexChangedEvent.CHANGE, viewstackChangeHandler);
+			dispatcher.removeEventListener(FlexEvent.INITIALIZE, viewstackInitializeHandler);
+			dispatcher.removeEventListener(FlexEvent.VALUE_COMMIT, viewstackValueCommitHandler);
+			dispatcher.removeEventListener(IndexChangedEvent.CHANGE, viewstackIndexChangedHandler);
 		}
 		
 		protected function update(useViewStackProperties:Boolean=false):void {
 			if (useViewStackProperties) {
 				selectedPageIndex = viewstack.selectedIndex;
+				
 			} else {
-				viewstack.selectedIndex = selectedPageIndex;
+				if (viewstack) viewstack.selectedIndex = selectedPageIndex;
+				//else trace("no viewstack yet");
 			}
+			
 			hasNextPage = (viewstack) ? (selectedPageIndex+1 < numPages) : false;
 			hasPreviousPage = (viewstack) ? (selectedPageIndex-1 >= 0) : false;
 		}
 		
 		// ---- event handlers ----
 		
-		protected function viewstackInitHandler(event:Event):void {
-			update(true);
+		protected function viewstackInitializeHandler(event:FlexEvent):void {
+			update(selectedPageIndex != viewstack.selectedIndex);
 		}
 		
-		protected function viewstackChangeHandler(event:IndexChangedEvent):void {
-			update(true);
+		protected function viewstackValueCommitHandler(event:FlexEvent):void {
+			if (selectedPageIndex != viewstack.selectedIndex) {
+				update(true);
+			}
+		}
+		
+		protected function viewstackIndexChangedHandler(event:IndexChangedEvent):void {
+			if (selectedPageIndex != viewstack.selectedIndex) {
+				update(true);
+			}
 		}
 		
 	}
