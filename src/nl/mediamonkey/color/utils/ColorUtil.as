@@ -44,7 +44,7 @@ package nl.mediamonkey.color.utils {
 			
 			for (var i:uint=0; i<str.length; i++) {
 				num = parseInt(HexPrefix.CODE + str.charAt(str.length-1-i)); // char from reversed index
-				result += num * Math.pow(16, i);
+				result += num * Math.pow(0x10, i);
 			}
 			
 			return result;
