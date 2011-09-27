@@ -152,10 +152,141 @@ package nl.mediamonkey.utils {
 			return normalizedSize + " " + unit;
 		}
 		
-		protected function tabs(amount:int):String {
-			var str:String = "";
-			for (var i:int=0; i<amount; i++) str += "\t";
-			return str;
+		protected static const htmlHexEntity	:RegExp = /&#x([a-fA-F0-9]+);/g;
+		
+		public static function replaceHexEntities(input:String):String {
+			var result:Object = htmlHexEntity.exec(input);
+			
+			// replace hex entities while a result is found
+			while (result) {
+				
+				// convert hex to decimal, then replace result with char from code
+				input = input.replace(result[0] as String, String.fromCharCode(hexStringToValue(result[1] as String, "")))
+				
+				// try finding more results
+				result = htmlHexEntity.exec(input);
+			}
+			
+			return input;
+		}
+		
+		protected static function hexStringToValue(hexString:String, prefix:String="#"):uint {
+			var args:Array = (prefix != "") ? hexString.split(prefix) : [hexString];
+			var str:String = args[args.length-1] as String;
+			
+			var num:uint;
+			var result:uint;
+			
+			for (var i:uint=0; i<str.length; i++) {
+				num = parseInt("0x" + str.charAt(str.length-1-i)); // char from reversed index
+				result += num * Math.pow(0x10, i);
+			}
+			
+			return result;
+		}
+		
+		private static var htmlCharCodes:Array;
+		
+		public static function replaceHTML(input:String):String {
+			if (!htmlCharCodes) htmlCharCodes = getHTMLEntityArray();
+			
+			for (var code:String in htmlCharCodes) {
+				input = input.replace(code, htmlCharCodes[code]);
+			}
+			
+			return input;
+		}
+		
+		public static function getHTMLEntityArray():Array {
+			var charCodes:Array = new Array();
+			charCodes["&nbsp;"]   = "\u00A0"; // non-breaking space
+			charCodes["&iexcl;"]  = "\u00A1"; // inverted exclamation mark
+			charCodes["&cent;"]   = "\u00A2"; // cent sign
+			charCodes["&pound;"]  = "\u00A3"; // pound sign
+			charCodes["&curren;"] = "\u00A4"; // currency sign
+			charCodes["&yen;"]    = "\u00A5"; // yen sign
+			charCodes["&brvbar;"] = "\u00A6"; // broken vertical bar (|)
+			charCodes["&sect;"]   = "\u00A7"; // section sign
+			charCodes["&uml;"]    = "\u00A8"; // diaeresis
+			charCodes["&copy;"]   = "\u00A9"; // copyright sign
+			charCodes["&reg;"]    = "\u00AE"; // registered sign
+			charCodes["&deg;"]    = "\u00B0"; // degree sign
+			charCodes["&plusmn;"] = "\u00B1"; // plus-minus sign
+					// remove spaces from next three lines in actual code
+			charCodes["& sup1;"]   = "\u00B9"; // superscript one
+			charCodes["& sup2;"]   = "\u00B2"; // superscript two
+			charCodes["& sup3;"]   = "\u00B3"; // superscript three
+			charCodes["&acute;"]  = "\u00B4"; // acute accent
+			charCodes["&micro;"]  = "\u00B5"; // micro sign
+					// remove spaces from next three lines in actual code
+			charCodes["& frac14;"] = "\u00BC"; // vulgar fraction one quarter
+			charCodes["& frac12;"] = "\u00BD"; // vulgar fraction one half
+			charCodes["& frac34;"] = "\u00BE"; // vulgar fraction three quarters
+			charCodes["&iquest;"] = "\u00BF"; // inverted question mark
+			charCodes["&Agrave;"] = "\u00C0"; // Latin capital letter A with grave
+			charCodes["&Aacute;"] = "\u00C1"; // Latin capital letter A with acute
+			charCodes["&Acirc;"]  = "\u00C2"; // Latin capital letter A with circumflex
+			charCodes["&Atilde;"] = "\u00C3"; // Latin capital letter A with tilde
+			charCodes["&Auml;"]   = "\u00C4"; // Latin capital letter A with diaeresis
+			charCodes["&Aring;"]  = "\u00C5"; // Latin capital letter A with ring above
+			charCodes["&AElig;"]  = "\u00C6"; // Latin capital letter AE
+			charCodes["&Ccedil;"] = "\u00C7"; // Latin capital letter C with cedilla
+			charCodes["&Egrave;"] = "\u00C8"; // Latin capital letter E with grave
+			charCodes["&Eacute;"] = "\u00C9"; // Latin capital letter E with acute
+			charCodes["&Ecirc;"]  = "\u00CA"; // Latin capital letter E with circumflex
+			charCodes["&Euml;"]   = "\u00CB"; // Latin capital letter E with diaeresis
+			charCodes["&Igrave;"] = "\u00CC"; // Latin capital letter I with grave
+			charCodes["&Iacute;"] = "\u00CD"; // Latin capital letter I with acute
+			charCodes["&Icirc;"]  = "\u00CE"; // Latin capital letter I with circumflex
+			charCodes["&Iuml;"]   = "\u00CF"; // Latin capital letter I with diaeresis
+			charCodes["&ETH;"]    = "\u00D0"; // Latin capital letter ETH
+			charCodes["&Ntilde;"] = "\u00D1"; // Latin capital letter N with tilde
+			charCodes["&Ograve;"] = "\u00D2"; // Latin capital letter O with grave
+			charCodes["&Oacute;"] = "\u00D3"; // Latin capital letter O with acute
+			charCodes["&Ocirc;"]  = "\u00D4"; // Latin capital letter O with circumflex
+			charCodes["&Otilde;"] = "\u00D5"; // Latin capital letter O with tilde
+			charCodes["&Ouml;"]   = "\u00D6"; // Latin capital letter O with diaeresis
+			charCodes["&Oslash;"] = "\u00D8"; // Latin capital letter O with stroke
+			charCodes["&Ugrave;"] = "\u00D9"; // Latin capital letter U with grave
+			charCodes["&Uacute;"] = "\u00DA"; // Latin capital letter U with acute
+			charCodes["&Ucirc;"]  = "\u00DB"; // Latin capital letter U with circumflex
+			charCodes["&Uuml;"]   = "\u00DC"; // Latin capital letter U with diaeresis
+			charCodes["&Yacute;"] = "\u00DD"; // Latin capital letter Y with acute
+			charCodes["&THORN;"]  = "\u00DE"; // Latin capital letter THORN
+			charCodes["&szlig;"]  = "\u00DF"; // Latin small letter sharp s = ess-zed
+			charCodes["&agrave;"] = "\u00E0"; // Latin small letter a with grave
+			charCodes["&aacute;"] = "\u00E1"; // Latin small letter a with acute
+			charCodes["&acirc;"]  = "\u00E2"; // Latin small letter a with circumflex
+			charCodes["&atilde;"] = "\u00E3"; // Latin small letter a with tilde
+			charCodes["&auml;"]   = "\u00E4"; // Latin small letter a with diaeresis
+			charCodes["&aring;"]  = "\u00E5"; // Latin small letter a with ring above
+			charCodes["&aelig;"]  = "\u00E6"; // Latin small letter ae
+			charCodes["&ccedil;"] = "\u00E7"; // Latin small letter c with cedilla
+			charCodes["&egrave;"] = "\u00E8"; // Latin small letter e with grave
+			charCodes["&eacute;"] = "\u00E9"; // Latin small letter e with acute
+			charCodes["&ecirc;"]  = "\u00EA"; // Latin small letter e with circumflex
+			charCodes["&euml;"]   = "\u00EB"; // Latin small letter e with diaeresis
+			charCodes["&igrave;"] = "\u00EC"; // Latin small letter i with grave
+			charCodes["&iacute;"] = "\u00ED"; // Latin small letter i with acute
+			charCodes["&icirc;"]  = "\u00EE"; // Latin small letter i with circumflex
+			charCodes["&iuml;"]   = "\u00EF"; // Latin small letter i with diaeresis
+			charCodes["&eth;"]    = "\u00F0"; // Latin small letter eth
+			charCodes["&ntilde;"] = "\u00F1"; // Latin small letter n with tilde
+			charCodes["&ograve;"] = "\u00F2"; // Latin small letter o with grave
+			charCodes["&oacute;"] = "\u00F3"; // Latin small letter o with acute
+			charCodes["&ocirc;"]  = "\u00F4"; // Latin small letter o with circumflex
+			charCodes["&otilde;"] = "\u00F5"; // Latin small letter o with tilde
+			charCodes["&ouml;"]   = "\u00F6"; // Latin small letter o with diaeresis
+			charCodes["&oslash;"] = "\u00F8"; // Latin small letter o with stroke
+			charCodes["&ugrave;"] = "\u00F9"; // Latin small letter u with grave
+			charCodes["&uacute;"] = "\u00FA"; // Latin small letter u with acute
+			charCodes["&ucirc;"]  = "\u00FB"; // Latin small letter u with circumflex
+			charCodes["&uuml;"]   = "\u00FC"; // Latin small letter u with diaeresis
+			charCodes["&yacute;"] = "\u00FD"; // Latin small letter y with acute
+			charCodes["&thorn;"]  = "\u00FE"; // Latin small letter thorn
+			charCodes["&yuml;"]   = "\u00FF"; // Latin small letter y with diaeresis
+			
+			return charCodes;
 		}
 		
 	}

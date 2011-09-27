@@ -36,7 +36,7 @@ package nl.mediamonkey.color.utils {
 			if (!EnumUtil.hasConst(HexPrefix, prefix))
 				throw new ArgumentError("invalid prefix as argument");
 			
-			var args:Array = hexString.split(prefix);
+			var args:Array = (prefix != "") ? hexString.split(prefix) : [hexString];
 			var str:String = args[args.length-1] as String;
 			
 			var num:uint;
