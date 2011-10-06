@@ -34,7 +34,7 @@ package nl.mediamonkey.encoding {
 		public var pixelsPerIteration	:uint = 1000;
 		public var contentType			:String = ContentType.JPG;
 		public var resumeAfterCancel	:Boolean = true;
-		public var encodeBase64			:Boolean = true;
+		public var encodeToBase64		:Boolean = true;
 		
 		protected var asyncEncoder		:JPEGAsyncEncoder;
 		protected var items				:Vector.<EncodingItem>;
@@ -48,6 +48,10 @@ package nl.mediamonkey.encoding {
 		private var _bytesTotal			:uint = 0;
 		private var _numCompleteItems	:uint = 0;
 		private var _numPendingItems	:uint = 0;
+		
+		public function get isWorking():Boolean {
+			return working;
+		}
 		
 		public function get bytesLoaded():uint {
 			return _bytesLoaded;
@@ -101,7 +105,9 @@ package nl.mediamonkey.encoding {
 		
 		// ---- constructor ----
 		
-		public function AsyncEncodingManager() {
+		public function AsyncEncodingManager(encodeToBase64:Boolean=true) {
+			this.encodeToBase64 = encodeToBase64;
+			
 			items = new Vector.<EncodingItem>();
 		}
 		
@@ -291,7 +297,7 @@ package nl.mediamonkey.encoding {
 				_numPendingItems--;
 				
 				// optional
-				if (encodeBase64) {
+				if (encodeToBase64) {
 					items[cursor].base64 = Base64.encode(event.ImageData);
 				}
 			}
