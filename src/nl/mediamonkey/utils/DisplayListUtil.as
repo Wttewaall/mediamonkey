@@ -32,7 +32,7 @@ package nl.mediamonkey.utils {
 				if (!leafsOnly) children.push(child);
 				
 				if (child.hasOwnProperty("numChildren") && (child as DisplayObjectContainer).numChildren > 0) {
-					children = children.concat( getFlattenedDisplayList(child as DisplayObjectContainer) );
+					children = children.concat( getFlattenedDisplayList(child as DisplayObjectContainer, leafsOnly) );
 					
 				} else if (leafsOnly) {
 					children.push(child);
