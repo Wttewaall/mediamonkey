@@ -6,7 +6,7 @@
 	
 	public final class TypeUtil {
 		
-		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]{6})/;
+		public static const hexPattern		:RegExp = /(\#|0x|0X)([0-9a-fA-F]+)/;
 		public static const valuePattern	:RegExp = /(".*?")|(?:'.*?')|[#\w-\.\+]+/g;
 		
 		/**
