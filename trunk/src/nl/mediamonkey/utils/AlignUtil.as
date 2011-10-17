@@ -87,9 +87,9 @@ package nl.mediamonkey.utils {
 			//if (stage) var tempArray:Array = array.concat(stage);
 			if (stage) var tempArray:Array = [stage];
 			
-			var topLeft:Rectangle = measureMinMax(tempArray || array, "top", "left");
-			var middleCenter:Rectangle = measureMinMax(tempArray || array, "middle", "center");
-			var bottomRight:Rectangle = measureMinMax(tempArray || array, "bottom", "right");
+			var topLeft:Rectangle = measureMinMax(tempArray || array, TOP, LEFT);
+			var middleCenter:Rectangle = measureMinMax(tempArray || array, MIDDLE, CENTER);
+			var bottomRight:Rectangle = measureMinMax(tempArray || array, BOTTOM, RIGHT);
 			
 			var point:Point = new Point();
 			var widthSpacing:Number;
@@ -237,6 +237,26 @@ package nl.mediamonkey.utils {
 			}
 			
 			return result;
+		}
+		
+		/**
+		 * @param rect The rectangle that needs to be capped.
+		 * @param bounds The boundary in which the rectangle needs to be capped.
+		 * @return a Rectangle that is capped within the given bounds
+		 * 
+		 * @example
+			<listing version="3.0">
+				var rect:Rectangle = new Rectangle(mouseX, mouseY, popUp.width, popUp.height);
+				var bounds:Rectangle = new Rectangle(popUp.width/2, popUp.height/2, stage.stageWidth - popUp.width/2, stage.stageHeight - popUp.height/2);
+				rect = rectWithinBounds(rect, bounds);
+				popUp.x = rect.x - rect.width/2;
+				popUp.y = rect.y - rect.height/2;
+			</listing>
+		 */
+		public static function rectWithinBounds(rect:Rectangle, bounds:Rectangle):Rectangle {
+			var x:Number = Math.max(bounds.x, Math.min(rect.x, rect.x+rect.width, bounds.x+bounds.width));
+			var y:Number = Math.max(bounds.y, Math.min(rect.y, rect.y+rect.height, bounds.y+bounds.height));
+			return new Rectangle(x, y, rect.width, rect.height);
 		}
 		
 		public static function measureMinMax(array:Array, vertical:String, horizontal:String):Rectangle {
