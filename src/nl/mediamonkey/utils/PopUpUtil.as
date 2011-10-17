@@ -61,6 +61,8 @@ package nl.mediamonkey.utils {
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
@@ -190,6 +192,10 @@ package nl.mediamonkey.utils {
 					window.x = settings.x;
 					window.y = settings.y;
 					
+					if (settings.center) {
+						centerPopUp(window, settings.x, settings.y);
+					}
+					
 				} else if (settings.center) {
 					centerPopUp(window);
 				}
@@ -198,14 +204,35 @@ package nl.mediamonkey.utils {
 			return window;
 		}
 		
-		public static function centerPopUp(popUp:IFlexDisplayObject):void {
+		public static function centerPopUp(popUp:IFlexDisplayObject, tx:Number=NaN, ty:Number=NaN):void {
 			// todo: calculate the center ourself, we may need it when resizing the content
-			try {
-				PopUpManager.centerPopUp(popUp);
+			
+			if (isNaN(tx) && isNaN(ty)) {
+				try {
+					PopUpManager.centerPopUp(popUp);
+					
+				} catch (e:Error) {
+					if (popUp && popUp.parent) centerPopUp(popUp.parent as IFlexDisplayObject);
+				}
 				
-			} catch (e:Error) {
-				if (popUp.parent) centerPopUp(popUp.parent as IFlexDisplayObject);
+			} else {
+				tx = isNaN(tx) ? popUp.x : tx;
+				ty = isNaN(ty) ? popUp.y : ty;
+				
+				var rect:Rectangle = new Rectangle(tx, ty, popUp.width, popUp.height);
+				var bounds:Rectangle = new Rectangle(popUp.width/2, popUp.height/2, Application.application.stage.stageWidth - popUp.width/2, Application.application.stage.stageHeight - popUp.height/2);
+				
+				rect = rectWithinBounds(rect, bounds);
+				
+				popUp.x = rect.x - rect.width/2;
+				popUp.y = rect.y - rect.height/2;
 			}
+		}
+		
+		protected static function rectWithinBounds(rect:Rectangle, bounds:Rectangle):Rectangle {
+			var x:Number = Math.max(bounds.x, Math.min(rect.x, rect.x+rect.width, bounds.x+bounds.width));
+			var y:Number = Math.max(bounds.y, Math.min(rect.y, rect.y+rect.height, bounds.y+bounds.height));
+			return new Rectangle(x, y, rect.width, rect.height);
 		}
 		
 		public static function removePopUp(popUp:IFlexDisplayObject):void {
