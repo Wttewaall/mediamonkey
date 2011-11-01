@@ -1,16 +1,16 @@
-package nl.mediamonkey.behaviors {
+﻿package nl.mediamonkey.behaviors {
 	
 	import flash.display.InteractiveObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import mx.core.IMXMLObject;
+	//import mx.core.IMXMLObject;
 	
 	/**
 	 * A behavior is a class that injects logic into an InteractiveObject as a target by means of event listeners.
 	 */
 	
-	public class Behavior extends EventDispatcher implements IBehavior, IMXMLObject {
+	public class Behavior extends EventDispatcher implements IBehavior /*, IMXMLObject*/ {
 		
 		private var document:Object;
 		
@@ -27,12 +27,14 @@ package nl.mediamonkey.behaviors {
 		public function set target(value:InteractiveObject):void {
 			if (_target == value) return;
 			
-			if (_target != null) disable();
+			// clean up previous target
+			if (_target != null) removeListeners(_target);
+			
 			_target = value;
 			
 			if (_target != null) {
-				if (_target.stage) addedToStageHandler();
-				else _target.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+				if (_target.stage != null) addedToStageHandler();
+				else _target.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler, false, 0, true);
 			}
 		}
 		
@@ -73,12 +75,16 @@ package nl.mediamonkey.behaviors {
 		// ---- protected methods ----
 		
 		protected function addListeners(target:InteractiveObject):void {
+			target.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler, false, 0, true);
+			
 			// always make sure to remove possible duplicate listeners
 			removeListeners(target);
 			// add logic
 		}
 		
 		protected function removeListeners(target:InteractiveObject):void {
+			target.removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			target.removeEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 			// add logic
 		}
 		
@@ -89,6 +95,10 @@ package nl.mediamonkey.behaviors {
 			
 			if (enabled) addListeners(target);
 			else removeListeners(target);
+		}
+		
+		protected function removedFromStageHandler(event:Event):void {
+			removeListeners(target);
 		}
 		
 	}
