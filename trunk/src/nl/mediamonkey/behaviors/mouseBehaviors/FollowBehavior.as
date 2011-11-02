@@ -1,4 +1,4 @@
-package nl.mediamonkey.behaviors {
+package nl.mediamonkey.behaviors.animationBehaviors {
 	
 	import flash.display.InteractiveObject;
 	import flash.events.Event;

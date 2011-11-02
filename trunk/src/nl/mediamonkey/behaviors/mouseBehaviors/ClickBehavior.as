@@ -1,4 +1,4 @@
-package nl.mediamonkey.behaviors {
+package nl.mediamonkey.behaviors.mouseBehaviors {
 	
 	import flash.display.InteractiveObject;
 	
