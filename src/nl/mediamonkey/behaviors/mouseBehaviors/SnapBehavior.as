@@ -3,7 +3,7 @@
  * Copyright © 2010 Mediamonkey
  */ 
 
-package nl.mediamonkey.behaviors {
+package nl.mediamonkey.behaviors.mouseBehaviors {
 	
 	import designtool.view.components.GuideLine;
 	
