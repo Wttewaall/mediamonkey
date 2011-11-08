@@ -71,25 +71,6 @@ package nl.mediamonkey.utils {
 			return str;
 		}
 		
-		// where source = "myProject.unity3d?xmlURL=data/account.xml&texturePath=./textures"
-		public static function getArguments(source:String):Object {
-			
-			var args:Array = source.split("?");
-			
-			if (args.Length > 1) {
-				var arguments:Array = String(args[1]).split("&");
-				
-				var hash:Object = {};
-				for each (var arg:String in arguments) {
-					hash[arg.split("=")[0]] = arg.split("=")[1];
-				}
-				
-				return hash;
-			}
-			
-			return null;
-		}
-		
 		// ----
 		
 		public static function test():void {
@@ -102,7 +83,6 @@ package nl.mediamonkey.utils {
 			trace(decodeURI(escaped));
 			trace(encodeURIComponent(url));
 			trace(decodeURIComponent(escaped));
-			trace(getArguments(url));
 		}
 		
 	}
