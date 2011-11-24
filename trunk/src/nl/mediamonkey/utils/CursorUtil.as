@@ -8,6 +8,7 @@ package nl.mediamonkey.utils {
 	import flash.utils.Dictionary;
 	
 	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	import mx.managers.CursorManager;
 	import mx.managers.ISystemManager;
 	
@@ -130,8 +131,8 @@ package nl.mediamonkey.utils {
 		}
 		
 		public static function getCursorHolder():Sprite {
-			//var systemManager:ISystemManager = FlexGlobals.topLevelApplication.systemManager;
-			var systemManager:ISystemManager = Application.application.systemManager;
+			var systemManager:ISystemManager = FlexGlobals.topLevelApplication.systemManager;
+			//var systemManager:ISystemManager = Application.application.systemManager;
 			return systemManager.cursorChildren.getChildAt(systemManager.cursorChildren.numChildren-1) as Sprite;
 		}
 		

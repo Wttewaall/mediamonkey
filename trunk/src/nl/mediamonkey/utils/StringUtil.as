@@ -19,6 +19,12 @@ package nl.mediamonkey.utils {
 			return input.replace(REGEXP_TRIM, "");
 		}
 		
+		public static function truncateText(input:String, maxLength:int=50):String {
+			// first n chars ending in space (complete words)
+			var trunkPattern:RegExp	= new RegExp("(^.{0,"+(maxLength-4)+"}\s){1}", "g");
+			return (input.length > maxLength) ? input.match(trunkPattern)[0] + "..." : input;
+		}
+		
 		public static function isURLEncodingSafe(value:String):Boolean {
 			return REGEXP_URL_ENCODING_SAFE.test(value);
 		}

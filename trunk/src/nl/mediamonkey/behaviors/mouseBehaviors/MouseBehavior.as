@@ -8,8 +8,10 @@ package nl.mediamonkey.behaviors.mouseBehaviors {
 	import flash.geom.Point;
 	
 	import mx.core.Application;
+	import mx.core.FlexGlobals;
 	import mx.events.SandboxMouseEvent;
 	
+	import nl.mediamonkey.behaviors.Behavior;
 	import nl.mediamonkey.behaviors.events.MouseBehaviorEvent;
 	
 	[Event(name="mouseDown", type="nl.mediamonkey.behaviors.events.MouseBehaviorEvent")]
@@ -22,6 +24,11 @@ package nl.mediamonkey.behaviors.mouseBehaviors {
 	/* TODO: add cursor logic for mouseOver? */
 	
 	public class MouseBehavior extends Behavior {
+		
+		protected static function get topLevelApplication():Application {
+			//return Application.application as Application;
+			return FlexGlobals.topLevelApplication as Application;
+		}
 		
 		// ---- public variables ----
 		
@@ -68,7 +75,7 @@ package nl.mediamonkey.behaviors.mouseBehaviors {
 			this.target = target;
 			this.dispatchFromTarget = dispatchFromTarget;
 			
-			sandboxRoot = Application.application.systemManager.getSandboxRoot();
+			sandboxRoot = topLevelApplication.systemManager.getSandboxRoot();
 		}
 		
 		// ---- protected methods ----

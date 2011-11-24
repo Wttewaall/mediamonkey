@@ -51,7 +51,7 @@ package nl.mediamonkey.utils {
 				
 				var tabString:String = "";
 				for (var t:int=0; t<tabs; t++) {
-					tabString += (t < tabs-1) ? "  " : "+ ";
+					tabString += (t < tabs-1) ? "    " : "- ";
 				}
 				//tabString = tabString.split("  + ").join("|-+ ");
 				
@@ -163,12 +163,15 @@ package nl.mediamonkey.utils {
 				return contentHolder;
 			}
 			
-			// get global pixel bounds plus added padding
-			var bounds:Rectangle = target.transform.pixelBounds;
+			// get pixel bounds plus added padding
+			var bounds:Rectangle = target.transform.pixelBounds; //CoordsUtil.getGlobalBounds(target);
 			bounds.x -= padding;
 			bounds.y -= padding;
 			bounds.width += padding * 2;
 			bounds.height += padding * 2;
+			
+			// pixelbounds != global bounds
+			var globalBounds:Rectangle = CoordsUtil.getGlobalBounds(target);
 			
 			// get concatenated matrix (= global space)
 			var matrix:Matrix = target.transform.concatenatedMatrix;
@@ -177,7 +180,10 @@ package nl.mediamonkey.utils {
 			
 			// build and draw bitmapdata, then later re-use the matrix in local space
 			var maskBD:BitmapData = new BitmapData(bounds.width, bounds.height, true, 0x00FFFFFF);
+			var filters:Array = target.filters;
+			target.filters = [];
 			maskBD.draw(target, matrix);
+			target.filters = filters;
 			
 			// invert container matrix scale to correctly size our mask when placing it in the container
 			var transformMatrix:Matrix = new Matrix();
@@ -185,10 +191,22 @@ package nl.mediamonkey.utils {
 			transformMatrix.a = 1/cm.a;
 			transformMatrix.d = 1/cm.d;
 			
+			/** scale the global bounds
+			globalBounds.x *= transformMatrix.a;
+			globalBounds.y *= transformMatrix.d;
+			//*/
+			
 			// set container's local position
 			var local:Point = container.globalToLocal(new Point(bounds.x, bounds.y));
-			transformMatrix.tx = local.x;
-			transformMatrix.ty = local.y;
+			transformMatrix.tx = local.x;/** + globalBounds.x;*/
+			transformMatrix.ty = local.y;/** + globalBounds.y;*/
+			
+			/**
+			trace(bounds);
+			trace(globalBounds);
+			trace(local);
+			trace(transformMatrix.tx, transformMatrix.ty);
+			//*/
 			
 			// add bitmap mask to the container
 			var maskBitmap:Bitmap = new Bitmap(maskBD);
@@ -236,7 +254,7 @@ package nl.mediamonkey.utils {
 			return drawSprite;
 		}
 		
-		public static function getBitmapData(source:*):BitmapData {
+		public static function getBitmapData(source:*, clone:Boolean=false):BitmapData {
 			var bitmapData:BitmapData;
 			
 			if (source is Class) {
@@ -245,10 +263,10 @@ package nl.mediamonkey.utils {
 			}
 			
 			if (source is BitmapData) {
-				bitmapData = BitmapData(source);
+				bitmapData = (clone) ? BitmapData(source).clone() : BitmapData(source);
 				
 			} else if (source is Bitmap) {
-				bitmapData = Bitmap(source).bitmapData;
+				bitmapData = (clone) ? Bitmap(source).bitmapData.clone() : Bitmap(source).bitmapData;
 				
 			} else if (source is DisplayObject) {
 				var display:DisplayObject = DisplayObject(source);

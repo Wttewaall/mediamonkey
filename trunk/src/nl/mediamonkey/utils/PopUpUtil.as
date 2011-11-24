@@ -61,13 +61,12 @@ package nl.mediamonkey.utils {
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import mx.containers.TitleWindow;
 	import mx.core.Application;
 	import mx.core.Container;
-	import mx.core.IContainer;
+	import mx.core.FlexGlobals;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
 	import mx.effects.*;
@@ -91,6 +90,11 @@ package nl.mediamonkey.utils {
 		public static var resizeEffectDuration		:Number = 200;
 		
 		// ---- public static methods ----
+		
+		protected static function get topLevelApplication():Application {
+			//return Application.application as Application;
+			return FlexGlobals.topLevelApplication as Application;
+		}
 		
 		/**
 		 * @param target:DisplayObject = null
@@ -150,7 +154,7 @@ package nl.mediamonkey.utils {
 			
 			// create popup through PopUpManager and add listeners
 			if (target == null) {
-				target = Application.application as DisplayObject;
+				target = topLevelApplication as DisplayObject;
 				if (childList == null) childList = PopUpManagerChildList.APPLICATION;
 			}
 			
@@ -220,7 +224,7 @@ package nl.mediamonkey.utils {
 				ty = isNaN(ty) ? popUp.y : ty;
 				
 				var rect:Rectangle = new Rectangle(tx, ty, popUp.width, popUp.height);
-				var bounds:Rectangle = new Rectangle(popUp.width/2, popUp.height/2, Application.application.stage.stageWidth - popUp.width/2, Application.application.stage.stageHeight - popUp.height/2);
+				var bounds:Rectangle = new Rectangle(popUp.width/2, popUp.height/2, topLevelApplication.stage.stageWidth - popUp.width/2, topLevelApplication.stage.stageHeight - popUp.height/2);
 				
 				rect = rectWithinBounds(rect, bounds);
 				

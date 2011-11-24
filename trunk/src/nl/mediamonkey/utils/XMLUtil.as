@@ -67,8 +67,8 @@ package nl.mediamonkey.utils {
 		 * @param data the data string to create a CDATA section from.
 		 * @return a CDATA section for the data
 		 */
-		public static function cdata(data:String):XML {
-			var result:XML = new XML("<![CDATA[" + data + "]]>");
+		public static function cdata(text:String):XML {
+			var result:XML = new XML("<![CDATA[" + text + "]]>");
 			return result;
 		}
 		
