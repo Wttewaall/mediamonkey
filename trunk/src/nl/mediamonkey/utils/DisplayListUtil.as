@@ -7,6 +7,7 @@ package nl.mediamonkey.utils {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -63,6 +64,19 @@ package nl.mediamonkey.utils {
 					traceDisplayListTree(child as DisplayObjectContainer, tabs + 1);
 				}
 			}
+		}
+		
+		public static function getFullDisplayListName(target:DisplayObject):String {
+			var tree:Array = [target.name];
+			var parent:DisplayObjectContainer = target.parent;
+			
+			while (parent != null && parent is Stage == false) {
+				target = parent;
+				tree.splice(0, 0, target.name);
+				parent = target.parent;
+			}
+			
+			return tree.join(".");
 		}
 		
 		// from: http://www.kirupa.com/forum/showpost.php?p=1939827&postcount=172
