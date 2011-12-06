@@ -117,7 +117,7 @@ package nl.mediamonkey.behaviors.animationBehaviors {
 			
 			// calculate rate in frames
 			if (frameRateChange) {
-				rate = Math.ceil(target.root.loaderInfo.frameRate / _frameRate);
+				if (target.root) rate = Math.ceil(target.root.loaderInfo.frameRate / _frameRate);
 				frameRateChange = false;
 			}
 			

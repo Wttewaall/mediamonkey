@@ -11,8 +11,6 @@
 	public class RandomFrameBehavior extends Behavior {
 		
 		public var startFrame		:uint = 1;
-		public var minWaitTime		:Number = 4000;
-		public var maxWaitTime		:Number = 5000;
 		
 		protected var currentTime	:uint;
 		protected var nextTime		:uint;
@@ -20,9 +18,29 @@
 		// ---- getters & setters ----
 		
 		private var _clip			:MovieClip;
+		private var _minWaitTime	:Number = 4000;
+		private var _maxWaitTime	:Number = 5000;
 		
 		public function get clip():MovieClip {
 			return _clip ||= target as MovieClip;
+		}
+		
+		public function get minWaitTime():Number {
+			return _minWaitTime;
+		}
+		
+		public function set minWaitTime(value:Number):void {
+			_minWaitTime = value;
+			setWaitTime();
+		}
+		
+		public function get maxWaitTime():Number {
+			return _maxWaitTime;
+		}
+		
+		public function set maxWaitTime(value:Number):void {
+			_maxWaitTime = value;
+			setWaitTime();
 		}
 		
 		// ---- constructor ----
