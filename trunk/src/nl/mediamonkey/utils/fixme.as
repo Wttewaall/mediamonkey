@@ -1,6 +1,6 @@
 ﻿package nl.mediamonkey.utils {
 	
-	public function fixMe(...message:Array):void {
+	public function fixme(...message:Array):void {
 		
 		var functionName	:String = "";
 		var callerOffset	:Number = 2;
