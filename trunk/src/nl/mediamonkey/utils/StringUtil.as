@@ -14,6 +14,8 @@ package nl.mediamonkey.utils {
 		public static const REGEXP_DATE_TIME_EXT		:RegExp = /(?P<day>\d{1,2})\W(?P<month>\d{1,2})\W(?P<year>\d{4})\s*(?P<hours>\d{1,2})\W(?P<minutes>\d{2})(\W(?P<seconds>\d{2}))?\s*(?P<period>(?:am|AM|pm|PM)?)/g;
 		public static const REGEXP_DATE_TIME2			:RegExp = /\d{4}\W\d{1,2}\W\d{1,2}\s*\d{1,2}\W\d{2}(\W\d{2})?\s*(am|AM|pm|PM)?/g; //"YYYY-MM-DD HH:NN:SS"
 		public static const REGEXP_DATE_TIME2_EXT		:RegExp = /(?P<year>\d{4})\W(?P<month>\d{1,2})\W(?P<day>\d{1,2})\s*(?P<hours>\d{1,2})\W(?P<minutes>\d{2})(\W(?P<seconds>\d{2}))?\s*(?P<period>(?:am|AM|pm|PM)?)/g;
+		public static const REGEXP_NO_HTML				:RegExp = /(?<=^|>)[^><]+?(?=<|$)/g;
+		public static const REGEXP_HTML_HEX_ENTITY		:RegExp = /&#x?([0-9A-F]+);/gi;
 		
 		public static function trim(input:String):String {
 			return input.replace(REGEXP_TRIM, "");
@@ -158,19 +160,17 @@ package nl.mediamonkey.utils {
 			return normalizedSize + " " + unit;
 		}
 		
-		protected static const htmlHexEntity	:RegExp = /&#x([a-fA-F0-9]+);/g;
-		
 		public static function replaceHexEntities(input:String):String {
-			var result:Object = htmlHexEntity.exec(input);
+			var result:Object = REGEXP_HTML_HEX_ENTITY.exec(input);
 			
 			// replace hex entities while a result is found
-			while (result) {
+			while (result != null) {
 				
 				// convert hex to decimal, then replace result with char from code
 				input = input.replace(result[0] as String, String.fromCharCode(hexStringToValue(result[1] as String, "")))
 				
 				// try finding more results
-				result = htmlHexEntity.exec(input);
+				result = REGEXP_HTML_HEX_ENTITY.exec(input);
 			}
 			
 			return input;
@@ -191,13 +191,17 @@ package nl.mediamonkey.utils {
 			return result;
 		}
 		
+		public static function filterTags(input:String):String {
+			return input.match(StringUtil.REGEXP_NO_HTML).join("");
+		}
+		
 		private static var htmlCharCodes:Array;
 		
 		public static function replaceHTML(input:String):String {
 			if (!htmlCharCodes) htmlCharCodes = getHTMLEntityArray();
 			
 			for (var code:String in htmlCharCodes) {
-				input = input.replace(code, htmlCharCodes[code]);
+				input = input.replace(new RegExp(code, "g"), htmlCharCodes[code]);
 			}
 			
 			return input;
@@ -205,6 +209,40 @@ package nl.mediamonkey.utils {
 		
 		public static function getHTMLEntityArray():Array {
 			var charCodes:Array = new Array();
+			
+			charCodes["&quot;"]   = "\u0022"; // quotation mark
+			charCodes["&amp;"]    = "\u0026"; // ampersand
+			charCodes["&lt;"]     = "\u003C"; // less-than sign
+			charCodes["&gt;"]     = "\u003E"; // greater-than sign
+			charCodes["&OElig;"]  = "\u0152"; // Latin capital ligature OE
+			charCodes["&oelig;"]  = "\u0153"; // Latin small ligature oe
+			charCodes["&Scaron;"] = "\u0160"; // Latin capital letter S with caron
+			charCodes["&scaron;"] = "\u0161"; // Latin small letter s with caron
+			charCodes["&Yuml;"]   = "\u0178"; // Latin capital letter Y with diaeresis
+			charCodes["&circ;"]   = "\u02C6"; // modifier letter circumflex accent
+			charCodes["&tilde;"]  = "\u02DC"; // small tilde
+			charCodes["&ensp;"]   = "\u2002"; // en space
+			charCodes["&emsp;"]   = "\u2003"; // em space
+			charCodes["&thinsp;"] = "\u2009"; // thin space
+			charCodes["&zwnj;"]   = "\u200C"; // zero width non-joiner
+			charCodes["&zwj;"]    = "\u200D"; // zero width joiner
+			charCodes["&lrm;"]    = "\u200E"; // left-to-right mark
+			charCodes["&rlm;"]    = "\u200F"; // right-to-left mark
+			charCodes["&ndash;"]  = "\u2013"; // en dash
+			charCodes["&mdash;"]  = "\u2014"; // em dash
+			charCodes["&lsquo;"]  = "\u2018"; // left single quotation mark
+			charCodes["&rsquo;"]  = "\u2019"; // right single quotation mark
+			charCodes["&sbquo;"]  = "\u201A"; // single low-9 quotation mark
+			charCodes["&ldquo;"]  = "\u201C"; // left double quotation mark
+			charCodes["&rdquo;"]  = "\u201D"; // right double quotation mark
+			charCodes["&bdquo;"]  = "\u201E"; // double low-9 quotation mark
+			charCodes["&dagger;"] = "\u2020"; // dagger
+			charCodes["&Dagger;"] = "\u2021"; // double dagger
+			charCodes["&permil;"] = "\u2030"; // per mille sign
+			charCodes["&lsaquo;"] = "\u2039"; // single left-pointing angle quotation mark
+			charCodes["&rsaquo;"] = "\u203A"; // single right-pointing angle quotation mark
+			charCodes["&euro;"]   = "\u20AC"; // euro sign
+			
 			charCodes["&nbsp;"]   = "\u00A0"; // non-breaking space
 			charCodes["&iexcl;"]  = "\u00A1"; // inverted exclamation mark
 			charCodes["&cent;"]   = "\u00A2"; // cent sign
@@ -219,9 +257,9 @@ package nl.mediamonkey.utils {
 			charCodes["&deg;"]    = "\u00B0"; // degree sign
 			charCodes["&plusmn;"] = "\u00B1"; // plus-minus sign
 					// remove spaces from next three lines in actual code
-			charCodes["& sup1;"]   = "\u00B9"; // superscript one
-			charCodes["& sup2;"]   = "\u00B2"; // superscript two
-			charCodes["& sup3;"]   = "\u00B3"; // superscript three
+			charCodes["& sup1;"]  = "\u00B9"; // superscript one
+			charCodes["& sup2;"]  = "\u00B2"; // superscript two
+			charCodes["& sup3;"]  = "\u00B3"; // superscript three
 			charCodes["&acute;"]  = "\u00B4"; // acute accent
 			charCodes["&micro;"]  = "\u00B5"; // micro sign
 					// remove spaces from next three lines in actual code
