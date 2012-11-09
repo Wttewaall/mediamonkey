@@ -103,6 +103,14 @@
 			return bounds;
 		}
 		
+		public static function crop(displayObject:DisplayObject, cropRect:Rectangle):Bitmap {
+			var source:DisplayObject = (displayObject != null) ? displayObject : FlexGlobals.topLevelApplication.stage;
+			var cropArea:Rectangle = (cropRect) ? new Rectangle(0, 0, cropRect.width, cropRect.height) : new Rectangle(0, 0, source.width, source.height);
+			var croppedBitmap:Bitmap = new Bitmap(new BitmapData(cropRect.width, cropRect.height), PixelSnapping.ALWAYS, true);
+			croppedBitmap.bitmapData.draw(source, new Matrix(1, 0, 0, 1, -cropRect.x, -cropRect.y) , null, null, cropArea, true);
+			return croppedBitmap;
+		}
+		
 		public static function saveAs(image:Object, fileName:String=null, encoderType:String="image/png", jpgQuality:int=85):Boolean {
 			if (image is Bitmap) {
 				image = (image as Bitmap).bitmapData;

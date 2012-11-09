@@ -46,23 +46,25 @@ package nl.mediamonkey.utils {
 			else bounds = combineRectangles(array);
 			
 			var object:DisplayObject;
+			var objectBounds:Rectangle;
 			var point:Point = new Point();
 			
 			for each (object in array) {
 				
 				// we need the global point since we'll set the x, y or both back to local later
 				point = CoordsUtil.globalPosition(object);
+				objectBounds = CoordsUtil.getGlobalBounds(object);
 				
 				switch (horizontal) {
 					case LEFT:		point.x = bounds.left; break;
-					case CENTER:	point.x = bounds.left + (bounds.width - object.width)/2; break;
-					case RIGHT:		point.x = bounds.right - object.width; break;
+					case CENTER:	point.x = bounds.left + (bounds.width - objectBounds.width)/2; break;
+					case RIGHT:		point.x = bounds.right - objectBounds.width; break;
 				}
 				
 				switch (vertical) {
 					case TOP:		point.y = bounds.top; break;
-					case MIDDLE:	point.y = bounds.top + (bounds.height - object.height)/2; break;
-					case BOTTOM:	point.y = bounds.bottom - object.height; break;
+					case MIDDLE:	point.y = bounds.top + (bounds.height - objectBounds.height)/2; break;
+					case BOTTOM:	point.y = bounds.bottom - objectBounds.height; break;
 				}
 				
 				point = CoordsUtil.globalToLocal(object, point);
@@ -91,6 +93,8 @@ package nl.mediamonkey.utils {
 			var middleCenter:Rectangle = measureMinMax(tempArray || array, MIDDLE, CENTER);
 			var bottomRight:Rectangle = measureMinMax(tempArray || array, BOTTOM, RIGHT);
 			
+			var object:DisplayObject;
+			var objectBounds:Rectangle;
 			var point:Point = new Point();
 			var widthSpacing:Number;
 			var heightSpacing:Number;
@@ -98,9 +102,9 @@ package nl.mediamonkey.utils {
 			// TODO: sort on GLOBAL coords
 			//array = array.sortOn(["x", "y"], Array.NUMERIC);
 			
-			var object:DisplayObject;
 			for (var i:uint=0; i<array.length; i++) {
 				object = array[i] as DisplayObject;
+				objectBounds = CoordsUtil.getGlobalBounds(object);
 				
 				switch (horizontal) {
 					case LEFT: {
@@ -110,12 +114,12 @@ package nl.mediamonkey.utils {
 					}
 					case CENTER: {
 						widthSpacing = middleCenter.width / (array.length - 1);
-						point.x = middleCenter.x - (object.width/2) + (widthSpacing * i);
+						point.x = middleCenter.x - (objectBounds.width/2) + (widthSpacing * i);
 						break;
 					}
 					case RIGHT: {
 						widthSpacing = bottomRight.width / (array.length - 1);
-						point.x = bottomRight.x - object.width + (widthSpacing * i);
+						point.x = bottomRight.x - objectBounds.width + (widthSpacing * i);
 						break;
 					}
 				}
@@ -128,12 +132,12 @@ package nl.mediamonkey.utils {
 					}
 					case MIDDLE: {
 						heightSpacing = middleCenter.height / (array.length - 1);
-						point.y = middleCenter.y - (object.height/2) + (heightSpacing * i);
+						point.y = middleCenter.y - (objectBounds.height/2) + (heightSpacing * i);
 						break;
 					}
 					case BOTTOM: {
 						heightSpacing = bottomRight.height / (array.length - 1);
-						point.y = bottomRight.y - object.height + (heightSpacing * i);
+						point.y = bottomRight.y - objectBounds.height + (heightSpacing * i);
 						break;
 					}
 				}
