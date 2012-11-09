@@ -5,6 +5,8 @@ package nl.mediamonkey.color.utils {
 	 * http://www.easyrgb.com/index.php?X=MATH
 	 */
 	
+	import flash.geom.ColorTransform;
+	
 	import nl.mediamonkey.color.ARGBColor;
 	import nl.mediamonkey.color.CMYKColor;
 	import nl.mediamonkey.color.HSLColor;
@@ -36,7 +38,7 @@ package nl.mediamonkey.color.utils {
 			if (!EnumUtil.hasConst(HexPrefix, prefix))
 				throw new ArgumentError("invalid prefix as argument");
 			
-			var args:Array = (prefix != "") ? hexString.split(prefix) : [hexString];
+			var args:Array = hexString.split(prefix);
 			var str:String = args[args.length-1] as String;
 			
 			var num:uint;
@@ -44,7 +46,7 @@ package nl.mediamonkey.color.utils {
 			
 			for (var i:uint=0; i<str.length; i++) {
 				num = parseInt(HexPrefix.CODE + str.charAt(str.length-1-i)); // char from reversed index
-				result += num * Math.pow(0x10, i);
+				result += num * Math.pow(16, i);
 			}
 			
 			return result;
@@ -476,5 +478,28 @@ package nl.mediamonkey.color.utils {
 			return XYZToRGB(xyz.x, xyz.y, xyz.z);
 		}
 		
+		// todo: include alpha
+		public static function tint(transform:ColorTransform, color:uint, amount:Number):ColorTransform {
+			
+			if (transform == null) transform = new ColorTransform();
+			
+			var r:int = color >> 16 & 0xFF;
+			var g:int = color >> 8 & 0xFF;
+			var b:int = color & 0xFF;
+			
+			//transform.alphaMultiplier = alpha - amount;
+			//transform.alphaOffset = alpha * 0xFF * amount;
+			
+			transform.redMultiplier = 1 - amount;
+			transform.redOffset = r * amount;
+			
+			transform.greenMultiplier = 1 - amount;
+			transform.greenOffset = g * amount;
+			
+			transform.blueMultiplier = 1 - amount;
+			transform.blueOffset = b * amount;
+			
+			return transform;
+		}
 	}
 }
