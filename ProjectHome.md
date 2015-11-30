@@ -1,0 +1,1 @@
+Mediamonkey's personal source code library
